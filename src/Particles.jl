@@ -2,7 +2,12 @@ module Particles
 
 using DelimitedFiles
 
-rows(x) = (x[i, :] for i in 1:size(x)[1])
+try
+   eachrow
+catch UndefVarError  # Julia 1.0 compatibility
+    eachrow(x) = (x[i, :] for i in 1:size(x)[1])
+end
+
 
 function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
@@ -64,7 +69,7 @@ function read_particle_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString)
     header = string.(file_content[1,:])
     dct_particles = ParticleDict()
-    for row in rows(file_content[2:end,:])
+    for row in eachrow(file_content[2:end,:])
         pdgid       = parse(Int64, row[1])
         mass_value  = parse(Float64, row[2])
         mass_lower  = parse(Float64, row[3])
