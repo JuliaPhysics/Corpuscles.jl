@@ -1,6 +1,9 @@
 module Particles
 
 using DelimitedFiles
+using Unitful
+using UnitfulAtomic
+
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
@@ -28,17 +31,20 @@ end
     ChargeInv = 2
 end
 
-struct MeasuredValue{T}
-    value::T
-    lower_limit::T
-    upper_limit::T
+struct MeasuredValue{D} 
+    value::Quantity{T1,D,U1} where {T1 <: Real, U1 <: Unitful.Units}
+    lower_limit::Quantity{T2,D,U2} where {T2 <: Real, U2 <: Unitful.Units}
+    upper_limit::Quantity{T3,D,U3} where {T3 <: Real, U3 <: Unitful.Units}
 end
+
+const _energy_dim = Unitful.dimension(u"J")
+const _charge_dim = Unitful.dimension(u"C")
 
 struct ParticleInfo
     pdgid::Int64
-    mass::MeasuredValue{Float64}
-    width::Union{Missing, MeasuredValue{Float64}}
-    charge::Rational{Int8}
+    mass::MeasuredValue{_energy_dim} 
+    width::Union{Missing, MeasuredValue{_energy_dim}}
+    charge::Quantity{T,_charge_dim,U} where {T<:Real, U<: Unitful.Units}
     isospin::Union{Missing, Rational{Int8}}
     parity::Union{Missing, Int8}
     gparity::Union{Missing, Int8}
@@ -68,20 +74,20 @@ function read_particle_csv(filepath::AbstractString)
     dct_particles = ParticleDict()
     for row in eachrow_(file_content[2:end,:])
         pdgid       = parse(Int64, row[1])
-        mass_value  = parse(Float64, row[2])
-        mass_lower  = parse(Float64, row[3])
-        mass_upper  = parse(Float64, row[4])
-        mass = MeasuredValue{Float64}(mass_value, mass_lower, mass_upper)
-        width_value  = parse(Float64, row[5])
-        width_lower  = parse(Float64, row[6])
-        width_upper  = parse(Float64, row[7])
-        width = MeasuredValue{Float64}(width_value, width_lower, width_upper)
+        mass_value  = parse(Float64, row[2]) * u"MeV"
+        mass_lower  = parse(Float64, row[3]) * u"MeV"
+        mass_upper  = parse(Float64, row[4]) * u"MeV"
+        mass = MeasuredValue{_energy_dim}(mass_value, mass_lower, mass_upper)
+        width_value  = parse(Float64, row[5]) * u"MeV"
+        width_lower  = parse(Float64, row[6]) * u"MeV"
+        width_upper  = parse(Float64, row[7]) * u"MeV"
+        width = MeasuredValue{}(width_value, width_lower, width_upper)
         isospin = if (row[8] in ["", "?"]) missing else parse(Rational{Int16}, row[8]) end
         gparity = read_parity(row[9])
         parity = read_parity(row[10])
         cparity = read_parity(row[11])
         antiprop = InvProperty(parse(Int8, row[12]))
-        charge = parse(Int8, row[13]) // 3
+        charge = parse(Int8, row[13]) // 3 * u"e_au"
         rank = parse(Int8, row[14])
         status = PDGStatus(parse(Int8, row[15]))
         name = row[16]
