@@ -2,6 +2,9 @@ module Particles
 
 using DelimitedFiles
 
+
+
+
 function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
     nums, denoms = split(val, '/', keepempty=false)
@@ -55,10 +58,12 @@ function read_parity(val::AbstractString)
     end
 end
 
+const ParticleDict = Dict{Int, ParticleInfo}
+
 function read_particle_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString)
     header = string.(file_content[1,:])
-    dct_particles = Dict{Int32, ParticleInfo}()
+    dct_particles = ParticleDict()
     for row in eachrow(file_content[2:end,:])
         pdgid       = parse(Int64, row[1])
         mass_value  = parse(Float64, row[2])
@@ -98,5 +103,51 @@ function read_particle_csv(filepath::AbstractString)
 end
 
 
+const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
+
+"""
+    available_catalog_files()
+
+Function to get the available catalog files which are available within 
+the package and returns a list with the absolute filepaths.
+
+# Examples
+```julia-repl
+julia> Particles.available_catalog_files()
+["/home/foobar/dev/Particles.jl/data/particle2019.csv"]
+```
+"""
+function available_catalog_files()
+    dir_content = readdir(_data_dir)
+    filter!(s->occursin(".csv",s), dir_content)
+    joinpath.(_data_dir, dir_content)
+end
+
+
+
+const _catalogs = available_catalog_files()
+
+const _default_year = "2019"
+const _default_catalog = filter(s->occursin(_default_year,s), _catalogs)[end]
+
+const _current_particle_tbl = read_particle_csv(_default_catalog)
+
+"""
+    use_catalog_file(filepath::AbstractString)
+
+This function reads a given catalog file and sets it as reference 
+
+# Arguments
+- `filepath::AbstractString`: filepath to the catalog file
+
+# Examples
+```julia-repl
+julia> Particles.use_catalog_file("/home/foobar/dev/Particles.jl/data/particle2019.csv")
+```
+"""
+function use_catalog_file(filepath::AbstractString)
+    _current_particle_tbl = read_particle_csv(filepath)
+    return
+end
 
 end # module
