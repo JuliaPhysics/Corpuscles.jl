@@ -4,9 +4,9 @@ authors = ["Johannes Schumann", "Tamas Gal"]
 version = "0.1.0"
 
 [deps]
-CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
-CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+UnitfulAtomic = "a7773ee8-282e-5fa2-be4e-bd808c38a91a"
 
 [compat]
 julia = "1"
