@@ -3,8 +3,6 @@ module Particles
 using DelimitedFiles
 
 
-
-
 function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
     nums, denoms = split(val, '/', keepempty=false)
@@ -102,7 +100,6 @@ function read_particle_csv(filepath::AbstractString)
     dct_particles
 end
 
-
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 
 """
@@ -122,8 +119,6 @@ function available_catalog_files()
     filter!(s->occursin(".csv",s), dir_content)
     joinpath.(_data_dir, dir_content)
 end
-
-
 
 const _catalogs = available_catalog_files()
 
