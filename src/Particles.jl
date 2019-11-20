@@ -32,6 +32,7 @@ struct MeasuredValue{T}
 end
 
 struct ParticleInfo
+    pdgid::Int64
     mass::MeasuredValue{Float64}
     width::Union{Missing, MeasuredValue{Float64}}
     charge::Rational{Int8}
@@ -83,7 +84,8 @@ function read_particle_csv(filepath::AbstractString)
         name = row[16]
         quarks = row[17]
         latex = row[18]
-        dct_particles[pdgid] = ParticleInfo(mass, 
+        dct_particles[pdgid] = ParticleInfo(pdgid,
+                                            mass, 
                                             width, 
                                             charge,
                                             isospin,
@@ -125,7 +127,7 @@ const _catalogs = available_catalog_files()
 const _default_year = "2019"
 const _default_catalog = filter(s->occursin(_default_year,s), _catalogs)[end]
 
-const _current_particle_tbl = read_particle_csv(_default_catalog)
+const _current_particle_dct = read_particle_csv(_default_catalog)
 
 """
     use_catalog_file(filepath::AbstractString)
@@ -141,7 +143,7 @@ julia> Particles.use_catalog_file("/home/foobar/dev/Particles.jl/data/particle20
 ```
 """
 function use_catalog_file(filepath::AbstractString)
-    _current_particle_tbl = read_particle_csv(filepath)
+    _current_particle_dct = read_particle_csv(filepath)
     return
 end
 
