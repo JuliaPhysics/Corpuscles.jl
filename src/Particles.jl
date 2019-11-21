@@ -6,8 +6,9 @@ using UnitfulAtomic
 using Printf
 
 import Base.show
+import Base.convert
 
-export Particle
+export Particle, PDGID, PythiaID, GeantID
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
@@ -20,6 +21,20 @@ function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Intege
     denom = parse(T, denoms)
     return num//denom 
 end 
+
+abstract type ParticleID end
+struct PDGID <: ParticleID
+    value 
+end
+struct GeantID <: ParticleID
+    value
+end
+struct PythiaID <: ParticleID
+    value
+end
+
+promote_rule(::Type{PDGID}, ::Type{GeantID}) = PDGID
+promote_rule(::Type{PDGID}, ::Type{PythiaID}) = PDGID
  
 @enum PDGStatus begin
     Common      = 0
@@ -61,7 +76,9 @@ struct Particle
     latex::String
 end
 
-Particle(pdgid) = _current_particle_dct[pdgid]
+Particle(id::ParticleID) = _current_particle_dct[PDGID(id)]
+Base.convert(::Type{GeantID}, id::PDGID) = PDGID(23)
+Base.convert(::Type{PythiaID}, id::PDGID) = PDGID(42)
 
 function read_parity(val::AbstractString)
     tmp = parse(Int8, val)
