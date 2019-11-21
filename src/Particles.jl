@@ -7,6 +7,8 @@ using Printf
 
 import Base.show
 
+export Particle
+
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
 
@@ -42,7 +44,7 @@ end
 const _energy_dim = Unitful.dimension(u"J")
 const _charge_dim = Unitful.dimension(u"C")
 
-struct ParticleInfo
+struct Particle
     pdgid::Int64
     mass::MeasuredValue{_energy_dim} 
     width::Union{Missing, MeasuredValue{_energy_dim}}
@@ -59,6 +61,8 @@ struct ParticleInfo
     latex::String
 end
 
+Particle(pdgid) = _current_particle_dct[pdgid]
+
 function read_parity(val::AbstractString)
     tmp = parse(Int8, val)
     if tmp == 5
@@ -68,7 +72,7 @@ function read_parity(val::AbstractString)
     end
 end
 
-const ParticleDict = Dict{Int, ParticleInfo}
+const ParticleDict = Dict{Int, Particle}
 
 function read_particle_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString)
@@ -95,20 +99,20 @@ function read_particle_csv(filepath::AbstractString)
         name = row[16]
         quarks = row[17]
         latex = row[18]
-        dct_particles[pdgid] = ParticleInfo(pdgid,
-                                            mass, 
-                                            width, 
-                                            charge,
-                                            isospin,
-                                            parity,
-                                            gparity,
-                                            cparity,
-                                            antiprop,
-                                            rank,
-                                            status,
-                                            name,
-                                            quarks,
-                                            latex)
+        dct_particles[pdgid] = Particle(pdgid,
+                                        mass, 
+                                        width, 
+                                        charge,
+                                        isospin,
+                                        parity,
+                                        gparity,
+                                        cparity,
+                                        antiprop,
+                                        rank,
+                                        status,
+                                        name,
+                                        quarks,
+                                        latex)
     end
     dct_particles
 end
@@ -167,7 +171,7 @@ function show(io::IO, m::MeasuredValue)
     return 
 end
 
-function show(io::IO, p::ParticleInfo)
+function show(io::IO, p::Particle)
     Printf.@printf(io, "\n%-8s %-12s", "Name:", p.name)
     Printf.@printf(io, "%-7s %-10s", "PDGid:", p.pdgid)
     Printf.@printf(io, " %-7s %s", "LaTex:", "\$$(p.latex)\$\n\n")
