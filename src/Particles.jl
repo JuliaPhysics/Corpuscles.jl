@@ -3,7 +3,9 @@ module Particles
 using DelimitedFiles
 using Unitful
 using UnitfulAtomic
+using Printf
 
+import Base.show
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
@@ -154,6 +156,28 @@ julia> Particles.use_catalog_file("/home/foobar/dev/Particles.jl/data/particle20
 function use_catalog_file(filepath::AbstractString)
     _current_particle_dct = read_particle_csv(filepath)
     return
+end
+
+function show(io::IO, m::MeasuredValue)
+    if isapprox(m.upper_limit, m.lower_limit)
+        print(io, "$(m.value) ± $(m.lower_limit)")
+    else 
+        print(io, "$(m.value) + $(m.lower_limit) - $(m.lower_limit)")
+    end
+    return 
+end
+
+function show(io::IO, p::ParticleInfo)
+    println(io, "\nName: $(p.name) \t PDGid: $(p.pdgid) \t LaTex: \$$(p.latex)\$")
+    println(io, "\nParameters:")
+    println(io, "-----------")
+    Printf.@printf(io, "%-19s= %s\n","Mass", "$(p.mass)")
+    Printf.@printf(io, "%-19s= %s\n","Width", "$(p.width)")
+    Printf.@printf(io, "%-19s= %s\n", "Q (charge)", "$(p.charge)")
+    Printf.@printf(io, "%-19s= %s\n", "C (charge parity)", "$(p.cparity)")
+    Printf.@printf(io, "%-19s= %s\n", "P (space parity)", "$(p.parity)")
+    Printf.@printf(io, "%-19s= %s\n", "G (G-parity)", "$(p.gparity)")
+    Printf.@printf(io, "%-19s= %s\n", "Isospin", "$(p.isospin)")
 end
 
 end # module
