@@ -174,15 +174,18 @@ function show(io::IO, p::ParticleInfo)
     Printf.@printf(io, "%-8s %s\n", "Status:", p.status)
     println(io, "\nParameters:")
     println(io, "-----------")
-    Printf.@printf(io, "%-19s = %s\n","Mass", p.mass)
-    Printf.@printf(io, "%-19s = %s\n","Width", p.width)
-    Printf.@printf(io, "%-19s = %s\n", "Q (charge)", p.charge)
-    Printf.@printf(io, "%-19s = %s\n", "C (charge parity)", p.cparity)
-    Printf.@printf(io, "%-19s = %s\n", "P (space parity)", p.parity)
-    Printf.@printf(io, "%-19s = %s\n", "G (G-parity)", p.gparity)
-    Printf.@printf(io, "%-19s = %s\n", "Isospin", p.isospin)
-    if !isempty(p.quarks)
-        Printf.@printf(io, "%-19s = %s\n", "Composition", p.quarks)
+    fields = Dict("Mass" => p.mass, 
+                  "Width" => p.width, 
+                  "Q (charge)" => p.charge,
+                  "C (charge parity)" => p.cparity,
+                  "P (space parity)" => p.parity,
+                  "G (G-parity)" => p.gparity,
+                  "Isospin" => p.isospin,
+                  "Composition" => p.quarks)
+    for (key, value) in fields
+        if value isa MeasuredValue || !ismissing(value) && !isempty(value)
+            Printf.@printf(io, "%-19s = %s\n",key, value)
+        end
     end
 end
 
