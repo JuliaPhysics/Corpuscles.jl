@@ -168,16 +168,22 @@ function show(io::IO, m::MeasuredValue)
 end
 
 function show(io::IO, p::ParticleInfo)
-    println(io, "\nName: $(p.name) \t PDGid: $(p.pdgid) \t LaTex: \$$(p.latex)\$")
+    Printf.@printf(io, "\n%-8s %-12s", "Name:", p.name)
+    Printf.@printf(io, "%-7s %-10s", "PDGid:", p.pdgid)
+    Printf.@printf(io, " %-7s %s", "LaTex:", "\$$(p.latex)\$\n\n")
+    Printf.@printf(io, "%-8s %s\n", "Status:", p.status)
     println(io, "\nParameters:")
     println(io, "-----------")
-    Printf.@printf(io, "%-19s = %s\n","Mass", "$(p.mass)")
-    Printf.@printf(io, "%-19s = %s\n","Width", "$(p.width)")
-    Printf.@printf(io, "%-19s = %s\n", "Q (charge)", "$(p.charge)")
-    Printf.@printf(io, "%-19s = %s\n", "C (charge parity)", "$(p.cparity)")
-    Printf.@printf(io, "%-19s = %s\n", "P (space parity)", "$(p.parity)")
-    Printf.@printf(io, "%-19s = %s\n", "G (G-parity)", "$(p.gparity)")
-    Printf.@printf(io, "%-19s = %s\n", "Isospin", "$(p.isospin)")
+    Printf.@printf(io, "%-19s = %s\n","Mass", p.mass)
+    Printf.@printf(io, "%-19s = %s\n","Width", p.width)
+    Printf.@printf(io, "%-19s = %s\n", "Q (charge)", p.charge)
+    Printf.@printf(io, "%-19s = %s\n", "C (charge parity)", p.cparity)
+    Printf.@printf(io, "%-19s = %s\n", "P (space parity)", p.parity)
+    Printf.@printf(io, "%-19s = %s\n", "G (G-parity)", p.gparity)
+    Printf.@printf(io, "%-19s = %s\n", "Isospin", p.isospin)
+    if !isempty(p.quarks)
+        Printf.@printf(io, "%-19s = %s\n", "Composition", p.quarks)
+    end
 end
 
 end # module
