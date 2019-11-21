@@ -14,6 +14,5 @@ Modules = [Particles]
 # Acknowledgements
 
 This project uses data files which are part of the
-[particle]([particle](https://github.com/scikit-hep/particle) Python
-package, developed by the [Scikit-HEP](http://scikit-hep.org) group. Many
-thanks for the permission!
+[particle](https://github.com/scikit-hep/particle) Python package, developed by
+the [Scikit-HEP](http://scikit-hep.org) group. Many thanks for the permission!
