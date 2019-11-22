@@ -98,7 +98,7 @@ function Base.convert(t::Type{X}, id::Y) where {X <: ParticleID, Y <: ParticleID
     val_col = _id_conversion_cols[t]
     key_col = _id_conversion_cols[Y]
     row = findfirst(x->isequal(x, id.value), _id_conversion_tbl[:,key_col])
-    if iszero(id.value) || isnothing(row)
+    if iszero(id.value) || isequal(row, nothing)
         throw(IDException("No corresponding $t for $id found!"))
     end
     X(_id_conversion_tbl[row, val_col])
