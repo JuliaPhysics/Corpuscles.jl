@@ -7,12 +7,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 219763.56 33487.985"
+   viewBox="0 0 219763.56 34038.988"
    version="1.1"
    id="svg118"
-   sodipodi:docname="Particles_Logo.svg"
+   sodipodi:docname="Corpuscles_Logo.svg"
    width="1435.05"
-   height="339.49701"
+   height="345.08301"
    inkscape:version="0.92.4 5da689c313, 2019-01-14">
   <metadata
      id="metadata122">
@@ -42,22 +42,27 @@
      units="px"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="0.50000001"
-     inkscape:cx="453.39891"
-     inkscape:cy="213.15432"
+     inkscape:zoom="0.7071068"
+     inkscape:cx="580.40778"
+     inkscape:cy="61.776492"
      inkscape:window-x="1920"
      inkscape:window-y="15"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g184">
+     inkscape:current-layer="g920">
     <sodipodi:guide
-       position="-2246.9414,5405.5485"
+       position="123446.41,-4882.4308"
        orientation="1,0"
        id="guide4830"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="-7580.0432,2789.9605"
+       position="104821.17,5161.4269"
        orientation="0,1"
        id="guide9585"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="26421.864,21901.19"
+       orientation="1,0"
+       id="guide45"
        inkscape:locked="false" />
   </sodipodi:namedview>
   <defs
@@ -146,27 +151,27 @@
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="Back"
-     transform="translate(0,39739.37)" />
+     transform="translate(0,40594.808)" />
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Main"
-     transform="translate(0,39739.37)">
+     transform="translate(0,40594.808)">
     <g
        id="g184"
        transform="matrix(8.2033477,0,0,8.2033477,0,-85038.012)">
       <g
-         transform="translate(576.85996,18193.103)"
+         transform="translate(799.95839,18062.427)"
          id="g920">
         <path
            sodipodi:nodetypes="cc"
            inkscape:connector-curvature="0"
            id="path9145"
-           d="M 8380.2771,-13179.789 19337.32,-11053.99"
+           d="m 8145.6932,-13176.64 10481.0088,2032.459"
            style="fill:none;stroke:#aaaaaa;stroke-width:76.56999969;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:76.57, 76.57;stroke-dashoffset:0;stroke-opacity:1" />
       </g>
       <g
-         transform="translate(4438.2448,14961.836)"
+         transform="translate(4426.7593,14834.309)"
          id="g920-8">
         <path
            sodipodi:nodetypes="cc"
@@ -179,32 +184,32 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path9575"
-         d="m 17327.553,5377.0983 c 233.342,623.7648 84.421,1284.4137 84.421,1284.4137"
+         d="m 17316.067,5249.5707 c 233.342,623.7648 84.421,1284.4137 84.421,1284.4137"
          style="fill:none;stroke:#555555;stroke-width:76.56999969;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <text
          id="text9579"
-         y="6353.6636"
-         x="16673.41"
+         y="6226.1362"
+         x="16661.926"
          style="font-style:normal;font-weight:normal;font-size:890.22839355px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:22.2557106"
          xml:space="preserve"><tspan
            style="stroke-width:22.2557106"
-           y="6353.6636"
-           x="16673.41"
+           y="6226.1362"
+           x="16661.926"
            id="tspan9577"
            sodipodi:role="line">θ</tspan></text>
       <text
          id="text9583"
-         y="9794.6494"
+         y="9771.3975"
          x="24917.273"
          style="font-style:normal;font-weight:normal;font-size:6125.60009766px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:153.13999939"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2450.23999023px;font-family:'Tamil MN';-inkscape-font-specification:'Tamil MN, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:153.13999939"
-           y="9794.6494"
+           y="9771.3975"
            x="24917.273"
            id="tspan9581"
            sodipodi:role="line">.jl</tspan></text>
       <g
-         transform="matrix(59.363259,0,0,59.363259,9746.9267,3789.6511)"
+         transform="matrix(59.363259,0,0,59.363259,9735.4412,3662.1235)"
          id="g898">
         <g
            id="g893">
@@ -217,7 +222,7 @@
         </g>
       </g>
       <g
-         transform="matrix(154.27262,0,0,154.27262,1042.7942,1884.6739)"
+         transform="matrix(154.27262,0,0,154.27262,1031.3087,1757.1463)"
          id="g890">
         <path
            id="path13"
@@ -242,11 +247,11 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path5151"
-         d="m 11828.158,5554.0885 1884.397,372.5998"
+         d="m 11816.672,5426.5609 1884.397,372.5998"
          style="fill:#4d64ae;fill-opacity:1;stroke:#4d64ae;stroke-width:252.57196045;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Send)" />
       <g
          style="fill:#777777;fill-opacity:1"
-         transform="matrix(59.363259,0,0,59.363259,17114.957,3417.9997)"
+         transform="matrix(59.363259,0,0,59.363259,17103.471,3290.4721)"
          id="g898-9">
         <g
            style="fill:#777777;fill-opacity:1"
@@ -261,15 +266,16 @@
       </g>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:746.71954346px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:18.66798782"
-         x="-251.58032"
-         y="9808.7598"
-         id="text54"><tspan
+         style="font-style:normal;font-weight:normal;font-size:762.35162354px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:19.05879021"
+         x="-256.84698"
+         y="9546.5977"
+         id="text54"
+         transform="scale(0.97949486,1.0209344)"><tspan
            sodipodi:role="line"
            id="tspan52"
-           x="-251.58032"
-           y="9808.7598"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4480.31738281px;font-family:'Tamil MN';-inkscape-font-specification:'Tamil MN, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:18.66798782">Corpuscles</tspan></text>
+           x="-256.84698"
+           y="9546.5977"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4574.10986328px;font-family:'Tamil MN';-inkscape-font-specification:'Tamil MN, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:19.05879021">Corpuscles</tspan></text>
     </g>
   </g>
 </svg>
