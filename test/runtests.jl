@@ -1,9 +1,9 @@
-using Particles
+using Corpuscles
 using Test
 
-@testset "Particles.jl" begin
+@testset "Corpuscles.jl" begin
 
-    catalog_files = map(basename, Particles.available_catalog_files())
+    catalog_files = map(basename, Corpuscles.available_catalog_files())
     @test "particle2019.csv" in catalog_files
 
     # Particle Identites
@@ -26,7 +26,4 @@ using Test
     pdg_id = PDGID(13)
     geant_id = convert(GeantID, pdg_id)
     @test !isequal(1, geant_id.value)
-    
-    
-
 end

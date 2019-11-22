@@ -1,4 +1,4 @@
-module Particles
+module Corpuscles
 
 using DelimitedFiles
 using Unitful
@@ -166,8 +166,8 @@ the package and returns a list with the absolute filepaths.
 
 # Examples
 ```julia-repl
-julia> Particles.available_catalog_files()
-["/home/foobar/dev/Particles.jl/data/particle2019.csv"]
+julia> Corpuscles.available_catalog_files()
+["/home/foobar/dev/Corpuscles.jl/data/particle2019.csv"]
 ```
 """
 function available_catalog_files()
@@ -194,7 +194,7 @@ This function reads a given catalog file and sets it as reference
 
 # Examples
 ```julia-repl
-julia> Particles.use_catalog_file("/home/foobar/dev/Particles.jl/data/particle2019.csv")
+julia> Corpuscles.use_catalog_file("/home/foobar/dev/Corpuscles.jl/data/particle2019.csv")
 ```
 """
 function use_catalog_file(filepath::AbstractString)
