@@ -74,10 +74,60 @@ struct Particle
     latex::String
 end
 
+const _geant_pdg_ids = Dict{Int, Int}(
+ 1  =>  22,       # photon
+ 25 =>  -2112,    # anti-neutron
+ 2  =>  -11,      # e+
+ 26 =>  -3122,    # anti-Lambda
+ 3  =>  11,       # e-
+ 27 =>  -3222,    # Sigma-
+ 4  =>  12,       # e-neutrino (NB: flavour undefined by Geant)
+ 28 =>  -3212,    # Sigma0
+ 5  =>  -13,      # mu+
+ 29 =>  -3112,    # Sigma+ (PB)*/
+ 6  =>  13,       # mu-
+ 30 =>  -3322,    # Xi0
+ 7  =>  111,      # pi0
+ 31 =>  -3312,    # Xi+
+ 8  =>  211,      # pi+
+ 32 =>  -3334,    # Omega+ (PB)
+ 9  =>  -211,     # pi-
+ 33 =>  -15,      # tau+
+ 10 =>  130,      # K long
+ 34 =>  15,       # tau-
+ 11 =>  321,      # K+
+ 35 =>  411,      # D+
+ 12 =>  -321,     # K-
+ 36 =>  -411,     # D-
+ 13 =>  2112,     # n
+ 37 =>  421,      # D0
+ 14 =>  2212,     # p
+ 38 =>  -421,     # D0
+ 15 =>  -2212,    # anti-proton
+ 39 =>  431,      # Ds+
+ 16 =>  310,      # K short
+ 40 =>  -431,     # anti Ds-
+ 17 =>  221,      # eta
+ 41 =>  4122,     # Lamba_c+
+ 18 =>  3122,     # Lambda
+ 42 =>  24,       # W+
+ 19 =>  3222,     # Sigma+
+ 43 =>  -24,      # W-
+ 20 =>  3212,     # Sigma0
+ 44 =>  23,       # Z
+ 21 =>  3112,     # Sigma-
+ 22 =>  3322,     # Xi0
+ 23 =>  3312,     # Xi-
+ 24 =>  3334)    # Omega- (PB)
+
+
 Particle(id::ParticleID) = _current_particle_dct[convert(PDGID, id)]
 Particle(id::Integer) = Particle(PDGID(id))
-Base.convert(::Type{PDGID}, id::PythiaID) = PDGID(id.value)
-Base.convert(::Type{PDGID}, id::GeantID) = PDGID(id.value)
+Base.convert(::Type{PDGID}, id::GeantID) = PDGID(_geant_pdg_ids[id.value])
+function Base.convert(::Type{PDGID}, id::PythiaID)
+    throw("Pythia IDs not implemented!")
+end
+
 
 function read_parity(val::AbstractString)
     tmp = parse(Int8, val)
