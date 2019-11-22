@@ -5,8 +5,7 @@ using Unitful
 using UnitfulAtomic
 using Printf
 
-import Base.show
-import Base.convert
+import Base: show, convert
 
 export Particle, PDGID, PythiaID, GeantID
 
@@ -19,12 +18,13 @@ function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Intege
     nums, denoms = split(val, '/', keepempty=false)
     num = parse(T, nums)
     denom = parse(T, denoms)
-    return num//denom 
-end 
+    return num//denom
+end
+
 
 abstract type ParticleID end
 struct PDGID <: ParticleID
-    value 
+    value
 end
 struct GeantID <: ParticleID
     value
@@ -33,9 +33,7 @@ struct PythiaID <: ParticleID
     value
 end
 
-promote_rule(::Type{PDGID}, ::Type{GeantID}) = PDGID
-promote_rule(::Type{PDGID}, ::Type{PythiaID}) = PDGID
- 
+
 @enum PDGStatus begin
     Common      = 0
     Rare        = 1
@@ -50,7 +48,7 @@ end
     ChargeInv = 2
 end
 
-struct MeasuredValue{D} 
+struct MeasuredValue{D}
     value::Quantity{T1,D,U1} where {T1 <: Real, U1 <: Unitful.Units}
     lower_limit::Quantity{T2,D,U2} where {T2 <: Real, U2 <: Unitful.Units}
     upper_limit::Quantity{T3,D,U3} where {T3 <: Real, U3 <: Unitful.Units}
@@ -60,8 +58,8 @@ const _energy_dim = Unitful.dimension(u"J")
 const _charge_dim = Unitful.dimension(u"C")
 
 struct Particle
-    pdgid::Int64
-    mass::MeasuredValue{_energy_dim} 
+    pdgid::PDGID
+    mass::MeasuredValue{_energy_dim}
     width::Union{Missing, MeasuredValue{_energy_dim}}
     charge::Quantity{T,_charge_dim,U} where {T<:Real, U<: Unitful.Units}
     isospin::Union{Missing, Rational{Int8}}
@@ -76,9 +74,10 @@ struct Particle
     latex::String
 end
 
-Particle(id::ParticleID) = _current_particle_dct[PDGID(id)]
-Base.convert(::Type{GeantID}, id::PDGID) = PDGID(23)
-Base.convert(::Type{PythiaID}, id::PDGID) = PDGID(42)
+Particle(id::ParticleID) = _current_particle_dct[convert(PDGID, id)]
+Particle(id::Integer) = Particle(PDGID(id))
+Base.convert(::Type{PDGID}, id::PythiaID) = PDGID(id.value)
+Base.convert(::Type{PDGID}, id::GeantID) = PDGID(id.value)
 
 function read_parity(val::AbstractString)
     tmp = parse(Int8, val)
@@ -89,14 +88,14 @@ function read_parity(val::AbstractString)
     end
 end
 
-const ParticleDict = Dict{Int, Particle}
+const ParticleDict = Dict{PDGID, Particle}
 
 function read_particle_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString)
     header = string.(file_content[1,:])
     dct_particles = ParticleDict()
     for row in eachrow_(file_content[2:end,:])
-        pdgid       = parse(Int64, row[1])
+        pdgid       = PDGID(parse(Int64, row[1]))
         mass_value  = parse(Float64, row[2]) * u"MeV"
         mass_lower  = parse(Float64, row[3]) * u"MeV"
         mass_upper  = parse(Float64, row[4]) * u"MeV"
@@ -117,8 +116,8 @@ function read_particle_csv(filepath::AbstractString)
         quarks = row[17]
         latex = row[18]
         dct_particles[pdgid] = Particle(pdgid,
-                                        mass, 
-                                        width, 
+                                        mass,
+                                        width,
                                         charge,
                                         isospin,
                                         parity,
@@ -139,7 +138,7 @@ const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 """
     available_catalog_files()
 
-Function to get the available catalog files which are available within 
+Function to get the available catalog files which are available within
 the package and returns a list with the absolute filepaths.
 
 # Examples
@@ -164,7 +163,7 @@ const _current_particle_dct = read_particle_csv(_default_catalog)
 """
     use_catalog_file(filepath::AbstractString)
 
-This function reads a given catalog file and sets it as reference 
+This function reads a given catalog file and sets it as reference
 
 # Arguments
 - `filepath::AbstractString`: filepath to the catalog file
@@ -182,10 +181,10 @@ end
 function show(io::IO, m::MeasuredValue)
     if isapprox(m.upper_limit, m.lower_limit)
         print(io, "$(m.value) ± $(m.lower_limit)")
-    else 
+    else
         print(io, "$(m.value) + $(m.lower_limit) - $(m.lower_limit)")
     end
-    return 
+    return
 end
 
 function show(io::IO, p::Particle)
@@ -195,8 +194,8 @@ function show(io::IO, p::Particle)
     Printf.@printf(io, "%-8s %s\n", "Status:", p.status)
     println(io, "\nParameters:")
     println(io, "-----------")
-    fields = Dict("Mass" => p.mass, 
-                  "Width" => p.width, 
+    fields = Dict("Mass" => p.mass,
+                  "Width" => p.width,
                   "Q (charge)" => p.charge,
                   "C (charge parity)" => p.cparity,
                   "P (space parity)" => p.parity,
