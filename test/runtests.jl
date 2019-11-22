@@ -22,20 +22,20 @@ using Test
         pdg_id = convert(PDGID, geant_id)
         @test isequal(value, pdg_id.value)
     end
-    pdg_id = PDGID(22)
-    pdg_id = convert(GeantID, pdg_id)
-    @test isequal(1, pdg_id.value)
-    pdg_id = PDGID(13)
-    pdg_id = convert(GeantID, pdg_id)
-    @test isequal(3, pdg_id.value)
-    pdg_id = PDGID(13)
-    pdg_id = convert(GeantID, pdg_id)
-    @test !isequal(1, pdg_id.value)
-    for (key, value) in Particles._geant_pdg_ids # Do the conversion for each dict entry
-        pdg_id = PDGID(value)
-        pdg_id = convert(GeantID, pdg_id)
-        @test isequal(key, pdg_id.value)
-    end
+    # pdg_id = PDGID(22)
+    # pdg_id = convert(GeantID, pdg_id)
+    # @test isequal(1, pdg_id.value)
+    # pdg_id = PDGID(13)
+    # pdg_id = convert(GeantID, pdg_id)
+    # @test isequal(3, pdg_id.value)
+    # pdg_id = PDGID(13)
+    # pdg_id = convert(GeantID, pdg_id)
+    # @test !isequal(1, pdg_id.value)
+    # for (key, value) in Particles._geant_pdg_ids # Do the conversion for each dict entry
+    #     pdg_id = PDGID(value)
+    #     pdg_id = convert(GeantID, pdg_id)
+    #     @test isequal(key, pdg_id.value)
+    # end
     
     
 
