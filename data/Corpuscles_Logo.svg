@@ -7,12 +7,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 219763.56 34038.988"
+   viewBox="0 0 212616.51 33487.985"
    version="1.1"
    id="svg118"
    sodipodi:docname="Corpuscles_Logo.svg"
-   width="1435.05"
-   height="345.08301"
+   width="1388.38"
+   height="339.49701"
    inkscape:version="0.92.4 5da689c313, 2019-01-14">
   <metadata
      id="metadata122">
@@ -42,27 +42,32 @@
      units="px"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="2.0000001"
-     inkscape:cx="767.16382"
-     inkscape:cy="226.29123"
+     inkscape:zoom="0.7071068"
+     inkscape:cx="690.64266"
+     inkscape:cy="290.98919"
      inkscape:window-x="1920"
      inkscape:window-y="15"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g920">
+     inkscape:current-layer="g184">
     <sodipodi:guide
-       position="123013.27,3626.9486"
+       position="119219.49,18149.76"
        orientation="1,0"
        id="guide4830"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="104821.17,5161.4269"
+       position="168060.38,4882.4308"
        orientation="0,1"
        id="guide9585"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="26421.864,21901.19"
+       position="109571.67,10899.72"
        orientation="1,0"
        id="guide45"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="128867.3,15831.72"
+       orientation="1,0"
+       id="guide47"
        inkscape:locked="false" />
   </sodipodi:namedview>
   <defs
@@ -151,27 +156,27 @@
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="Back"
-     transform="translate(0,40594.808)" />
+     transform="translate(0,39739.37)" />
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Main"
-     transform="translate(0,40594.808)">
+     transform="translate(0,39739.37)">
     <g
        id="g184"
        transform="matrix(8.2033477,0,0,8.2033477,0,-85038.012)">
       <g
-         transform="translate(799.95839,18062.427)"
+         transform="translate(56.580961,18193.103)"
          id="g920">
         <path
            sodipodi:nodetypes="cc"
            inkscape:connector-curvature="0"
            id="path9145"
-           d="m 8091.5562,-13176.64 10481.0028,2032.459"
+           d="M 8380.2771,-13179.789 19337.32,-11053.99"
            style="fill:none;stroke:#aaaaaa;stroke-width:76.56999969;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:76.57, 76.57;stroke-dashoffset:0;stroke-opacity:1" />
       </g>
       <g
-         transform="translate(4372.6223,14834.309)"
+         transform="translate(3917.9658,14961.836)"
          id="g920-8">
         <path
            sodipodi:nodetypes="cc"
@@ -184,32 +189,32 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path9575"
-         d="m 17261.924,5249.5707 c 233.342,623.7648 84.421,1284.4137 84.421,1284.4137"
+         d="m 16807.272,5377.0983 c 233.342,623.7648 84.421,1284.4137 84.421,1284.4137"
          style="fill:none;stroke:#555555;stroke-width:76.56999969;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <text
          id="text9579"
-         y="6226.1362"
-         x="16607.777"
+         y="6353.6636"
+         x="16153.128"
          style="font-style:normal;font-weight:normal;font-size:890.22839355px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:22.2557106"
          xml:space="preserve"><tspan
            style="stroke-width:22.2557106"
-           y="6226.1362"
-           x="16607.777"
+           y="6353.6636"
+           x="16153.128"
            id="tspan9577"
            sodipodi:role="line">θ</tspan></text>
       <text
          id="text9583"
-         y="9771.3975"
-         x="24917.273"
+         y="9794.6494"
+         x="24046.057"
          style="font-style:normal;font-weight:normal;font-size:6125.60009766px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:153.13999939"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2450.23999023px;font-family:'Tamil MN';-inkscape-font-specification:'Tamil MN, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:153.13999939"
-           y="9771.3975"
-           x="24917.273"
+           y="9794.6494"
+           x="24046.057"
            id="tspan9581"
            sodipodi:role="line">.jl</tspan></text>
       <g
-         transform="matrix(59.363259,0,0,59.363259,9681.3042,3662.1235)"
+         transform="matrix(59.363259,0,0,59.363259,9226.6477,3789.6511)"
          id="g898">
         <g
            id="g893">
@@ -222,7 +227,7 @@
         </g>
       </g>
       <g
-         transform="matrix(154.27262,0,0,154.27262,977.17151,1757.1463)"
+         transform="matrix(154.27262,0,0,154.27262,522.51519,1884.6739)"
          id="g890">
         <path
            id="path13"
@@ -247,11 +252,11 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path5151"
-         d="m 11762.529,5426.5609 1884.397,372.5998"
+         d="m 11307.877,5554.0885 1884.397,372.5998"
          style="fill:#4d64ae;fill-opacity:1;stroke:#4d64ae;stroke-width:252.57196045;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Send)" />
       <g
          style="fill:#777777;fill-opacity:1"
-         transform="matrix(59.363259,0,0,59.363259,17049.328,3290.4721)"
+         transform="matrix(59.363259,0,0,59.363259,16594.676,3417.9997)"
          id="g898-9">
         <g
            style="fill:#777777;fill-opacity:1"
@@ -266,16 +271,27 @@
       </g>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:762.35162354px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:19.05879021"
-         x="-256.84698"
-         y="9546.5977"
-         id="text54"
-         transform="scale(0.97949486,1.0209344)"><tspan
+         style="font-style:normal;font-weight:normal;font-size:746.71954346px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:18.66798782"
+         x="-251.58032"
+         y="9808.7598"
+         id="text54"><tspan
            sodipodi:role="line"
            id="tspan52"
-           x="-256.84698"
-           y="9546.5977"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4574.10986328px;font-family:'Tamil MN';-inkscape-font-specification:'Tamil MN, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:19.05879021">Corpuscles</tspan></text>
-    </g>
+           x="-251.58032"
+           y="9808.7598"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4480.31738281px;font-family:'Tamil MN';-inkscape-font-specification:'Tamil MN, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:-93.33994293px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:18.66798782"
+           dx="0">Corpuscles</tspan></text>
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot49"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(18.667988,0,0,18.667988,0,4394.2242)"><flowRegion
+           id="flowRegion51"><rect
+             id="rect53"
+             width="1374.6156"
+             height="401.63666"
+             x="-63.63961"
+             y="-22.541656" /></flowRegion><flowPara
+           id="flowPara55"></flowPara></flowRoot>    </g>
   </g>
 </svg>
