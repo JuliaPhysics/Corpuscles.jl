@@ -104,6 +104,7 @@ function Base.convert(t::Type{X}, id::Y) where {X <: ParticleID, Y <: ParticleID
     X(_id_conversion_tbl[row, val_col])
 end
 
+
 function read_parity(val::AbstractString)
     tmp = parse(Int8, val)
     if tmp == 5
