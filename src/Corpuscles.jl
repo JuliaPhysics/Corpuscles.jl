@@ -234,4 +234,23 @@ function show(io::IO, p::Particle)
     end
 end
 
+"""
+    find_particles_by_name(name::Regex)
+
+Find particles by their name
+
+# Arguments
+- `name::Regex`: name search term
+
+# Examples
+```julia-repl
+julia> Corpuscles.find_particles_by_name(r"[A-Z]*mma")
+Dict{PDGID,Particle} with 1 entry:
+  PDGID(22) => …
+```
+"""
+function find_particles_by_name(name::Regex)
+    filter(x->occursin(name, x.second.name), _current_particle_dct)
+end
+
 end # module
