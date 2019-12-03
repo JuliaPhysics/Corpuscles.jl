@@ -1,4 +1,4 @@
-![Alt Corpuscles.jl](docs/Corpuscles_Logo.svg =400x)
+<img src="docs/Corpuscles_Logo.svg" style="width:200px"/>
 
 # Corpuscles.jl
 
