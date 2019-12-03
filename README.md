@@ -1,4 +1,4 @@
-![Alt Corpuscles.jl](docs/Corpuscles_Logo.svg =400x)
+![](docs/Corpuscles_Logo.svg){:height="50%" width="50%"}
 
 # Corpuscles.jl
 
