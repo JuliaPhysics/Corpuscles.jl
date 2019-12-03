@@ -234,4 +234,36 @@ function show(io::IO, p::Particle)
     end
 end
 
+"""
+    find_particles_by_name(name::Regex)
+
+Find particles by their name
+
+# Arguments
+- `name::Union{Regex, AbstractString}`: name search term
+
+# Examples
+```julia-repl
+julia> Corpuscles.find_particles_by_name(r"[A-Z]*mma")
+1-element Array{Particle,1}:
+ 
+Name:    gamma       PDGid:  PDGID(22)  LaTex:  \$\\gamma\$
+
+Status:  Common
+
+Parameters:
+-----------
+Width               = 0.0 MeV ± 0.0 MeV
+Q (charge)          = 0//1 e
+Isospin             = 0//1
+Mass                = 0.0 MeV ± 0.0 MeV
+P (space parity)    = -1
+C (charge parity)   = -1
+```
+"""
+function find_particles_by_name(name::Union{Regex, AbstractString})
+    dct = filter(x->occursin(name, x.second.name), _current_particle_dct)
+    collect(values(dct))
+end
+
 end # module
