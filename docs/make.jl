@@ -1,8 +1,12 @@
 using Documenter, Corpuscles
 
 makedocs(;
-    modules=[Corpuscles],
-    format=Documenter.HTML(),
+    modules = [Corpuscles],
+    authors = "Tamas Gal and Johannes Schumann",
+    format = Documenter.HTML(
+        prettyurls = get(ENV, "CI", nothing) == "true",
+        assets = ["assets/Corpuscles_Logo.svg"],
+    ),
     pages=[
         "Home" => "index.md",
     ],
