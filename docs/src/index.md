@@ -1,4 +1,4 @@
-# Particles.jl
+# Corpuscles.jl
 
 A [Julia](https://julialang.org) package to get access to the
 [PDG](http://pdg.lbl.gov) particle data.
@@ -8,7 +8,7 @@ A [Julia](https://julialang.org) package to get access to the
 ```
 
 ```@autodocs
-Modules = [Particles]
+Modules = [Corpuscles]
 ```
 
 # Acknowledgements

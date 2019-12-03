@@ -1,9 +1,9 @@
-using Particles
+using Corpuscles
 using Test
 
-@testset "Particles.jl" begin
+@testset "Corpuscles.jl" begin
 
-    catalog_files = map(basename, Particles.available_catalog_files())
+    catalog_files = map(basename, Corpuscles.available_catalog_files())
     @test "particle2019.csv" in catalog_files
 
     # Particle Identites
@@ -17,26 +17,13 @@ using Test
     geant_id = GeantID(3)
     pdg_id = convert(PDGID, geant_id)
     @test !isequal(13, pdg_id.value)
-    for (key, value) in Particles._geant_pdg_ids # Do the conversion for each dict entry
-        geant_id = GeantID(key)
-        pdg_id = convert(PDGID, geant_id)
-        @test isequal(value, pdg_id.value)
-    end
-    # pdg_id = PDGID(22)
-    # pdg_id = convert(GeantID, pdg_id)
-    # @test isequal(1, pdg_id.value)
-    # pdg_id = PDGID(13)
-    # pdg_id = convert(GeantID, pdg_id)
-    # @test isequal(3, pdg_id.value)
-    # pdg_id = PDGID(13)
-    # pdg_id = convert(GeantID, pdg_id)
-    # @test !isequal(1, pdg_id.value)
-    # for (key, value) in Particles._geant_pdg_ids # Do the conversion for each dict entry
-    #     pdg_id = PDGID(value)
-    #     pdg_id = convert(GeantID, pdg_id)
-    #     @test isequal(key, pdg_id.value)
-    # end
-    
-    
-
+    pdg_id = PDGID(22)
+    geant_id = convert(GeantID, pdg_id)
+    @test isequal(1, geant_id.value)
+    pdg_id = PDGID(11)
+    geant_id = convert(GeantID, pdg_id)
+    @test isequal(3, geant_id.value)
+    pdg_id = PDGID(13)
+    geant_id = convert(GeantID, pdg_id)
+    @test !isequal(1, geant_id.value)
 end

@@ -1,17 +1,20 @@
-module Particles
+module Corpuscles
 
 using DelimitedFiles
 using Unitful
 using UnitfulAtomic
 using Printf
 
-import Base: show, convert
+import Base: show, convert, showerror
+import Base: isless, isapprox
 
 export Particle, PDGID, PythiaID, GeantID
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
+eachcol_(x) = (x[:, j] for j in 1:size(x)[2])
 
+const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 
 function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
@@ -21,18 +24,19 @@ function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Intege
     return num//denom
 end
 
-
 abstract type ParticleID end
+
 struct PDGID <: ParticleID
     value
 end
+
 struct GeantID <: ParticleID
     value
 end
+
 struct PythiaID <: ParticleID
     value
 end
-
 
 @enum PDGStatus begin
     Common      = 0
@@ -52,6 +56,22 @@ struct MeasuredValue{D}
     value::Quantity{T1,D,U1} where {T1 <: Real, U1 <: Unitful.Units}
     lower_limit::Quantity{T2,D,U2} where {T2 <: Real, U2 <: Unitful.Units}
     upper_limit::Quantity{T3,D,U3} where {T3 <: Real, U3 <: Unitful.Units}
+end
+
+function Base.isless(x::MeasuredValue, y::Quantity)
+    x.value + x.upper_limit < y
+end
+
+function Base.isless(x::Quantity, y::MeasuredValue)
+    x < y.value - y.lower_limit
+end
+
+function Base.isapprox(x::Quantity, y::MeasuredValue)
+    (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
+end
+
+function Base.isapprox(y::MeasuredValue, x::Quantity)
+    (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
 end
 
 const _energy_dim = Unitful.dimension(u"J")
@@ -74,58 +94,34 @@ struct Particle
     latex::String
 end
 
-const _geant_pdg_ids = Dict{Int, Int}(
- 1  =>  22,       # photon
- 25 =>  -2112,    # anti-neutron
- 2  =>  -11,      # e+
- 26 =>  -3122,    # anti-Lambda
- 3  =>  11,       # e-
- 27 =>  -3222,    # Sigma-
- 4  =>  12,       # e-neutrino (NB: flavour undefined by Geant)
- 28 =>  -3212,    # Sigma0
- 5  =>  -13,      # mu+
- 29 =>  -3112,    # Sigma+ (PB)*/
- 6  =>  13,       # mu-
- 30 =>  -3322,    # Xi0
- 7  =>  111,      # pi0
- 31 =>  -3312,    # Xi+
- 8  =>  211,      # pi+
- 32 =>  -3334,    # Omega+ (PB)
- 9  =>  -211,     # pi-
- 33 =>  -15,      # tau+
- 10 =>  130,      # K long
- 34 =>  15,       # tau-
- 11 =>  321,      # K+
- 35 =>  411,      # D+
- 12 =>  -321,     # K-
- 36 =>  -411,     # D-
- 13 =>  2112,     # n
- 37 =>  421,      # D0
- 14 =>  2212,     # p
- 38 =>  -421,     # D0
- 15 =>  -2212,    # anti-proton
- 39 =>  431,      # Ds+
- 16 =>  310,      # K short
- 40 =>  -431,     # anti Ds-
- 17 =>  221,      # eta
- 41 =>  4122,     # Lamba_c+
- 18 =>  3122,     # Lambda
- 42 =>  24,       # W+
- 19 =>  3222,     # Sigma+
- 43 =>  -24,      # W-
- 20 =>  3212,     # Sigma0
- 44 =>  23,       # Z
- 21 =>  3112,     # Sigma-
- 22 =>  3322,     # Xi0
- 23 =>  3312,     # Xi-
- 24 =>  3334)    # Omega- (PB)
+function read_conversion_csv(filepath::AbstractString)
+    file_content = readdlm(filepath, ',', AbstractString, skipstart=2, comments=true)
+    conversions = parse.(Int, file_content[:,1:3])
+end
 
+const _id_conversion_cols = Dict(PDGID => 1, GeantID => 3, PythiaID => 2)
+const _id_conversion_tbl = read_conversion_csv(joinpath(_data_dir, "conversions.csv"))
 
 Particle(id::ParticleID) = _current_particle_dct[convert(PDGID, id)]
 Particle(id::Integer) = Particle(PDGID(id))
-Base.convert(::Type{PDGID}, id::GeantID) = PDGID(_geant_pdg_ids[id.value])
-function Base.convert(::Type{PDGID}, id::PythiaID)
-    throw("Pythia IDs not implemented!")
+
+struct IDException <: Exception 
+    var::AbstractString
+end
+
+Base.showerror(io::IO, e::IDException) = Printf.@printf(io, "ParticleID Error: %s", e.var)
+
+function Base.convert(t::Type{X}, id::Y) where {X <: ParticleID, Y <: ParticleID}
+    if isequal(X, Y)
+        return id
+    end
+    val_col = _id_conversion_cols[t]
+    key_col = _id_conversion_cols[Y]
+    row = findfirst(x->isequal(x, id.value), _id_conversion_tbl[:,key_col])
+    if iszero(id.value) || isequal(row, nothing)
+        throw(IDException("No corresponding $t for $id found!"))
+    end
+    X(_id_conversion_tbl[row, val_col])
 end
 
 
@@ -154,7 +150,7 @@ function read_particle_csv(filepath::AbstractString)
         width_lower  = parse(Float64, row[6]) * u"MeV"
         width_upper  = parse(Float64, row[7]) * u"MeV"
         width = MeasuredValue{}(width_value, width_lower, width_upper)
-        isospin = if (row[8] in ["", "?"]) missing else parse(Rational{Int16}, row[8]) end
+        isospin = if (row[8] in ["", "?"]) missing else parse(Rational{Int8}, row[8]) end
         gparity = read_parity(row[9])
         parity = read_parity(row[10])
         cparity = read_parity(row[11])
@@ -183,8 +179,6 @@ function read_particle_csv(filepath::AbstractString)
     dct_particles
 end
 
-const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
-
 """
     available_catalog_files()
 
@@ -193,13 +187,14 @@ the package and returns a list with the absolute filepaths.
 
 # Examples
 ```julia-repl
-julia> Particles.available_catalog_files()
-["/home/foobar/dev/Particles.jl/data/particle2019.csv"]
+julia> Corpuscles.available_catalog_files()
+["/home/foobar/dev/Corpuscles.jl/data/particle2019.csv"]
 ```
 """
 function available_catalog_files()
     dir_content = readdir(_data_dir)
     filter!(s->occursin(".csv",s), dir_content)
+    filter!(s->!occursin("conversions", s), dir_content)
     joinpath.(_data_dir, dir_content)
 end
 
@@ -220,7 +215,7 @@ This function reads a given catalog file and sets it as reference
 
 # Examples
 ```julia-repl
-julia> Particles.use_catalog_file("/home/foobar/dev/Particles.jl/data/particle2019.csv")
+julia> Corpuscles.use_catalog_file("/home/foobar/dev/Corpuscles.jl/data/particle2019.csv")
 ```
 """
 function use_catalog_file(filepath::AbstractString)
@@ -232,15 +227,19 @@ function show(io::IO, m::MeasuredValue)
     if isapprox(m.upper_limit, m.lower_limit)
         print(io, "$(m.value) ± $(m.lower_limit)")
     else
-        print(io, "$(m.value) + $(m.lower_limit) - $(m.lower_limit)")
+        print(io, "$(m.value) + $(m.upper_limit) - $(m.lower_limit)")
     end
     return
 end
 
 function show(io::IO, p::Particle)
-    Printf.@printf(io, "\n%-8s %-12s", "Name:", p.name)
+    Printf.@printf(io, "Particle(%s)", p.pdgid.value)
+end
+
+function print(io::IO, p::Particle)
+    Printf.@printf(io, "%-8s %-12s", "Name:", p.name)
     Printf.@printf(io, "%-7s %-10s", "PDGid:", p.pdgid)
-    Printf.@printf(io, " %-7s %s", "LaTex:", "\$$(p.latex)\$\n\n")
+    Printf.@printf(io, " %-7s %s", "LaTeX:", "\$$(p.latex)\$\n\n")
     Printf.@printf(io, "%-8s %s\n", "Status:", p.status)
     println(io, "\nParameters:")
     println(io, "-----------")
@@ -257,6 +256,38 @@ function show(io::IO, p::Particle)
             Printf.@printf(io, "%-19s = %s\n",key, value)
         end
     end
+end
+
+"""
+    find_particles_by_name(name::Regex)
+
+Find particles by their name
+
+# Arguments
+- `name::Union{Regex, AbstractString}`: name search term
+
+# Examples
+```julia-repl
+julia> Corpuscles.find_particles_by_name(r"[A-Z]*mma")
+1-element Array{Particle,1}:
+ 
+Name:    gamma       PDGid:  PDGID(22)  LaTex:  \$\\gamma\$
+
+Status:  Common
+
+Parameters:
+-----------
+Width               = 0.0 MeV ± 0.0 MeV
+Q (charge)          = 0//1 e
+Isospin             = 0//1
+Mass                = 0.0 MeV ± 0.0 MeV
+P (space parity)    = -1
+C (charge parity)   = -1
+```
+"""
+function find_particles_by_name(name::Union{Regex, AbstractString})
+    dct = filter(x->occursin(name, x.second.name), _current_particle_dct)
+    collect(values(dct))
 end
 
 end # module
