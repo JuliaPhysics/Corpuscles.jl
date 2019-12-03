@@ -6,6 +6,7 @@ using UnitfulAtomic
 using Printf
 
 import Base: show, convert, showerror
+import Base: isless, isapprox
 
 export Particle, PDGID, PythiaID, GeantID
 
@@ -55,6 +56,22 @@ struct MeasuredValue{D}
     value::Quantity{T1,D,U1} where {T1 <: Real, U1 <: Unitful.Units}
     lower_limit::Quantity{T2,D,U2} where {T2 <: Real, U2 <: Unitful.Units}
     upper_limit::Quantity{T3,D,U3} where {T3 <: Real, U3 <: Unitful.Units}
+end
+
+function Base.isless(x::MeasuredValue, y::Quantity)
+    x.value + x.upper_limit < y
+end
+
+function Base.isless(x::Quantity, y::MeasuredValue)
+    x < y.value - y.lower_limit
+end
+
+function Base.isapprox(x::Quantity, y::MeasuredValue)
+    (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
+end
+
+function Base.isapprox(y::MeasuredValue, x::Quantity)
+    (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
 end
 
 const _energy_dim = Unitful.dimension(u"J")
