@@ -12,7 +12,6 @@ makedocs(;
     ],
     repo="https://github.com/KM3NeT/Corpuscles.jl/blob/{commit}{path}#L{line}",
     sitename="Corpuscles.jl",
-    authors="Johannes Schumann, Tamas Gal",
     assets=String[],
 )
 
