@@ -247,7 +247,7 @@ Find particles by their name
 julia> Corpuscles.find_particles_by_name(r"[A-Z]*mma")
 1-element Array{Particle,1}:
  
-Name:    gamma       PDGid:  PDGID(22)  LaTex:  $\gamma$
+Name:    gamma       PDGid:  PDGID(22)  LaTex:  \$\\gamma\$
 
 Status:  Common
 
