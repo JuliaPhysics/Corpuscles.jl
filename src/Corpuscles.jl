@@ -24,12 +24,15 @@ function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Intege
 end
 
 abstract type ParticleID end
+
 struct PDGID <: ParticleID
     value
 end
+
 struct GeantID <: ParticleID
     value
 end
+
 struct PythiaID <: ParticleID
     value
 end
@@ -213,9 +216,13 @@ function show(io::IO, m::MeasuredValue)
 end
 
 function show(io::IO, p::Particle)
-    Printf.@printf(io, "\n%-8s %-12s", "Name:", p.name)
+    Printf.@printf(io, "Particle(%s)", p.pdgid.value)
+end
+
+function print(io::IO, p::Particle)
+    Printf.@printf(io, "%-8s %-12s", "Name:", p.name)
     Printf.@printf(io, "%-7s %-10s", "PDGid:", p.pdgid)
-    Printf.@printf(io, " %-7s %s", "LaTex:", "\$$(p.latex)\$\n\n")
+    Printf.@printf(io, " %-7s %s", "LaTeX:", "\$$(p.latex)\$\n\n")
     Printf.@printf(io, "%-8s %s\n", "Status:", p.status)
     println(io, "\nParameters:")
     println(io, "-----------")
