@@ -1,4 +1,4 @@
-![Alt Corpuscles.jl](docs/Corpuscles_Logo.svg)
+![Alt Corpuscles.jl](docs/Corpuscles_Logo.svg =400)
 
 # Corpuscles.jl
 
