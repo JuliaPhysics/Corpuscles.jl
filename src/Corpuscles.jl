@@ -210,7 +210,7 @@ function show(io::IO, m::MeasuredValue)
     if isapprox(m.upper_limit, m.lower_limit)
         print(io, "$(m.value) ± $(m.lower_limit)")
     else
-        print(io, "$(m.value) + $(m.lower_limit) - $(m.lower_limit)")
+        print(io, "$(m.value) + $(m.upper_limit) - $(m.lower_limit)")
     end
     return
 end
