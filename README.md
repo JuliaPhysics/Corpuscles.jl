@@ -1,3 +1,4 @@
+![](docs/Corpuscles_Logo.svg)
 <img src="docs/Corpuscles_Logo.svg" style="width:200px"/>
 
 # Corpuscles.jl
