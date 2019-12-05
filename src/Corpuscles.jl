@@ -5,8 +5,7 @@ using Unitful
 using UnitfulAtomic
 using Printf
 
-import Base: show, convert, showerror
-import Base: isless, isapprox
+import Base
 
 export Particle, PDGID, PythiaID, GeantID
 
@@ -102,7 +101,7 @@ end
 const _id_conversion_cols = Dict(PDGID => 1, GeantID => 3, PythiaID => 2)
 const _id_conversion_tbl = read_conversion_csv(joinpath(_data_dir, "conversions.csv"))
 
-Particle(id::ParticleID) = _current_particle_dct[convert(PDGID, id)]
+Particle(id::ParticleID) = _current_particle_dct[Base.convert(PDGID, id)]
 Particle(id::Integer) = Particle(PDGID(id))
 
 struct IDException <: Exception 
@@ -223,7 +222,7 @@ function use_catalog_file(filepath::AbstractString)
     return
 end
 
-function show(io::IO, m::MeasuredValue)
+function Base.show(io::IO, m::MeasuredValue)
     if isapprox(m.upper_limit, m.lower_limit)
         print(io, "$(m.value) ± $(m.lower_limit)")
     else
@@ -232,17 +231,15 @@ function show(io::IO, m::MeasuredValue)
     return
 end
 
-function show(io::IO, p::Particle)
+function Base.show(io::IO, p::Particle)
     Printf.@printf(io, "Particle(%s)", p.pdgid.value)
 end
 
-function print(io::IO, p::Particle)
-    Printf.@printf(io, "%-8s %-12s", "Name:", p.name)
-    Printf.@printf(io, "%-7s %-10s", "PDGid:", p.pdgid)
-    Printf.@printf(io, " %-7s %s", "LaTeX:", "\$$(p.latex)\$\n\n")
+function Base.print(io::IO, p::Particle)
+    Printf.@printf(io, "%-8s %s\n", "Name:", p.name)
+    Printf.@printf(io, "%-8s %s\n", "PDG ID:", p.pdgid.value)
+    Printf.@printf(io, "%-8s %s\n", "LaTeX:", "\$$(p.latex)\$")
     Printf.@printf(io, "%-8s %s\n", "Status:", p.status)
-    println(io, "\nParameters:")
-    println(io, "-----------")
     fields = Dict("Mass" => p.mass,
                   "Width" => p.width,
                   "Q (charge)" => p.charge,
@@ -253,7 +250,7 @@ function print(io::IO, p::Particle)
                   "Composition" => p.quarks)
     for (key, value) in fields
         if value isa MeasuredValue || !ismissing(value) && !isempty(value)
-            Printf.@printf(io, "%-19s = %s\n",key, value)
+            Printf.@printf(io, "%s = %s\n",key, value)
         end
     end
 end
