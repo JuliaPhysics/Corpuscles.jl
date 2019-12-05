@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Usage · Corpuscles.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../readme/"><img class="logo" src="../assets/logo.svg" alt="Corpuscles.jl logo"/></a><h1>Corpuscles.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../readme/">Introduction</a></li><li class="current"><a class="toctext" href>Usage</a><ul class="internal"></ul></li><li><a class="toctext" href="../api/">API</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Usage</a></li></ul><a class="edit-page" href="https://github.com/KM3NeT/Corpuscles.jl/blob/master/docs/src/usage.md#L"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Usage</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Usage-1" href="#Usage-1">Usage</a></h1><p>The <code>Particle</code> struct can be used to create a particle. If an integer value is passed, it will be interpreted as PDG ID, which is the primary particle encoding in <strong>Corpuscles.jl</strong>:</p><pre><code class="language-julia">julia&gt; using Corpuscles
+
+julia&gt; p = Particle(-319)
+Particle(-319)</code></pre><p>To get an overview of the available particle information, use <code>print()</code>:</p><pre><code class="language-julia">julia&gt; print(p)
+Name:    K(4)*(2045)
+PDG ID:  -319
+LaTeX:   $\bar{K}_{4}^{*}(2045)^{0}$
+Status:  Common
+Width = 198.0 MeV ± 30.0 MeV
+Q (charge) = 0//1 e
+Composition = Ds
+Isospin = 1//2
+Mass = 2045.0 MeV ± 9.0 MeV
+P (space parity) = 1</code></pre><p>The properties are accessible via attributes:</p><pre><code class="language-julia">julia&gt; fieldnames(Particle)
+(:pdgid, :mass, :width, :charge, :isospin, :parity, :gparity, :cparity, :antiprop, :rank, :status, :name, :quarks, :latex)
+
+julia&gt; p.quarks
+&quot;Ds&quot;
+
+julia&gt; p.isospin
+1//2</code></pre><p>For the mass, we use the <a href="https://github.com/PainterQubits/Unitful.jl">Unitful</a> package, which makes it easy to combine values with physical units:</p><pre><code class="language-julia">julia&gt; typeof(p.mass)
+Corpuscles.MeasuredValue{𝐋^2 𝐌 𝐓^-2}
+
+julia&gt; p.mass
+2045.0 MeV ± 9.0 MeV
+
+julia&gt; p.mass.value
+2045.0 MeV
+
+julia&gt; p.mass.lower_limit
+9.0 MeV
+
+julia&gt; p.mass.upper_limit
+9.0 MeV</code></pre><p>and also <code>Base.isless</code> and <code>Base.isapprox</code> are implemented so that the lower and upper limits are taken into account, as seen here:</p><pre><code class="language-julia">julia&gt; using Unitful
+
+julia&gt; p.mass
+2045.0 MeV ± 9.0 MeV
+
+julia&gt; p.mass &gt; 2034u&quot;MeV&quot;
+true</code></pre><footer><hr/><a class="previous" href="../readme/"><span class="direction">Previous</span><span class="title">Introduction</span></a><a class="next" href="../api/"><span class="direction">Next</span><span class="title">API</span></a></footer></article></body></html>
