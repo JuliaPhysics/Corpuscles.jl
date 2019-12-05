@@ -26,4 +26,25 @@ using Test
     pdg_id = PDGID(13)
     geant_id = convert(GeantID, pdg_id)
     @test !isequal(1, geant_id.value)
+    
+    try
+        convert(PDGID, GeantID(5000))
+        @test false
+    catch e
+        @test e isa Corpuscles.IDException
+        msg = sprint(showerror, e)
+        @test msg == "ParticleID Error: No corresponding PDGID for GeantID(5000) found!"
+    end
+    
+    try
+        convert(GeantID, PDGID(2222212))
+        @test false
+    catch e
+        @test e isa Corpuscles.IDException
+        msg = sprint(showerror, e)
+        @test msg == "ParticleID Error: No corresponding GeantID for PDGID(2222212) found!"
+    end
+
+
+
 end
