@@ -1,10 +1,10 @@
-using Corpuscles
 using Test
+using Corpuscles
+using Unitful
 
-@testset "Corpuscles.jl" begin
+const DATA_DIR = joinpath(@__DIR__, "../data")
 
-    catalog_files = map(basename, Corpuscles.available_catalog_files())
-    @test "particle2019.csv" in catalog_files
+@testset "conversions" begin
 
     # Particle Identites
     # PDGID <-> Geant3ID 
@@ -46,5 +46,19 @@ using Test
     end
 
 
+
+end
+
+
+@testset "catalogs" begin
+    catalog_files = map(basename, Corpuscles.available_catalog_files())
+    @test "particle2008.csv" in catalog_files
+    @test "particle2018.csv" in catalog_files
+    @test "particle2019.csv" in catalog_files
+
+    Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2008.csv"))
+    @test 0.054u"MeV" == Particle(553).width.value
+    Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2019.csv"))
+    @test 0.05402u"MeV" == Particle(553).width.value
 
 end
