@@ -104,4 +104,35 @@ true
 
 ## Finding Particles
 
+The `find_particles_by_name` function takes a `String` or a `Regex` to create
+a `Vector` of `Particle`s where the name matches them. If a simple `String`
+is provided, Corpuscles will do a substring search:
+
+```julia
+julia> Corpuscles.find_particles_by_name("nu")
+6-element Array{Particle,1}:
+ Particle(12) 'nu(e)'
+ Particle(14) 'nu(mu)'
+ Particle(-16) 'nu(tau)'
+ Particle(-12) 'nu(e)'
+ Particle(16) 'nu(tau)'
+ Particle(-14) 'nu(mu)'
+```
+
+to have more control, use a regular expression:
+
+```julia
+julia> Corpuscles.find_particles_by_name(r"D\(\d*\)")
+10-element Array{Particle,1}:
+ Particle(-10411) 'D(0)*(2300)'
+ Particle(10423) 'D(1)(2420)'
+ Particle(425) 'D(2)*(2460)'
+ Particle(10421) 'D(0)*(2300)'
+ Particle(-10423) 'D(1)(2420)'
+ Particle(-425) 'D(2)*(2460)'
+ Particle(10411) 'D(0)*(2300)'
+ Particle(415) 'D(2)*(2460)'
+ Particle(-10421) 'D(0)*(2300)'
+ Particle(-415) 'D(2)*(2460)'
+```
 
