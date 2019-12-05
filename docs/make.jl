@@ -9,10 +9,10 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "API" => "api.md",
     ],
     repo="https://github.com/KM3NeT/Corpuscles.jl/blob/{commit}{path}#L{line}",
     sitename="Corpuscles.jl",
-    assets=String[],
 )
 
 deploydocs(;

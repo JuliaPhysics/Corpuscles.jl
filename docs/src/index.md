@@ -4,13 +4,6 @@ A [Julia](https://julialang.org) package to get access to the
 [PDG](http://pdg.lbl.gov) particle data.
 
 
-```@index
-```
-
-```@autodocs
-Modules = [Corpuscles]
-```
-
 # Acknowledgements
 
 This project uses data files which are part of the
