@@ -136,7 +136,7 @@ end
 const ParticleDict = Dict{PDGID, Particle}
 
 function read_particle_csv(filepath::AbstractString)
-    file_content = readdlm(filepath, ',', AbstractString)
+    file_content = readdlm(filepath, ',', AbstractString, comments=true)
     header = string.(file_content[1,:])
     dct_particles = ParticleDict()
     for row in eachrow_(file_content[2:end,:])
