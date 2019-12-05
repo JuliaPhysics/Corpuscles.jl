@@ -11,7 +11,6 @@ export Particle, PDGID, PythiaID, Geant3ID
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
-eachcol_(x) = (x[:, j] for j in 1:size(x)[2])
 
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 
