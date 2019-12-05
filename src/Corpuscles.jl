@@ -7,7 +7,7 @@ using Printf
 
 import Base
 
-export Particle, PDGID, PythiaID, GeantID
+export Particle, PDGID, PythiaID, Geant3ID
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
@@ -29,7 +29,7 @@ struct PDGID <: ParticleID
     value
 end
 
-struct GeantID <: ParticleID
+struct Geant3ID <: ParticleID
     value
 end
 
@@ -98,7 +98,7 @@ function read_conversion_csv(filepath::AbstractString)
     conversions = parse.(Int, file_content[:,1:3])
 end
 
-const _id_conversion_cols = Dict(PDGID => 1, GeantID => 3, PythiaID => 2)
+const _id_conversion_cols = Dict(PDGID => 1, Geant3ID => 3, PythiaID => 2)
 const _id_conversion_tbl = read_conversion_csv(joinpath(_data_dir, "conversions.csv"))
 
 Particle(id::ParticleID) = _current_particle_dct[Base.convert(PDGID, id)]
