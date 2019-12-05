@@ -1,4 +1,4 @@
-![](docs/src/assets/logo.png)
+![](docs/src/assets/corpuscles.png)
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://KM3NeT.github.io/Corpuscles.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://KM3NeT.github.io/Corpuscles.jl/dev)
