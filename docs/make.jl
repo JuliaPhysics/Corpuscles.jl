@@ -5,10 +5,10 @@ makedocs(;
     authors = "Tamas Gal and Johannes Schumann",
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true",
-        assets = ["assets/Corpuscles_Logo.svg"],
+        assets = ["assets/logo.svg"],
     ),
     pages=[
-        "Home" => "index.md",
+        "Introduction" => "index.md",
         "API" => "api.md",
     ],
     repo="https://github.com/KM3NeT/Corpuscles.jl/blob/{commit}{path}#L{line}",
