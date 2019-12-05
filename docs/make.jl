@@ -8,7 +8,8 @@ makedocs(;
         assets = ["assets/logo.svg"],
     ),
     pages=[
-        "Introduction" => "index.md",
+        "Introduction" => "readme.md",
+        "Usage" => "usage.md",
         "API" => "api.md",
     ],
     repo="https://github.com/KM3NeT/Corpuscles.jl/blob/{commit}{path}#L{line}",
