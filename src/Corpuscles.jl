@@ -101,7 +101,7 @@ end
 const _id_conversion_cols = Dict(PDGID => 1, Geant3ID => 3, PythiaID => 2)
 const _id_conversion_tbl = read_conversion_csv(joinpath(_data_dir, "conversions.csv"))
 
-Particle(id::ParticleID) = _current_particle_dct[Base.convert(PDGID, id)]
+Particle(id::ParticleID) = catalog.particle_dict[Base.convert(PDGID, id)]
 Particle(id::Integer) = Particle(PDGID(id))
 
 struct IDException <: Exception 
@@ -202,7 +202,11 @@ const _catalogs = available_catalog_files()
 const _default_year = "2019"
 const _default_catalog = filter(s->occursin(_default_year,s), _catalogs)[end]
 
-const _current_particle_dct = read_particle_csv(_default_catalog)
+mutable struct Catalog
+    particle_dict::ParticleDict
+end
+
+const catalog = Catalog(read_particle_csv(_default_catalog))
 
 """
     use_catalog_file(filepath::AbstractString)
@@ -218,7 +222,7 @@ julia> Corpuscles.use_catalog_file("/home/foobar/dev/Corpuscles.jl/data/particle
 ```
 """
 function use_catalog_file(filepath::AbstractString)
-    _current_particle_dct = read_particle_csv(filepath)
+    catalog.particle_dict = read_particle_csv(filepath)
     return
 end
 
@@ -271,7 +275,7 @@ julia> Corpuscles.find_particles_by_name(r"[A-Z]*mma")
 ```
 """
 function find_particles_by_name(name::Union{Regex, AbstractString})
-    dct = filter(x->occursin(name, x.second.name), _current_particle_dct)
+    dct = filter(x->occursin(name, x.second.name), catalog.particle_dict)
     collect(values(dct))
 end
 
