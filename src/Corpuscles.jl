@@ -7,7 +7,7 @@ using Printf
 
 import Base
 
-export Particle, PDGID, PythiaID, Geant3ID, GenatID
+export Particle, PDGID, PythiaID, Geant3ID
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
@@ -32,7 +32,7 @@ struct Geant3ID <: ParticleID
     value
 end
 
-@deprecate GeantID Geant3ID
+@deprecate GeantID Geant3ID true
 
 struct PythiaID <: ParticleID
     value
