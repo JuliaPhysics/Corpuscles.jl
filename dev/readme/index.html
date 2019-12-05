@@ -41,4 +41,22 @@ julia&gt; p.mass
 2045.0 MeV ± 9.0 MeV
 
 julia&gt; p.mass &gt; 2034u&quot;MeV&quot;
-true</code></pre><h2><a class="nav-anchor" id="Finding-Particles-1" href="#Finding-Particles-1">Finding Particles</a></h2><footer><hr/><a class="next" href="../acknowledgements/"><span class="direction">Next</span><span class="title">Acknowledgements</span></a></footer></article></body></html>
+true</code></pre><h2><a class="nav-anchor" id="Finding-Particles-1" href="#Finding-Particles-1">Finding Particles</a></h2><p>The <code>find_particles_by_name</code> function takes a <code>String</code> or a <code>Regex</code> to create a <code>Vector</code> of <code>Particle</code>s where the name matches them. If a simple <code>String</code> is provided, Corpuscles will do a substring search:</p><pre><code class="language-julia">julia&gt; Corpuscles.find_particles_by_name(&quot;nu&quot;)
+6-element Array{Particle,1}:
+ Particle(12) &#39;nu(e)&#39;
+ Particle(14) &#39;nu(mu)&#39;
+ Particle(-16) &#39;nu(tau)&#39;
+ Particle(-12) &#39;nu(e)&#39;
+ Particle(16) &#39;nu(tau)&#39;
+ Particle(-14) &#39;nu(mu)&#39;</code></pre><p>to have more control, use a regular expression:</p><pre><code class="language-julia">julia&gt; Corpuscles.find_particles_by_name(r&quot;D\(\d*\)&quot;)
+10-element Array{Particle,1}:
+ Particle(-10411) &#39;D(0)*(2300)&#39;
+ Particle(10423) &#39;D(1)(2420)&#39;
+ Particle(425) &#39;D(2)*(2460)&#39;
+ Particle(10421) &#39;D(0)*(2300)&#39;
+ Particle(-10423) &#39;D(1)(2420)&#39;
+ Particle(-425) &#39;D(2)*(2460)&#39;
+ Particle(10411) &#39;D(0)*(2300)&#39;
+ Particle(415) &#39;D(2)*(2460)&#39;
+ Particle(-10421) &#39;D(0)*(2300)&#39;
+ Particle(-415) &#39;D(2)*(2460)&#39;</code></pre><footer><hr/><a class="next" href="../acknowledgements/"><span class="direction">Next</span><span class="title">Acknowledgements</span></a></footer></article></body></html>
