@@ -67,7 +67,7 @@ end
     d = Corpuscles.MeasuredValue(0.8u"m", 5u"cm", 5u"cm")
     e = Corpuscles.MeasuredValue(0.9u"m", 5u"cm", 5u"cm")
     f = Corpuscles.MeasuredValue(90u"s", 5u"s", 5u"s")
-    g = 90u"cm"
+    g = 91u"cm"
 
     @test a == b
     @test !(a == c)
@@ -75,7 +75,8 @@ end
     @test !(e < a)
     @test !(e < c)
     @test g < c
-    @test g == e
+    @test isapprox(g, e)
+    @test isapprox(g, a)
 
     try
         e < f
