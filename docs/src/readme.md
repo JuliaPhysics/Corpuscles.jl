@@ -101,3 +101,7 @@ julia> p.mass
 julia> p.mass > 2034u"MeV"
 true
 ```
+
+## Finding Particles
+
+

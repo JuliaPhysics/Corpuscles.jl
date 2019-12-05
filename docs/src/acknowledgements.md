@@ -1,9 +1,3 @@
-# Corpuscles.jl
-
-A [Julia](https://julialang.org) package to get access to the
-[PDG](http://pdg.lbl.gov) particle data.
-
-
 # Acknowledgements
 
 This project uses data files which are part of the

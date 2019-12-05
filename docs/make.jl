@@ -9,6 +9,7 @@ makedocs(;
     ),
     pages=[
         "Introduction" => "readme.md",
+        "Acknowledgements" => "acknowledgements.md",
         "API" => "api.md",
     ],
     repo="https://github.com/KM3NeT/Corpuscles.jl/blob/{commit}{path}#L{line}",
