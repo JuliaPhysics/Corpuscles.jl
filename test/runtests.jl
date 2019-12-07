@@ -45,6 +45,15 @@ const DATA_DIR = joinpath(@__DIR__, "../data")
         @test msg == "ParticleID Error: No corresponding Geant3ID for PDGID(2222212) found!"
     end
 
+    for particle in particles()
+        if particle.pdgid in [PDGID(-9000321), PDGID(9000321), PDGID(9020113),
+                              PDGID(-9000311), PDGID(9020213), PDGID(9000311),
+                              PDGID(-9020213)]
+            continue
+        end
+        @test convert(Geant3ID, particle.pdgid) !== nothing
+    end
+
 end
 
 @testset "catalogs" begin
@@ -84,4 +93,10 @@ end
     catch e
         @test e isa Unitful.DimensionError
     end
+end
+
+@testset "show and print" begin
+    # TODO: use an `IOBuffer` instead of `devnull` and check output
+    show(devnull, Particle(1))
+    print(devnull, Particle(1))
 end
