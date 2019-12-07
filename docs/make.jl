@@ -8,7 +8,7 @@ makedocs(;
         assets = ["assets/logo.ico"],
     ),
     pages=[
-        "Introduction" => "readme.md",
+        "Introduction" => "index.md",
         "Acknowledgements" => "acknowledgements.md",
         "API" => "api.md",
     ],
