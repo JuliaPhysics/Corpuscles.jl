@@ -66,6 +66,10 @@ function Base.isless(x::Quantity, y::MeasuredValue)
     x < y.value - y.lower_limit
 end
 
+function Base.isless(x::MeasuredValue, y::MeasuredValue)
+    x.value + x.upper_limit < y.value - y.lower_limit
+end
+
 function Base.isapprox(x::Quantity, y::MeasuredValue)
     (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
 end

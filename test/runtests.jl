@@ -45,10 +45,7 @@ const DATA_DIR = joinpath(@__DIR__, "../data")
         @test msg == "ParticleID Error: No corresponding Geant3ID for PDGID(2222212) found!"
     end
 
-
-
 end
-
 
 @testset "catalogs" begin
     catalog_files = map(basename, Corpuscles.available_catalog_files())
@@ -61,4 +58,30 @@ end
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2019.csv"))
     @test 0.05402u"MeV" == Particle(553).width.value
 
+end
+
+@testset "comparison" begin
+    a = Corpuscles.MeasuredValue(1u"m", 10u"cm", 10u"cm")
+    b = Corpuscles.MeasuredValue(1u"m", 10u"cm", 10u"cm")
+    c = Corpuscles.MeasuredValue(1u"m", 5u"cm", 5u"cm")
+    d = Corpuscles.MeasuredValue(0.8u"m", 5u"cm", 5u"cm")
+    e = Corpuscles.MeasuredValue(0.9u"m", 5u"cm", 5u"cm")
+    f = Corpuscles.MeasuredValue(90u"s", 5u"s", 5u"s")
+    g = 91u"cm"
+
+    @test a == b
+    @test !(a == c)
+    @test d < a
+    @test !(e < a)
+    @test !(e < c)
+    @test g < c
+    @test isapprox(g, e)
+    @test isapprox(g, a)
+
+    try
+        e < f
+        @test false
+    catch e
+        @test e isa Unitful.DimensionError
+    end
 end
