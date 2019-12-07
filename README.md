@@ -1,1 +1,1 @@
-docs/src/readme.md
+docs/src/index.md
