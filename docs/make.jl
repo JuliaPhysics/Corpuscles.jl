@@ -5,7 +5,7 @@ makedocs(;
     authors = "Tamas Gal and Johannes Schumann",
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true",
-        assets = ["assets/logo.svg"],
+        assets = ["assets/logo.ico"],
     ),
     pages=[
         "Introduction" => "readme.md",
