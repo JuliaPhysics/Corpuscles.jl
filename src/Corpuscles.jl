@@ -78,6 +78,17 @@ function Base.isapprox(y::MeasuredValue, x::Quantity)
     (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
 end
 
+function Base.isapprox(x::MeasuredValue, y::MeasuredValue)
+    # TODO: I think this can be done way more elegant, but functionality is now given
+    retval = isapprox(x, y.value + y.upper_limit)
+    retval |= isapprox(x, y.value - y.lower_limit)
+    retval |= isapprox(x, y.value)
+    retval |= isapprox(y, x.value + x.upper_limit)
+    retval |= isapprox(y, x.value - x.upper_limit)
+    retval |= isapprox(y, x.value)
+    retval
+end
+
 const _energy_dim = Unitful.dimension(u"J")
 const _charge_dim = Unitful.dimension(u"C")
 

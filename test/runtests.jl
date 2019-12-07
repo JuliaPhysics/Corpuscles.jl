@@ -86,6 +86,10 @@ end
     @test g < c
     @test isapprox(g, e)
     @test isapprox(g, a)
+    @test isapprox(a, b)
+    @test isapprox(a, c)
+    @test isapprox(a, e)
+    @test !isapprox(a, d)
 
     try
         e < f
