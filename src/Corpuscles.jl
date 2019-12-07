@@ -7,7 +7,7 @@ using Printf
 
 import Base
 
-export Particle, PDGID, PythiaID, Geant3ID
+export Particle, PDGID, PythiaID, Geant3ID, particles
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
@@ -209,7 +209,17 @@ const _default_catalog = filter(s->occursin(_default_year,s), _catalogs)[end]
 
 mutable struct Catalog
     particle_dict::ParticleDict
+    particles::Vector{Particle}
+
+    Catalog(d::ParticleDict) = new(d, collect(values(d)))
 end
+
+"""
+    particles()
+
+Returns the full list of particles from the currently selected catalog.
+"""
+particles() = catalog.particles
 
 const catalog = Catalog(read_particle_csv(_default_catalog))
 
@@ -227,7 +237,9 @@ julia> Corpuscles.use_catalog_file("/home/foobar/dev/Corpuscles.jl/data/particle
 ```
 """
 function use_catalog_file(filepath::AbstractString)
+    # TODO: there is surely a better way to manage this "closure"-like thing
     catalog.particle_dict = read_particle_csv(filepath)
+    catalog.particles = collect(values(catalog.particle_dict))
     return
 end
 
@@ -262,26 +274,6 @@ function Base.print(io::IO, p::Particle)
             Printf.@printf(io, "%s = %s\n",key, value)
         end
     end
-end
-
-"""
-    find_particles_by_name(name::Regex)
-
-Find particles by their name
-
-# Arguments
-- `name::Union{Regex, AbstractString}`: name search term
-
-# Examples
-```julia-repl
-julia> Corpuscles.find_particles_by_name(r"[A-Z]*mma")
-1-element Array{Particle,1}:
- Particle(22)
-```
-"""
-function find_particles_by_name(name::Union{Regex, AbstractString})
-    dct = filter(x->occursin(name, x.second.name), catalog.particle_dict)
-    collect(values(dct))
 end
 
 end # module
