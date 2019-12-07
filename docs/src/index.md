@@ -104,35 +104,41 @@ true
 
 ## Finding Particles
 
-The `find_particles_by_name` function takes a `String` or a `Regex` to create
-a `Vector` of `Particle`s where the name matches them. If a simple `String`
-is provided, Corpuscles will do a substring search:
+The `particles()` functions returns a `Vector` containing all the particles
+of the currently selected catalog. To search for particles, the `filter()`
+function comes in hand which can be combined with string comparison functions
+like `startswith()` or `occursin()`.
+
+Here is an example how to find all particles with names starting with `"nu"`:
 
 ```julia
-julia> Corpuscles.find_particles_by_name("nu")
+julia> filter(p->startswith(p.name, "nu"), particles())
 6-element Array{Particle,1}:
- Particle(12) 'nu(e)'
- Particle(14) 'nu(mu)'
+ Particle(-14) 'nu(mu)'
  Particle(-16) 'nu(tau)'
  Particle(-12) 'nu(e)'
+ Particle(14) 'nu(mu)'
  Particle(16) 'nu(tau)'
- Particle(-14) 'nu(mu)'
+ Particle(12) 'nu(e)'
 ```
 
-to have more control, use a regular expression:
+A more powerful way to filter particles based
+on patterns in their name is using [regular
+expressions](https://docs.julialang.org/en/v1/manual/strings/#Regular-Expressio ns-1)
+with e.g. `occursin()`:
 
 ```julia
-julia> Corpuscles.find_particles_by_name(r"D\(\d*\)")
+julia> filter(p->occursin(r"D\(\d*\)", p.name), particles())
 10-element Array{Particle,1}:
- Particle(-10411) 'D(0)*(2300)'
- Particle(10423) 'D(1)(2420)'
- Particle(425) 'D(2)*(2460)'
- Particle(10421) 'D(0)*(2300)'
- Particle(-10423) 'D(1)(2420)'
- Particle(-425) 'D(2)*(2460)'
- Particle(10411) 'D(0)*(2300)'
- Particle(415) 'D(2)*(2460)'
  Particle(-10421) 'D(0)*(2300)'
+ Particle(-10411) 'D(0)*(2300)'
+ Particle(425) 'D(2)*(2460)'
+ Particle(10411) 'D(0)*(2300)'
+ Particle(10421) 'D(0)*(2300)'
+ Particle(10423) 'D(1)(2420)'
+ Particle(-425) 'D(2)*(2460)'
+ Particle(-10423) 'D(1)(2420)'
+ Particle(415) 'D(2)*(2460)'
  Particle(-415) 'D(2)*(2460)'
 ```
 
