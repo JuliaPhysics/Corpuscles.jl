@@ -102,6 +102,18 @@ julia> p.mass > 2034u"MeV"
 true
 ```
 
+## Particle Codes
+
+Corpuscles currently supports conversions of Pythia and Geant3 codes to PDG
+using the `Pythia` and `Geant3ID` types. The corresponding number is simply
+passed to the type and then to the `Particle` itself. The PDG ID will be
+converted if possible, otherwise an error will be raised.
+
+```julia
+julia> Particle(Geant3ID(5))
+Particle(-13) 'mu'
+```
+
 ## Finding Particles
 
 The `particles()` functions returns a `Vector` containing all the particles
