@@ -30,8 +30,8 @@ encoding in **Corpuscles.jl**:
 ```julia
 julia> using Corpuscles
 
-julia> p = Particle(-319)
-Particle(-319)
+julia> p = Particle(12)
+Particle(12) 'nu(e)'
 ```
 
 To get an overview of the available particle information, use `print()`:
