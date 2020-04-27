@@ -98,7 +98,10 @@ julia> using Unitful
 julia> p.mass
 2045.0 MeV ± 9.0 MeV
 
-julia> p.mass > 2034u"MeV"
+julia> p.mass > 2036u"MeV"
+false
+
+julia> p.mass > 2035u"MeV"
 true
 ```
 
