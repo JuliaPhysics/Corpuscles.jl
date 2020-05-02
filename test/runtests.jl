@@ -26,6 +26,8 @@ const DATA_DIR = joinpath(@__DIR__, "../data")
     pdg_id = PDGID(13)
     geant_id = convert(Geant3ID, pdg_id)
     @test !isequal(1, geant_id.value)
+
+    @test PDGID(13) === convert(PDGID, PDGID(13))
     
     try
         convert(PDGID, Geant3ID(5000))
@@ -77,6 +79,7 @@ end
     e = Corpuscles.MeasuredValue(0.9u"m", 5u"cm", 5u"cm")
     f = Corpuscles.MeasuredValue(90u"s", 5u"s", 5u"s")
     g = 91u"cm"
+    h = 91u"s"
 
     @test a == b
     @test !(a == c)
@@ -84,6 +87,7 @@ end
     @test !(e < a)
     @test !(e < c)
     @test g < c
+    @test !(f < h)
     @test isapprox(g, e)
     @test isapprox(g, a)
     @test isapprox(a, b)
@@ -100,7 +104,15 @@ end
 end
 
 @testset "show and print" begin
-    # TODO: use an `IOBuffer` instead of `devnull` and check output
-    show(devnull, Particle(1))
-    print(devnull, Particle(1))
+    io = IOBuffer(write=true)
+    show(io, Particle(1))
+    seekstart(io)
+    @test "Particle(1) 'd'" == String(read(io))
+
+    io = IOBuffer(write=true)
+    print(io, Particle(1))
+    seekstart(io)
+    output = String(read(io))
+    @test occursin(r"PDG ID:\s*1", output)
+    @test occursin(r"Name:\s*d\n", output)
 end
