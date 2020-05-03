@@ -195,7 +195,7 @@ function read_particle_csv(filepath::AbstractString)
 end
 
 """
-    available_catalog_files()
+$(SIGNATURES)
 
 Function to get the available catalog files which are available within
 the package and returns a list with the absolute filepaths.
@@ -226,7 +226,7 @@ mutable struct Catalog
 end
 
 """
-    particles()
+$(SIGNATURES)
 
 Returns the full list of particles from the currently selected catalog.
 """
@@ -235,7 +235,7 @@ particles() = catalog.particles
 const catalog = Catalog(read_particle_csv(_default_catalog))
 
 """
-    use_catalog_file(filepath::AbstractString)
+$(SIGNATURES)
 
 This function reads a given catalog file and sets it as reference
 
