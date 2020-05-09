@@ -1,5 +1,6 @@
 module Corpuscles
 
+using DocStringExtensions
 using DelimitedFiles
 using Unitful
 using UnitfulAtomic
