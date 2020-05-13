@@ -12,6 +12,9 @@ UnitfulAtomic = "a7773ee8-282e-5fa2-be4e-bd808c38a91a"
 
 [compat]
 julia = "1"
+Unitful = "0.18, 1"
+UnitfulAtomic = "0.3.0"
+DocStringExtensions = "0.8"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
