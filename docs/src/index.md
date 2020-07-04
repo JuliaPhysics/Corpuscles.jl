@@ -24,7 +24,7 @@ you find any bugs or have suggestions to improve.
 ## Usage
 
 The `Particle` struct can be used to create a particle. If an integer value is
-passed, it will be interpreted as PDG ID, which is the primary particle
+passed, it will be interpreted as [PDG ID](http://pdg.lbl.gov/2019/reviews/rpp2019-rev-monte-carlo-numbering.pdf), which is the primary particle
 encoding in **Corpuscles.jl**:
 
 ```julia
