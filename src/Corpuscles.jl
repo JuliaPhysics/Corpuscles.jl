@@ -26,7 +26,7 @@ end
 abstract type ParticleID end
 
 struct PDGID <: ParticleID
-    value
+    value::Int64
 end
 
 struct Geant3ID <: ParticleID
