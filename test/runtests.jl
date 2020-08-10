@@ -4,6 +4,16 @@ using Unitful
 
 const DATA_DIR = joinpath(@__DIR__, "../data")
 
+@testset "inits" begin
+    p = Particle(Int8(11))
+    @test isequal(11, p.pdgid.value)
+    p = Particle(Int16(11))
+    @test isequal(11, p.pdgid.value)
+    p = Particle(Int32(11))
+    @test isequal(11, p.pdgid.value)
+end
+
+
 @testset "conversions" begin
 
     # Particle Identites
