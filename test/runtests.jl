@@ -1,8 +1,17 @@
 using Test
+using InteractiveUtils
 using Corpuscles
 using Unitful
 
 const DATA_DIR = joinpath(@__DIR__, "../data")
+
+@testset "inits" begin
+    for T in vcat(map(subtypes, [Signed, Unsigned])...)
+        p = Particle(T(11))
+        @test PDGID(11) == p.pdgid
+    end
+end
+
 
 @testset "conversions" begin
 
