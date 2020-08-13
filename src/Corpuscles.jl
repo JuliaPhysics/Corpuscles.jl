@@ -216,7 +216,7 @@ end
 
 const _catalogs = available_catalog_files()
 
-const _default_year = "2019"
+const _default_year = "2020"
 const _default_catalog = filter(s->occursin(_default_year,s), _catalogs)[end]
 
 mutable struct Catalog
