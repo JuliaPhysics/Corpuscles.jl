@@ -116,7 +116,7 @@ end
     io = IOBuffer(write=true)
     show(io, Particle(1))
     seekstart(io)
-    @test "Particle(1) 'd'" == String(read(io))
+    @test "Particle(1) d" == String(read(io))
 
     io = IOBuffer(write=true)
     print(io, Particle(1))
