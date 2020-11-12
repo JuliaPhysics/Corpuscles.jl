@@ -13,6 +13,26 @@ const DATA_DIR = joinpath(@__DIR__, "../data")
 end
 
 
+@testset "pdg digits" begin
+    p = Particle(9020113)
+    @test p.pdgid.Nj == 3
+    @test p.pdgid.Nq3 == 1
+    @test p.pdgid.Nq2 == 1
+    @test p.pdgid.Nq1 == 0
+    @test p.pdgid.Nl == 2
+    @test p.pdgid.Nr == 0
+    @test p.pdgid.N == 9
+    @test p.pdgid.N8 == 0
+    @test p.pdgid.N9 == 0
+    @test p.pdgid.N10 == 0
+
+    # digits should be positive
+    p = Particle(-321)
+    @test p.pdgid.Nj == 1
+    @test p.pdgid.Nq3 == 2
+    @test p.pdgid.Nq2 == 3
+end
+
 @testset "conversions" begin
 
     # Particle Identites
@@ -53,7 +73,7 @@ end
     catch e
         @test e isa Corpuscles.IDException
         msg = sprint(showerror, e)
-        @test msg == "ParticleID Error: No corresponding Geant3ID for PDGID(2222212) found!"
+        @test occursin("2222212", msg)
     end
 
     for particle in particles()
