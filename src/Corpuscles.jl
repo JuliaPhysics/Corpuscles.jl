@@ -296,6 +296,10 @@ function Base.show(io::IO, m::MeasuredValue)
     return
 end
 
+function Base.show(io::IO, p::PDGID)
+    Printf.@printf(io, "PDGID(%s)", p.value)
+end
+
 function Base.show(io::IO, p::Particle)
     Printf.@printf(io, "Particle(%s) %s", p.pdgid.value, p.name)
 end
