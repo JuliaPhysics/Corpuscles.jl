@@ -10,6 +10,9 @@ import Base
 
 export Particle, PDGID, PythiaID, Geant3ID, particles
 
+# helpers.jl
+export isquark
+
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
 
@@ -316,5 +319,8 @@ function Base.print(io::IO, p::Particle)
         end
     end
 end
+
+
+include("helpers.jl")
 
 end # module
