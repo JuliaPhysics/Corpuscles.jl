@@ -152,19 +152,22 @@ end
     @test sum(map(isfundamental, particles())) > 0
     @test sum(map(Corpuscles.fundamentalid, particles())) > 0
 
-    @test sum(map(isquark, particles())) > 0
-    @test sum(map(islepton, particles())) > 0
-    @test sum(map(ismeson, particles())) > 0
-    @test sum(map(isbaryon, particles())) > 0
-    @test sum(map(ishadron, particles())) > 0
-    @test sum(map(isRhadron, particles())) > 0
+    @test sum(map(isquark, particles())) == 12
+    @test sum(map(islepton, particles())) == 16
+    @test sum(map(ismeson, particles())) == 234
+    @test sum(map(isbaryon, particles())) == 292
+    @test sum(map(ishadron, particles())) == 526
+    @test sum(map(isRhadron, particles())) == 1
     @test sum(map(isSUSY, particles())) == 0
     @test sum(map(ispentaquark, particles())) == 0
+    @test sum(map(isgaugebosonorhiggs, particles())) == 6
+    @test sum(map(isdyon, particles())) == 0
+    # @test sum(map(isnucleus, particles())) == 0
 
-    @test sum(map(hasdown, particles())) > 0
-    @test sum(map(hasup, particles())) > 0
-    @test sum(map(hascharm, particles())) > 0
-    @test sum(map(hasstrange, particles())) > 0
-    @test sum(map(hasbottom, particles())) > 0
-    @test sum(map(hastop, particles())) > 0
+    @test sum(map(hasdown, particles())) == 328
+    @test sum(map(hasup, particles())) == 346
+    @test sum(map(hascharm, particles())) == 107
+    @test sum(map(hasstrange, particles())) == 257
+    @test sum(map(hasbottom, particles())) == 68
+    @test sum(map(hastop, particles())) == 0
 end

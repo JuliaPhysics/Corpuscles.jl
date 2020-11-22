@@ -1,4 +1,6 @@
 # Helper functions
+# Based on the particle Python package implementations from the SciKit-HEP
+# group: https://github.com/scikit-hep/particle/blob/master/src/particle/pdgid/functions.py
 
 """
 $(SIGNATURES)
@@ -21,7 +23,12 @@ end
 
 
 isquark(p::Particle) = 1 <= abs(p.pdgid.value) <= 8
-islepton(p::Particle) = 1 <= abs(p.pdgid.value) <= 8
+
+function islepton(p::Particle)
+    !isstandard(p) && return false
+    11 <= fundamentailid(p) <= 18 && return true
+    false
+end
 
 function ismeson(p::Particle)
     !isstandard(p) && return false
@@ -133,13 +140,63 @@ end
 
 isgaugebosonorhiggs(p::Particle) = 21 <= abs(p.pdgid.value) <= 40
 
+"""
+$(SIGNATURES)
+
+Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole
+charge and a variable integer number xyz units of electric charge, where xyz
+stands for Nq1 Nq2 Nq3.
+Codes 411xyz0 are used when the magnetic and electrical charge sign agree and
+412xyz0 when they disagree, with the overall sign of the particle set by the
+magnetic charge. For now, no spin information is provided.
+"""
+function isdyon(p::Particle)
+    !isstandard(p) && return false
+    p.pdgid.N != 4 && return false
+    p.pdgid.Nr != 1 && return false
+    !(p.pdgid.Nl ∈ [1, 2]) && return false
+    p.pdgid.Nq3 == 0 && return false
+    p.pdgid.Nj != 0 && return false
+    true
+end
+
+"""
+$(SIGNATURES)
+
+Ion numbers are +/- 10LZZZAAAI.
+AAA is A - total baryon number
+ZZZ is Z - total charge
+L is the total number of strange quarks.
+I is the isomer number, with I=0 corresponding to the ground state.
+"""
+function isnucleus(p::Particle)
+    # A proton can be a Hydrogen nucleus
+    # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
+    # hence consistency demands that is_nucleus(neutron) is True
+    abs(p.pdgid.value) ∈ [2112, 2212] && return true
+
+    if p.pdgid.N10 == 1 && p.pdgid.N9 == 0
+        # # Charge should always be less than or equal to the baryon number
+        # A_pdgid = A(pdgid)
+        # Z_pdgid = Z(pdgid)
+
+        # if A_pdgid is None or Z_pdgid is None:
+        #     return False
+        # elif A_pdgid >= abs(Z_pdgid):
+        #     return True
+    end
+    false
+end
+
+"""
+$(SIGNATURES)
+
+Note that q is always positive, so [1, 6] for Standard Model quarks
+and [7, 8] for fourth-generation quarks.
+"""
 function _hasquark(p::Particle, id::Integer)
-    retval = abs(p.pdgid.value) == id
-    retval |= p.pdgid.Nq1 == id 
-    retval |= p.pdgid.Nq2 == id 
-    retval |= p.pdgid.Nq3 == id
-    retval
-end 
+
+end
 
 hasdown(p::Particle) = _hasquark(p, 1)
 hasup(p::Particle) = _hasquark(p, 2)
