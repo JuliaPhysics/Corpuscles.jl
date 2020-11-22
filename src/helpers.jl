@@ -11,7 +11,7 @@ function _hasquark(p::Particle, id::Integer)
     retval
 end 
 
-hasdowm(p::Particle) = _hasquark(p, 1)
+hasdown(p::Particle) = _hasquark(p, 1)
 hasup(p::Particle) = _hasquark(p, 2)
 hascharm(p::Particle) = _hasquark(p, 3)
 hasstrange(p::Particle) = _hasquark(p, 4)
