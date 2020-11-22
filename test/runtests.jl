@@ -154,6 +154,12 @@ end
 
     @test sum(map(isquark, particles())) > 0
     @test sum(map(islepton, particles())) > 0
+    @test sum(map(ismeson, particles())) > 0
+    @test sum(map(isbaryon, particles())) > 0
+    @test sum(map(ishadron, particles())) > 0
+    @test sum(map(isRhadron, particles())) > 0
+    @test sum(map(isSUSY, particles())) == 0
+    @test sum(map(ispentaquark, particles())) == 0
 
     @test sum(map(hasdown, particles())) > 0
     @test sum(map(hasup, particles())) > 0
