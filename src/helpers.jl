@@ -1,7 +1,27 @@
 # Helper functions
 
+"""
+$(SIGNATURES)
+
+Returns true if the PDG ID of the particle follows the standard numbering scheme.
+"""
+isstandard(p::Particle) = p.pdgid.N8 == 0 && p.pdgid.N9 == 0 && p.pdgid.N10 == 0
+
+function isfundamental(p::Particle)
+    !isstandard(p) && return false
+    p.pdgid.Nq1 == 0 && p.pdgid.Nq2 == 0 && return true
+    abs(p.pdgid.value) <= 100 && return true
+    false
+end
+
+function fundamentalid(p::Particle)
+    !isfundamental(p) && return 0
+    p.pdgid.value % 10000
+end
+
 
 isquark(p::Particle) = 1 <= abs(p.pdgid.value) <= 8
+islepton(p::Particle) = 1 <= abs(p.pdgid.value) <= 8
 
 function _hasquark(p::Particle, id::Integer)
     retval = abs(p.pdgid.value) == id

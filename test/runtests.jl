@@ -145,3 +145,20 @@ end
     @test occursin(r"PDG ID:\s*1", output)
     @test occursin(r"Name:\s*d\n", output)
 end
+
+
+@testset "helpers" begin
+    @test sum(map(isstandard, particles())) > 0
+    @test sum(map(isfundamental, particles())) > 0
+    @test sum(map(Corpuscles.fundamentalid, particles())) > 0
+
+    @test sum(map(isquark, particles())) > 0
+    @test sum(map(islepton, particles())) > 0
+
+    @test sum(map(hasdown, particles())) > 0
+    @test sum(map(hasup, particles())) > 0
+    @test sum(map(hascharm, particles())) > 0
+    @test sum(map(hasstrange, particles())) > 0
+    @test sum(map(hasbottom, particles())) > 0
+    @test sum(map(hastop, particles())) > 0
+end
