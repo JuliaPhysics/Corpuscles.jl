@@ -252,4 +252,28 @@ end
         @test all(f(p) for p in candidates)
         @test all(!f(p) for p in noncandidates)
     end
+
+    @testset "isgeneratorspecific" begin
+        f = isgeneratorspecific
+        candidates = [AntiCHadron]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
+
+    @testset "isspecial" begin
+        f = isspecial
+        candidates = [Graviton, Reggeon, Pomeron, Odderon, AntiCHadron]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
+
+    @testset "isnucleus" begin
+        f = isnucleus
+        candidates = [Proton, AntiNeutron, HydrogenNucleus, Carbon12]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
 end
