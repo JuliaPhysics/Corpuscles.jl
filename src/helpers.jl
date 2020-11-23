@@ -144,6 +144,23 @@ end
 isgaugebosonorhiggs(p::Particle) = 21 <= abs(p.pdgid.value) <= 40
 issmgaugebosonorhiggs(p::Particle) = abs(p.pdgid.value) == 24 || 21 <= p.pdgid.value <= 25
 
+function istechnicolor(p::Particle)
+    !isstandard(p) && return false
+    p.pdgid.N == 3
+end
+
+"""
+$(SIGNATURES)
+
+Excited (composite) quarks and leptons have N = 4 and Nr = 0.
+"""
+function iscompositequarkorlepton(p::Particle)
+    !isstandard(p) && return false
+    fundamentalid(p) == 0 && return false
+    !(p.pdgid.N == 4 && p.pdgid.Nr == 0) && return false
+    true
+end
+
 """
 $(SIGNATURES)
 
