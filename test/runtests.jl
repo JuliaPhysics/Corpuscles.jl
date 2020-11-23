@@ -213,4 +213,15 @@ end
         @test all(f(p) for p in candidates)
         @test all(!f(p) for p in noncandidates)
     end
+
+    @testset "isbaryon" begin
+        f = isbaryon
+        candidates = [Proton, AntiNeutron, HydrogenNucleus, Lambda, Sigma0,
+                      SigmaPlus, SigmaMinus, Xi0, AntiXiMinus, OmegaMinus,
+                      LcPlus, Lb, LtPlus, RPlusPlus_GTildeUUU,
+                      UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
 end
