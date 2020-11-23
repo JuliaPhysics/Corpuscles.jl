@@ -148,9 +148,11 @@ end
 
 
 @testset "helpers" begin
+    Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2020.csv"))
     @test sum(map(isstandard, particles())) > 0
     @test sum(map(isfundamental, particles())) > 0
-    @test sum(map(Corpuscles.fundamentalid, particles())) > 0
+    @test sum(map(Corpuscles.isstandard, particles())) == 610
+    @test sum(map(Corpuscles.fundamentalid, particles())) == 413
 
     @test sum(map(isquark, particles())) == 12
     @test sum(map(islepton, particles())) == 16

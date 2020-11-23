@@ -97,7 +97,7 @@ and a (the digit following the zero's) is a SUSY particle.
 """
 function isRhadron(p::Particle)
     !isstandard(p) && return false
-    (p.pdgid.N != 0 || p.pdgid.Nr != 0) && return false
+    (p.pdgid.N != 1 || p.pdgid.Nr != 0) && return false
     isSUSY(p) && return false
     # All R-hadrons have at least 3 core digits
     (p.pdgid.Nq2 == 0 || p.pdgid.Nq3 == 0 || p.pdgid.Nj == 0) && return false
