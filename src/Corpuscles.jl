@@ -14,6 +14,7 @@ export Particle, PDGID, PythiaID, Geant3ID, particles
 export isfundamental, isstandard
 export isquark, islepton, ismeson, isbaryon, ishadron
 export isRhadron, isSUSY, ispentaquark, isgaugebosonorhiggs, isdyon, isnucleus
+export isdiquark
 export hasdown, hasup, hascharm, hasstrange, hasbottom, hastop
 
 # Julia 1.0 compatibility

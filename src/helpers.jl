@@ -163,6 +163,15 @@ function isdyon(p::Particle)
     true
 end
 
+function isdiquark(p::Particle)
+    !isstandard(p) && return false
+    abs(p.pdgid.value) <= 100 && return false
+    0 < fundamentalid(p) <= 100 && return false
+    p.pdgid.Nj > 0 && p.pdgid.Nq3 == 0 && p.pdgid.Nq2 > 0 && p.pdgid.Nq1 > 0 && return true
+    false
+end
+
+
 """
 $(SIGNATURES)
 
