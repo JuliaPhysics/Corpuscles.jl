@@ -228,4 +228,13 @@ end
     @testset "ishadron" begin
         @test all(ishadron(p) == (ismeson(p) || isbaryon(p)) for p in instances(PDGIDS))
     end
+
+    @testset "ispentaquark" begin
+        f = ispentaquark
+        candidates = [UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
+
 end
