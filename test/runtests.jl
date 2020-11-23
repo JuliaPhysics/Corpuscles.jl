@@ -192,4 +192,12 @@ end
         @test all(isquark(p) for p in quarks)
         @test all(!isquark(p) for p in nonquarks)
     end
+
+    @testset "islepton" begin
+        f = islepton
+        candidates = [Electron, Positron, Muon, AntiMuon, Tau, TauPrime, Nu_e, NuBar_tau, AntiElectronStar]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
 end
