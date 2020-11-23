@@ -3,43 +3,65 @@
 # group: https://github.com/scikit-hep/particle/blob/master/src/particle/pdgid/functions.py
 
 """
-$(SIGNATURES)
+    isstandard(p::Union{Particle, PDGID, Integer})
 
 Returns true if the PDG ID of the particle follows the standard numbering scheme.
 """
-isstandard(p::PDGID) = p.N8 == 0 && p.N9 == 0 && p.N10 == 0
-isstandard(p::Union{Particle, Integer}) = isstandard(convert(PDGID, p))
+function isstandard(p)
+    p = pdgid(p)
+    p.N8 == 0 && p.N9 == 0 && p.N10 == 0
+end
 
-function isfundamental(p::PDGID)
+"""
+    isfundamental(p::Union{Particle, PDGID, Integer})
+
+"""
+function isfundamental(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     p.Nq2 == 0 && p.Nq1 == 0 && return true
     abs(p.value) <= 100 && return true
     false
 end
-isfundamental(p::Union{Particle, Integer}) = isfundamental(convert(PDGID, p))
 
 
-function fundamentalid(p::PDGID)
+"""
+    fundamentalid(p::Union{Particle, PDGID, Integer})
+
+"""
+function fundamentalid(p)
+    p = pdgid(p)
     !isstandard(p) && return 0
     abspdgid = abs(p.value)
     p.Nq2 == 0 && p.Nq1 == 0 && return abspdgid % 10000
     abs(p.value) <= 100 && return abspgdid
     0
 end
-fundamentalid(p::Union{Particle, Integer}) = fundamentalid(convert(PDGID, p))
 
 
-isquark(p::PDGID) = 1 <= abs(p.value) <= 8
-isquark(p::Union{Particle, Integer}) = isquark(convert(PDGID, p))
+"""
+    isquark(p::Union{Particle, PDGID, Integer})
 
-function islepton(p::PDGID)
+"""
+isquark(p) = 1 <= abs(pdgid(p).value) <= 8
+
+"""
+    islepton(p::Union{Particle, PDGID, Integer})
+
+"""
+function islepton(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     11 <= fundamentalid(p) <= 18 && return true
     false
 end
-islepton(p::Union{Particle, Integer}) = islepton(convert(PDGID, p))
 
-function ismeson(p::PDGID)
+"""
+    ismeson(p::Union{Particle, PDGID, Integer})
+
+"""
+function ismeson(p)
+    p = pdgid(p)
     !isstandard(p) && return false
 
     abspdgid = abs(p.value)
@@ -60,10 +82,13 @@ function ismeson(p::PDGID)
     end
     false
 end
-ismeson(p::Union{Particle, Integer}) = ismeson(convert(PDGID, p))
 
+"""
+    isbaryon(p::Union{Particle, PDGID, Integer})
 
-function isbaryon(p::PDGID)
+"""
+function isbaryon(p)
+    p = pdgid(p)
     abspdgid = abs(p.value)
 
     abspdgid <= 100 && return false
@@ -84,9 +109,13 @@ function isbaryon(p::PDGID)
 
     false
 end
-isbaryon(p::Union{Particle, Integer}) = isbaryon(convert(PDGID, p))
 
-function ishadron(p::PDGID)
+"""
+    ishadron(p::Union{Particle, PDGID, Integer})
+
+"""
+function ishadron(p)
+    p = pdgid(p)
     abs(p.value) ∈ [1000000010, 1000010010] && return true
     !isstandard(p) && return false
     ismeson(p) && return true
@@ -95,16 +124,17 @@ function ishadron(p::PDGID)
     isRhadron(p) && return true
     false
 end
-ishadron(p::Union{Particle, Integer}) = ishadron(convert(PDGID, p))
 
 """
-$(SIGNATURES)
+    isRhadron(p::Union{Particle, PDGID, Integer})
 
 An R-hadron is of the form 10abcdj, 100abcj, or 1000abj,
 where j = 2J + 1 gives the spin; b, c, and d are quarks or gluons;
 and a (the digit following the zero's) is a SUSY particle.
+
 """
-function isRhadron(p::PDGID)
+function isRhadron(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     (p.N != 1 || p.Nr != 0) && return false
     isSUSY(p) && return false
@@ -112,32 +142,34 @@ function isRhadron(p::PDGID)
     (p.Nq2 == 0 || p.Nq3 == 0 || p.Nj == 0) && return false
     true
 end
-isRhadron(p::Union{Particle, Integer}) = isRhadron(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    isSUSY(p::Union{Particle, PDGID, Integer})
 
 Fundamental SUSY particles have N = 1 or 2.
+
 """
-function isSUSY(p::PDGID)
+function isSUSY(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     p.N != 1 && p.N != 2 && return false
     p.Nr != 0 && return false
     fundamentalid(p) == 0 && return false
     true
 end
-isSUSY(p::Union{Particle, Integer}) = isSUSY(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    ispentaquark(p::Union{Particle, PDGID, Integer})
 
 Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj,
 where Nj = 2J + 1 gives the spin and Nr Nl Nq1 Nq2 Nq3 denote the quark numbers
 in order Nr >= Nl >= Nq1 >= Nq2 and Nq3 gives the antiquark number.
+
 """
-function ispentaquark(p::PDGID)
+function ispentaquark(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     p.N != 9 && return false
     (p.N == 9 || p.Nr == 0) && return false
@@ -151,34 +183,49 @@ function ispentaquark(p::PDGID)
     p.Nl > p.Nr && return false
     true
 end
-ispentaquark(p::Union{Particle, Integer}) = ispentaquark(convert(PDGID, p))
 
-isgaugebosonorhiggs(p::PDGID) = 21 <= abs(p.value) <= 40
-isgaugebosonorhiggs(p::Union{Particle, Integer}) = isgaugebosonorhiggs(convert(PDGID, p))
-issmgaugebosonorhiggs(p::PDGID) = abs(p.value) == 24 || 21 <= p.value <= 25
-issmgaugebosonorhiggs(p::Union{Particle, Integer}) = issmgaugebosonorhiggs(convert(PDGID, p))
+"""
+    isgaugebosonorhiggs(p::Union{Particle, PDGID, Integer})
 
-function istechnicolor(p::PDGID)
+"""
+function isgaugebosonorhiggs(p)
+    p = pdgid(p)
+    21 <= abs(p.value) <= 40
+end
+
+"""
+    issmgaugebosonorhiggs(p::Union{Particle, PDGID, Integer})
+"""
+function issmgaugebosonorhiggs(p)
+    p = pdgid(p)
+    abs(p.value) == 24 || 21 <= p.value <= 25
+end
+
+
+"""
+    istechnicolor(p::Union{Particle, PDGID, Integer})
+"""
+function istechnicolor(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     p.N == 3
 end
-istechnicolor(p::Union{Particle, Integer}) = istechnicolor(convert(PDGID, p))
 
 """
-$(SIGNATURES)
+    iscompositequarkorlepton(p::Union{Particle, PDGID, Integer})
 
 Excited (composite) quarks and leptons have N = 4 and Nr = 0.
 """
-function iscompositequarkorlepton(p::PDGID)
+function iscompositequarkorlepton(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     fundamentalid(p) == 0 && return false
     !(p.N == 4 && p.Nr == 0) && return false
     true
 end
-iscompositequarkorlepton(p::Union{Particle, Integer}) = iscompositequarkorlepton(convert(PDGID, p))
 
 """
-$(SIGNATURES)
+    isdyon(p::Union{Particle, PDGID, Integer})
 
 Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole
 charge and a variable integer number xyz units of electric charge, where xyz
@@ -187,7 +234,8 @@ Codes 411xyz0 are used when the magnetic and electrical charge sign agree and
 412xyz0 when they disagree, with the overall sign of the particle set by the
 magnetic charge. For now, no spin information is provided.
 """
-function isdyon(p::PDGID)
+function isdyon(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     p.N != 4 && return false
     p.Nr != 1 && return false
@@ -196,19 +244,21 @@ function isdyon(p::PDGID)
     p.Nj != 0 && return false
     true
 end
-isdyon(p::Union{Particle, Integer}) = isdyon(convert(PDGID, p))
 
-function isdiquark(p::PDGID)
+"""
+    isdiquark(p::Union{Particle, PDGID, Integer})
+"""
+function isdiquark(p)
+    p = pdgid(p)
     !isstandard(p) && return false
     abs(p.value) <= 100 && return false
     0 < fundamentalid(p) <= 100 && return false
     p.Nj > 0 && p.Nq3 == 0 && p.Nq2 > 0 && p.Nq1 > 0 && return true
     false
 end
-isdiquark(p::Union{Particle, Integer}) = isdiquark(convert(PDGID, p))
 
 """
-$(SIGNATURES)
+    isgeneratorspecific(p::Union{Particle, PDGID, Integer})
 
 Codes 81-100 are reserved for generator-specific pseudoparticles and concepts.
 Codes 901-930, 1901-1930, 2901-2930, and 3901-3930 are for additional components
@@ -216,7 +266,8 @@ of Standard Model parton distribution functions, where the latter three ranges
 are intended to distinguish left/right/longitudinal components.
 Codes 998 and 999 are reserved for GEANT tracking purposes.
 """
-function isgeneratorspecific(p::PDGID)
+function isgeneratorspecific(p)
+    p = pdgid(p)
     abspdgid = abs(p.value)
     81 <= abspdgid <= 100 && return true
     901 <= abspdgid <= 930 && return true
@@ -227,29 +278,31 @@ function isgeneratorspecific(p::PDGID)
     abspdgid ∈ [20022, 480000000] && return true  # Special cases of opticalphoton and geantino
     false
 end
-isgeneratorspecific(p::Union{Particle, Integer}) = isgeneratorspecific(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    isspecial(p::Union{Particle, PDGID, Integer})
 
 Special particle in the sense of the classification in the PDG MC particle
 numbering scheme document, hence the graviton, the DM (S = 0, 1/2, 1) particles,
 the reggeons (reggeon, pomeron and odderon), and all generator-specific
 pseudo-particles and concepts, see `isgeneratorspecific`.
 """
-function isspecial(p::PDGID)
+function isspecial(p)
+    p = pdgid(p)
     p.value ∈ [39, 41, 42, 51, 52, 53, 110, 990, 9990] || isgeneratorspecific(p)
 end
-isspecial(p::Union{Particle, Integer}) = isspecial(convert(PDGID, p))
 
 
 """
+    isQball(p::Union{Particle, PDGID, Integer})
+
 Does this PDG ID correspond to a Q-ball or any exotic particle with electric
 charge beyond the qqq scheme?
 Ad-hoc numbering for such particles is +/- 100XXXY0, where XXX.Y is the charge.
 """
-function isQball(p::PDGID)
+function isQball(p)
+    p = pdgid(p)
     p.N8 != 1 && return false
     p.N != 0 && return false
     p.Nr != 0 && return false
@@ -257,11 +310,10 @@ function isQball(p::PDGID)
     p.Nj != 0 && return false
     true
 end
-isQball(p::Union{Particle, Integer}) = isQball(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    hasfundamentalanti(p::Union{Particle, PDGID, Integer})
 
 If this is a fundamental particle, does it have a valid antiparticle?
 
@@ -269,8 +321,10 @@ Notes
 -----
 Based on the current list of defined particles/concepts
 in the PDG Monte Carlo Particle Numbering Scheme document.
+
 """
-function hasfundamentalanti(p::PDGID)
+function hasfundamentalanti(p)
+    p = pdgid(p)
     fid = fundamentalid(p)  # always a positive integer
 
     # Check generator-specific PDGIDs
@@ -286,11 +340,10 @@ function hasfundamentalanti(p::PDGID)
     end
     false
 end
-hasfundamentalanti(p::Union{Particle, Integer}) = hasfundamentalanti(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    isnucleus(p::Union{Particle, PDGID, Integer})
 
 Ion numbers are +/- 10LZZZAAAI.
 AAA is A - total baryon number
@@ -298,7 +351,8 @@ ZZZ is Z - total charge
 L is the total number of strange quarks.
 I is the isomer number, with I=0 corresponding to the ground state.
 """
-function isnucleus(p::PDGID)
+function isnucleus(p)
+    p = pdgid(p)
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
     # hence consistency demands that isnucleus(neutron) is True
@@ -317,45 +371,45 @@ function isnucleus(p::PDGID)
     end
     false
 end
-isnucleus(p::Union{Particle, Integer}) = isnucleus(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    A(p::Union{Particle, PDGID, Integer})
 
 Returns the atomic number A if the PDG ID corresponds to a nucleus.
 """
-function A(p::PDGID)
+function A(p)
+    p = pdgid(p)
     abspgdid = abs(p.value)
     abspdgid ∈ [2112, 2212] && return 1
     (p.N10 != 1 || p.N9 != 0) && error("Particle with $(p) is not a nucleus")
     (abspdgid ÷ 10) % 1000
 end
-A(p::Union{Particle, Integer}) = A(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    Z(p::Union{Particle, PDGID, Integer})
 
 Returns the charge Z if the PDG ID corresponds to a nucleus.
 """
-function Z(p::PDGID)
+function Z(p)
+    p = pdgid(p)
     abspgdid = abs(p.value)
     abspdgid == 2212 && return sign(p.value)
     abspdgid == 2112 && return 0
     (p.N10 != 1 || p.N9 != 0) && error("Particle with $(p) is not a nucleus")
     ((abspdgid ÷ 10000) % 1000) * sign(p.value)
 end
-Z(p::Union{Particle, Integer}) = Z(convert(PDGID, p))
 
 
 """
-$(SIGNATURES)
+    _hasquark(p:::Union{Particle, PDGID, Integer}, q::Integer)
 
 Note that q is always positive, so [1, 6] for Standard Model quarks
 and [7, 8] for fourth-generation quarks.
 """
-function _hasquark(p::PDGID, q::Integer)
+function _hasquark(p, q::Integer)
+    p = pdgid(p)
     # Nuclei can also contain strange quarks,
     # cf. the definition of a nucleus PDG ID in isnucleus.
     # This check needs to be done first since _extra_bits(pdgid) > 0 for nuclei
@@ -391,17 +445,33 @@ function _hasquark(p::PDGID, q::Integer)
     ispentaquark(p) && (p.Nl == q || p.Nr == q) && return true
     false
 end
-_hasquark(p::Union{Particle, Integer}, x::Integer) = _hasquark(convert(PDGID, p), x)
 
-hasdown(p::Particle) = _hasquark(p, 1)
-hasdown(p::Union{Particle, Integer}) = hasdown(convert(PDGID, p))
-hasup(p::Particle) = _hasquark(p, 2)
-hasup(p::Union{Particle, Integer}) = hasup(convert(PDGID, p))
-hasstrange(p::Particle) = _hasquark(p, 3)
-hasstrange(p::Union{Particle, Integer}) = hascharm(convert(PDGID, p))
-hascharm(p::Particle) = _hasquark(p, 4)
-hascharm(p::Union{Particle, Integer}) = hascharm(convert(PDGID, p))
-hasbottom(p::Particle) = _hasquark(p, 5)
-hasbottom(p::Union{Particle, Integer}) = hasbottom(convert(PDGID, p))
-hastop(p::Particle) = _hasquark(p, 6)
-hastop(p::Union{Particle, Integer}) = hastop(convert(PDGID, p))
+"""
+    hasdown(p::Union{Particle, PDGID, Integer})
+"""
+hasdown(p) = _hasquark(pdgid(p), 1)
+
+"""
+    hasdown(p::Union{Particle, PDGID, Integer})
+"""
+hasup(p) = _hasquark(pdgid(p), 2)
+
+"""
+    hasstrange(p::Union{Particle, PDGID, Integer})
+"""
+hasstrange(p) = _hasquark(pdgid(p), 3)
+
+"""
+    hascharm(p::Union{Particle, PDGID, Integer})
+"""
+hascharm(p) = _hasquark(pdgid(p), 4)
+
+"""
+    hasbottom(p::Union{Particle, PDGID, Integer})
+"""
+hasbottom(p) = _hasquark(pdgid(p), 5)
+
+"""
+    hastop(p::Union{Particle, PDGID, Integer})
+"""
+hastop(p) = _hasquark(pdgid(p), 6)

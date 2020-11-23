@@ -148,9 +148,9 @@ struct Particle
     latex::String
 end
 
-convert(::Type{PDGID}, p::Particle) = p.pdgid
-convert(::Type{PDGID}, x::Integer) = PDGID(x)
-
+pdgid(p::PDGID) = p
+pdgid(p::Particle) = p.pdgid
+pdgid(x::Integer) = PDGID(x)
 
 function read_conversion_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, skipstart=2, comments=true)
