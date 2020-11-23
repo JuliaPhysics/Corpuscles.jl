@@ -5,6 +5,9 @@ using Unitful
 
 const DATA_DIR = joinpath(@__DIR__, "../data")
 
+include("particles.jl")
+
+
 @testset "inits" begin
     for T in vcat(map(subtypes, [Signed, Unsigned])...)
         p = Particle(T(11))
@@ -181,5 +184,12 @@ end
         @test sum(map(hasstrange, _particles)) == 257
         @test sum(map(hasbottom, _particles)) == 68
         @test sum(map(hastop, _particles)) == 0
+    end
+
+    @testset "isquark" begin
+        quarks = [DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, BPrimeQuark, TPrimeQuark]
+        nonquarks = setdiff(Set(instances(PDGIDS)), Set(quarks))
+        @test all(isquark(p) for p in quarks)
+        @test all(!isquark(p) for p in nonquarks)
     end
 end
