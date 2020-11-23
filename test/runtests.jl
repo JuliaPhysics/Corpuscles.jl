@@ -237,4 +237,19 @@ end
         @test all(!f(p) for p in noncandidates)
     end
 
+    @testset "isgaugebosonorhiggs" begin
+        f = isgaugebosonorhiggs
+        candidates = [Gluon, Photon, Z0, WMinus, HiggsBoson, ZPrime, Graviton]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
+
+    @testset "issmgaugebosonorhiggs" begin
+        f = issmgaugebosonorhiggs
+        candidates = [Gluon, Photon, Z0, WMinus, HiggsBoson]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
 end
