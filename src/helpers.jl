@@ -11,14 +11,17 @@ isstandard(p::Particle) = p.pdgid.N8 == 0 && p.pdgid.N9 == 0 && p.pdgid.N10 == 0
 
 function isfundamental(p::Particle)
     !isstandard(p) && return false
-    p.pdgid.Nq1 == 0 && p.pdgid.Nq2 == 0 && return true
+    p.pdgid.Nq2 == 0 && p.pdgid.Nq1 == 0 && return true
     abs(p.pdgid.value) <= 100 && return true
     false
 end
 
 function fundamentalid(p::Particle)
-    !isfundamental(p) && return 0
-    p.pdgid.value % 10000
+    !isstandard(p) && return 0
+    abspdgid = abs(p.pdgid.value)
+    p.pdgid.Nq2 == 0 && p.pdgid.Nq1 == 0 && return abspdgid % 10000
+    abs(p.pdgid.value) <= 100 && return abspgdid
+    0
 end
 
 
@@ -26,7 +29,7 @@ isquark(p::Particle) = 1 <= abs(p.pdgid.value) <= 8
 
 function islepton(p::Particle)
     !isstandard(p) && return false
-    11 <= fundamentailid(p) <= 18 && return true
+    11 <= fundamentalid(p) <= 18 && return true
     false
 end
 
@@ -172,21 +175,50 @@ I is the isomer number, with I=0 corresponding to the ground state.
 function isnucleus(p::Particle)
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
-    # hence consistency demands that is_nucleus(neutron) is True
+    # hence consistency demands that isnucleus(neutron) is True
     abs(p.pdgid.value) ∈ [2112, 2212] && return true
 
     if p.pdgid.N10 == 1 && p.pdgid.N9 == 0
-        # # Charge should always be less than or equal to the baryon number
-        # A_pdgid = A(pdgid)
-        # Z_pdgid = Z(pdgid)
+        # Charge should always be less than or equal to the baryon number
+        try
+            A_ = A(p)
+            Z_ = Z(p)
+        catch
+            return false
+        end
 
-        # if A_pdgid is None or Z_pdgid is None:
-        #     return False
-        # elif A_pdgid >= abs(Z_pdgid):
-        #     return True
+        A_ >= abs(Z_) && return true
     end
     false
 end
+
+
+"""
+$(SIGNATURES)
+
+Returns the atomic number A if the PDG ID corresponds to a nucleus.
+"""
+function A(p::Particle)
+    abspgdid = abs(p.pdgid.value)
+    abspdgid ∈ [2112, 2212] && return 1
+    (p.pdgid.N10 != 1 || p.pdgid.N9 != 0) && error("Particle $(p) is not a nucleus")
+    (abspdgid ÷ 10) % 1000
+end
+
+
+"""
+$(SIGNATURES)
+
+Returns the charge Z if the PDG ID corresponds to a nucleus.
+"""
+function Z(p::Particle)
+    abspgdid = abs(p.pdgid.value)
+    abspdgid == 2212 && return sign(p.pdgid.value)
+    abspdgid == 2112 && return 0
+    (p.pdgid.N10 != 1 || p.pdgid.N9 != 0) && error("Particle $(p) is not a nucleus")
+    ((abspdgid ÷ 10000) % 1000) * sign(p.pdgid.value)
+end
+
 
 """
 $(SIGNATURES)
@@ -194,8 +226,41 @@ $(SIGNATURES)
 Note that q is always positive, so [1, 6] for Standard Model quarks
 and [7, 8] for fourth-generation quarks.
 """
-function _hasquark(p::Particle, id::Integer)
+function _hasquark(p::Particle, q::Integer)
+    # Nuclei can also contain strange quarks,
+    # cf. the definition of a nucleus PDG ID in isnucleus.
+    # This check needs to be done first since _extra_bits(pdgid) > 0 for nuclei
+    if isnucleus(p)
+        q ∈ [1, 2]  && return true # Nuclei by construction contain up and down quarks
+        if q == 3 && !(p.pdgid.value ∈ [2112, 2212])
+            p.pdgid.N8 > 0 && return true
+            return false
+        end
+    end
 
+    !isstandard(p) && return false
+    fundamentalid(p) > 0 && return false
+    isdyon(p) && return false
+
+    if isRhadron(p)
+        _digits = digits(abs(p.pdgid.value), pad=10)
+        iz = 7
+        for loc ∈ range(6, 1; step=-1)
+            if _digits[loc] == 0
+                iz = loc
+            elseif loc == iz - 1
+                # ignore squark or gluino
+            else
+                _digits[loc] == q && return true
+            end
+        end
+        return false
+    end
+
+    (p.pdgid.Nq3 == q || p.pdgid.Nq2 == q || p.pdgid.Nq1 == q) && return true
+
+    ispentaquark(p) && (p.pdgid.Nl == q || p.pdgid.Nr == q) && return true
+    false
 end
 
 hasdown(p::Particle) = _hasquark(p, 1)

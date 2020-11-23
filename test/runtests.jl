@@ -162,7 +162,7 @@ end
     @test sum(map(ispentaquark, particles())) == 0
     @test sum(map(isgaugebosonorhiggs, particles())) == 6
     @test sum(map(isdyon, particles())) == 0
-    # @test sum(map(isnucleus, particles())) == 0
+    @test sum(map(isnucleus, particles())) == 4
 
     @test sum(map(hasdown, particles())) == 328
     @test sum(map(hasup, particles())) == 346
