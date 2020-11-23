@@ -224,4 +224,8 @@ end
         @test all(f(p) for p in candidates)
         @test all(!f(p) for p in noncandidates)
     end
+
+    @testset "ishadron" begin
+        @test all(ishadron(p) == (ismeson(p) || isbaryon(p)) for p in instances(PDGIDS))
+    end
 end
