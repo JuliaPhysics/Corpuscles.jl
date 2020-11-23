@@ -120,8 +120,6 @@ end
 const _energy_dim = Unitful.dimension(u"J")
 const _charge_dim = Unitful.dimension(u"C")
 
-abstract type AbstractCatalog end
-
 struct Particle
     pdgid::PDGID
     mass::MeasuredValue{_energy_dim}
@@ -137,7 +135,6 @@ struct Particle
     name::String
     quarks::String
     latex::String
-    catalog::AbstractCatalog
 end
 
 function read_conversion_csv(filepath::AbstractString)
@@ -147,7 +144,6 @@ end
 
 const _id_conversion_cols = Dict(PDGID => 1, Geant3ID => 3, PythiaID => 2)
 const _id_conversion_tbl = read_conversion_csv(joinpath(_data_dir, "conversions.csv"))
-
 
 struct IDException <: Exception 
     var::AbstractString
@@ -180,18 +176,10 @@ end
 
 const ParticleDict = Dict{PDGID, Particle}
 
-mutable struct Catalog <: AbstractCatalog
-    filepath::AbstractString
-    particle_dict::ParticleDict
-    particles::Vector{Particle}
-    Catalog(filepath, d::ParticleDict) = new(filepath, d, collect(values(d)))
-end
-
-function read_particle_csv(filepath::AbstractString)
+function read_catalog_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, comments=true)
     header = string.(file_content[1,:])
     dct_particles = ParticleDict()
-    catalog = Catalog(filepath, dct_particles)
     for row in eachrow_(file_content[2:end,:])
         pdgid       = PDGID(parse(Int64, row[1]))
         mass_value  = parse(Float64, row[2]) * u"MeV"
@@ -226,12 +214,9 @@ function read_particle_csv(filepath::AbstractString)
                                         status,
                                         name,
                                         quarks,
-                                        latex, 
-                                        catalog)
+                                        latex)
     end
-    catalog.particle_dict = dct_particles
-    catalog.particles = collect(values(dct_particles))
-    catalog
+    dct_particles
 end
 
 """
@@ -261,21 +246,31 @@ const _default_year = "2020"
 const _default_particle_catalog = filter(s->occursin(_default_year,s), _particle_catalogs)[end]
 const _default_nuclei_catalog = filter(s->occursin(_default_year,s), _nuclei_catalogs)[end]
 
+struct Catalog
+    particle_dict::ParticleDict
+    particles::Vector{Particle}
+    Catalog(d::ParticleDict) = new(d, collect(values(d)))
+    Catalog(filepath::AbstractString) = Catalog(read_catalog_csv(filepath))
+end
 
-Particle(id::ParticleID, catalog::Catalog) = catalog.particle_dict[Base.convert(PDGID, id)]
-Particle(id::ParticleID) = ParticleID(id, catalog)
-Particle(id::Integer, catalog::Catalog) = Particle(PDGID(id), catalog)
-Particle(id::Integer) = Particle(id, catalog)
+Particle(catalog::Catalog, id::ParticleID) = catalog.particle_dict[Base.convert(PDGID, id)] 
+Particle(catalog::Catalog, id::Integer) = Particle(catalog, PDGID(id))
+Particle(id::ParticleID) = Particle(catalog.value, id)
+Particle(id::Integer) = Particle(catalog.value, id)
 
 """
 $(SIGNATURES)
 
-Returns the full list of particles from the currently selected catalogs.
+Returns the full list of particles from the currently selected catalog.
 """
-# function particles() 
-#     catalog.particles
+particles(catalog::Catalog) = catalog.particles
+particles() = particles(catalog)
 
-const catalog = read_particle_csv(_default_particle_catalog)
+mutable struct DefaultCatalog
+    value::Catalog
+end
+
+const catalog = DefaultCatalog(Catalog(read_catalog_csv(_default_particle_catalog)))
 
 """
 $(SIGNATURES)
@@ -292,10 +287,7 @@ julia> Corpuscles.use_catalog_file("/home/foobar/dev/Corpuscles.jl/data/particle
 """
 function use_catalog_file(filepath::AbstractString)
     # TODO: there is surely a better way to manage this "closure"-like thing
-    # c
-    catalog.filepath = filepath
-    catalog.particle_dict = read_particle_csv(filepath)
-    catalog.particles = collect(values(catalog.particle_dict))
+    catalog.value = Catalog(read_catalog_csv(filepath))
     return
 end
 
