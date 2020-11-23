@@ -200,4 +200,17 @@ end
         @test all(f(p) for p in candidates)
         @test all(!f(p) for p in noncandidates)
     end
+
+    @testset "ismeson" begin
+        f = ismeson
+        candidates = [jpsi, psi_2S, Upsilon_1S, Upsilon_4S, Pi0, PiPlus, eta,
+                  eta_prime, a_0_1450_plus, KL, KS, KMinus, phi, omega,
+                  rho_770_minus, K1_1270_0, K1_1400_0, rho_1700_0, a2_1320_minus,
+                  omega_3_1670, f_4_2300, D0, DPlus, DsPlus, B0, BPlus, Bs,
+                  BcPlus, Pi0TC, PiMinusTC, T0, Reggeon, Pomeron, Odderon,
+                  RPlus_TTildeDbar, R0_GTildeG]
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        @test all(f(p) for p in candidates)
+        @test all(!f(p) for p in noncandidates)
+    end
 end
