@@ -169,6 +169,10 @@ end
     @test sum(map(isdiquark, particles())) == 50
     @test sum(map(istechnicolor, particles())) == 0
     @test sum(map(iscompositequarkorlepton, particles())) == 0
+    @test sum(map(isgeneratorspecific, particles())) == 0
+    @test sum(map(isspecial, particles())) == 0
+    @test sum(map(isQball, particles())) == 0
+    @test sum(map(hasfundamentalanti, particles())) == 30
 
     @test sum(map(hasdown, particles())) == 328
     @test sum(map(hasup, particles())) == 346

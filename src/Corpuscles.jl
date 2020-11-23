@@ -16,6 +16,7 @@ export isquark, islepton, ismeson, isbaryon, ishadron
 export isRhadron, isSUSY, ispentaquark, isdyon, isnucleus, isdiquark
 export istechnicolor, iscompositequarkorlepton
 export isgaugebosonorhiggs, issmgaugebosonorhiggs
+export isgeneratorspecific, isspecial, isQball, hasfundamentalanti
 export hasdown, hasup, hascharm, hasstrange, hasbottom, hastop
 
 # Julia 1.0 compatibility
@@ -65,7 +66,6 @@ struct PDGID <: ParticleID
         return new(value, d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10])
     end
 end
-
 
 struct Geant3ID <: ParticleID
     value
@@ -147,6 +147,10 @@ struct Particle
     quarks::String
     latex::String
 end
+
+convert(::Type{PDGID}, p::Particle) = p.pdgid
+convert(::Type{PDGID}, x::Integer) = PDGID(x)
+
 
 function read_conversion_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, skipstart=2, comments=true)
