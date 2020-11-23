@@ -163,6 +163,7 @@ end
     @test sum(map(isSUSY, particles())) == 0
     @test sum(map(ispentaquark, particles())) == 0
     @test sum(map(isgaugebosonorhiggs, particles())) == 6
+    @test sum(map(issmgaugebosonorhiggs, particles())) == 6
     @test sum(map(isdyon, particles())) == 0
     @test sum(map(isnucleus, particles())) == 4
     @test sum(map(isdiquark, particles())) == 50

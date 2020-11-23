@@ -142,6 +142,7 @@ function ispentaquark(p::Particle)
 end
 
 isgaugebosonorhiggs(p::Particle) = 21 <= abs(p.pdgid.value) <= 40
+issmgaugebosonorhiggs(p::Particle) = abs(p.pdgid.value) == 24 || 21 <= p.pdgid.value <= 25
 
 """
 $(SIGNATURES)
