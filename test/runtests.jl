@@ -149,35 +149,37 @@ end
 
 @testset "helpers" begin
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2020.csv"))
-    @test sum(map(isstandard, particles())) > 0
-    @test sum(map(isfundamental, particles())) > 0
-    @test sum(map(Corpuscles.isstandard, particles())) == 610
-    @test sum(map(Corpuscles.fundamentalid, particles())) == 413
+    for _particles ∈ [particles(), [p.pdgid for p in particles()], [p.pdgid.value for p in particles()]]
+        @test sum(map(isstandard, _particles)) > 0
+        @test sum(map(isfundamental, _particles)) > 0
+        @test sum(map(Corpuscles.isstandard, _particles)) == 610
+        @test sum(map(Corpuscles.fundamentalid, _particles)) == 413
 
-    @test sum(map(isquark, particles())) == 12
-    @test sum(map(islepton, particles())) == 16
-    @test sum(map(ismeson, particles())) == 234
-    @test sum(map(isbaryon, particles())) == 292
-    @test sum(map(ishadron, particles())) == 526
-    @test sum(map(isRhadron, particles())) == 1
-    @test sum(map(isSUSY, particles())) == 0
-    @test sum(map(ispentaquark, particles())) == 0
-    @test sum(map(isgaugebosonorhiggs, particles())) == 6
-    @test sum(map(issmgaugebosonorhiggs, particles())) == 6
-    @test sum(map(isdyon, particles())) == 0
-    @test sum(map(isnucleus, particles())) == 4
-    @test sum(map(isdiquark, particles())) == 50
-    @test sum(map(istechnicolor, particles())) == 0
-    @test sum(map(iscompositequarkorlepton, particles())) == 0
-    @test sum(map(isgeneratorspecific, particles())) == 0
-    @test sum(map(isspecial, particles())) == 0
-    @test sum(map(isQball, particles())) == 0
-    @test sum(map(hasfundamentalanti, particles())) == 30
+        @test sum(map(isquark, _particles)) == 12
+        @test sum(map(islepton, _particles)) == 16
+        @test sum(map(ismeson, _particles)) == 234
+        @test sum(map(isbaryon, _particles)) == 292
+        @test sum(map(ishadron, _particles)) == 526
+        @test sum(map(isRhadron, _particles)) == 1
+        @test sum(map(isSUSY, _particles)) == 0
+        @test sum(map(ispentaquark, _particles)) == 0
+        @test sum(map(isgaugebosonorhiggs, _particles)) == 6
+        @test sum(map(issmgaugebosonorhiggs, _particles)) == 6
+        @test sum(map(isdyon, _particles)) == 0
+        @test sum(map(isnucleus, _particles)) == 4
+        @test sum(map(isdiquark, _particles)) == 50
+        @test sum(map(istechnicolor, _particles)) == 0
+        @test sum(map(iscompositequarkorlepton, _particles)) == 0
+        @test sum(map(isgeneratorspecific, _particles)) == 0
+        @test sum(map(isspecial, _particles)) == 0
+        @test sum(map(isQball, _particles)) == 0
+        @test sum(map(hasfundamentalanti, _particles)) == 30
 
-    @test sum(map(hasdown, particles())) == 328
-    @test sum(map(hasup, particles())) == 346
-    @test sum(map(hascharm, particles())) == 107
-    @test sum(map(hasstrange, particles())) == 257
-    @test sum(map(hasbottom, particles())) == 68
-    @test sum(map(hastop, particles())) == 0
+        @test sum(map(hasdown, _particles)) == 328
+        @test sum(map(hasup, _particles)) == 346
+        @test sum(map(hascharm, _particles)) == 107
+        @test sum(map(hasstrange, _particles)) == 257
+        @test sum(map(hasbottom, _particles)) == 68
+        @test sum(map(hastop, _particles)) == 0
+    end
 end
