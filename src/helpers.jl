@@ -172,7 +172,7 @@ function ispentaquark(p)
     p = pdgid(p)
     !isstandard(p) && return false
     p.N != 9 && return false
-    (p.N == 9 || p.Nr == 0) && return false
+    (p.Nr == 9 || p.Nr == 0) && return false
     (p.Nj == 9 || p.Nl == 0) && return false
     p.Nq1 == 0 && return false
     p.Nq2 == 0 && return false
