@@ -245,7 +245,7 @@ function _hasquark(p::Particle, q::Integer)
     if isRhadron(p)
         _digits = digits(abs(p.pdgid.value), pad=10)
         iz = 7
-        for loc ∈ range(6, 1; step=-1)
+        for loc ∈ range(6, 2; step=-1)
             if _digits[loc] == 0
                 iz = loc
             elseif loc == iz - 1
@@ -265,8 +265,8 @@ end
 
 hasdown(p::Particle) = _hasquark(p, 1)
 hasup(p::Particle) = _hasquark(p, 2)
-hascharm(p::Particle) = _hasquark(p, 3)
-hasstrange(p::Particle) = _hasquark(p, 4)
+hasstrange(p::Particle) = _hasquark(p, 3)
+hascharm(p::Particle) = _hasquark(p, 4)
 hasbottom(p::Particle) = _hasquark(p, 5)
 hastop(p::Particle) = _hasquark(p, 6)
 
