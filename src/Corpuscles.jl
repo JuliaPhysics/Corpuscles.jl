@@ -18,6 +18,7 @@ export istechnicolor, iscompositequarkorlepton
 export isgaugebosonorhiggs, issmgaugebosonorhiggs
 export isgeneratorspecific, isspecial, isQball, hasfundamentalanti
 export hasdown, hasup, hascharm, hasstrange, hasbottom, hastop
+export A, Z
 
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
