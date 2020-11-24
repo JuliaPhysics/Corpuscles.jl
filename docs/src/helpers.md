@@ -11,7 +11,7 @@ input, so that the general API is the following:
 helperfunction(p::Union{Particle, PDGID, Integer})
 ```
 
-Here is list of the currently available helper functions:
+Here is a list of the currently available helper functions:
 
 - `hasup(p)`
 - `hasdown(p)`
