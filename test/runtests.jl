@@ -152,6 +152,23 @@ end
 
 @testset "helpers" begin
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2020.csv"))
+
+
+    """
+    Runs the given is/has-function on a set of candidates and also checks every
+    other noncandidate in PDGIDs for the opposite outcome.
+    """
+    function check_candidates(f, candidates)
+        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
+        for candidate ∈ candidates
+            @test f(candidate)
+        end
+        for noncandidate ∈ noncandidates
+            @test !f(noncandidate)
+        end
+    end
+
+
     for _particles ∈ [particles(), [p.pdgid for p in particles()], [p.pdgid.value for p in particles()]]
         @test sum(map(isstandard, _particles)) > 0
         @test sum(map(isfundamental, _particles)) > 0
@@ -187,42 +204,31 @@ end
     end
 
     @testset "isquark" begin
-        quarks = [DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, BPrimeQuark, TPrimeQuark]
-        nonquarks = setdiff(Set(instances(PDGIDS)), Set(quarks))
-        @test all(isquark(p) for p in quarks)
-        @test all(!isquark(p) for p in nonquarks)
+        candidates = [DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, BPrimeQuark, TPrimeQuark]
+        check_candidates(isquark, candidates)
     end
 
     @testset "islepton" begin
-        f = islepton
         candidates = [Electron, Positron, Muon, AntiMuon, Tau, TauPrime, Nu_e, NuBar_tau, AntiElectronStar]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(islepton, candidates)
     end
 
     @testset "ismeson" begin
-        f = ismeson
         candidates = [jpsi, psi_2S, Upsilon_1S, Upsilon_4S, Pi0, PiPlus, eta,
                   eta_prime, a_0_1450_plus, KL, KS, KMinus, phi, omega,
                   rho_770_minus, K1_1270_0, K1_1400_0, rho_1700_0, a2_1320_minus,
                   omega_3_1670, f_4_2300, D0, DPlus, DsPlus, B0, BPlus, Bs,
                   BcPlus, Pi0TC, PiMinusTC, T0, Reggeon, Pomeron, Odderon,
                   RPlus_TTildeDbar, R0_GTildeG]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(ismeson, candidates)
     end
 
     @testset "isbaryon" begin
-        f = isbaryon
         candidates = [Proton, AntiNeutron, HydrogenNucleus, Lambda, Sigma0,
                       SigmaPlus, SigmaMinus, Xi0, AntiXiMinus, OmegaMinus,
                       LcPlus, Lb, LtPlus, RPlusPlus_GTildeUUU,
                       UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(isbaryon, candidates)
     end
 
     @testset "ishadron" begin
@@ -230,50 +236,187 @@ end
     end
 
     @testset "ispentaquark" begin
-        f = ispentaquark
         candidates = [UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(ispentaquark, candidates)
     end
 
     @testset "isgaugebosonorhiggs" begin
-        f = isgaugebosonorhiggs
         candidates = [Gluon, Photon, Z0, WMinus, HiggsBoson, ZPrime, Graviton]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(isgaugebosonorhiggs, candidates)
     end
 
     @testset "issmgaugebosonorhiggs" begin
-        f = issmgaugebosonorhiggs
         candidates = [Gluon, Photon, Z0, WMinus, HiggsBoson]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(issmgaugebosonorhiggs, candidates)
     end
 
     @testset "isgeneratorspecific" begin
-        f = isgeneratorspecific
         candidates = [AntiCHadron]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(isgeneratorspecific, candidates)
     end
 
     @testset "isspecial" begin
-        f = isspecial
         candidates = [Graviton, Reggeon, Pomeron, Odderon, AntiCHadron]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(isspecial, candidates)
     end
 
     @testset "isnucleus" begin
-        f = isnucleus
         candidates = [Proton, AntiNeutron, HydrogenNucleus, Carbon12]
-        noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        @test all(f(p) for p in candidates)
-        @test all(!f(p) for p in noncandidates)
+        check_candidates(isnucleus, candidates)
+    end
+
+    @testset "isdiquark" begin
+        candidates = [DD1, SD0]
+        check_candidates(isdiquark, candidates)
+    end
+
+    @testset "isRhadron" begin
+        candidates = [RPlus_TTildeDbar, R0_GTildeG, RPlusPlus_GTildeUUU]
+        check_candidates(isRhadron, candidates)
+    end
+
+    @testset "isQball" begin
+        candidates = [QBall1, QBall2]
+        check_candidates(isQball, candidates)
+    end
+
+    @testset "isdyon" begin
+        candidates = [DyonSameMagElecChargeSign, DyonOppositeMagElecChargeSign]
+        check_candidates(isdyon, candidates)
+    end
+
+    @testset "isSUSY" begin
+        candidates = [Gluino, Gravitino, STildeL, CTildeR]
+        check_candidates(isSUSY, candidates)
+    end
+
+    @testset "istechnicolor" begin
+        candidates = [Pi0TC, PiMinusTC]
+        check_candidates(istechnicolor, candidates)
+    end
+
+    @testset "iscompositequarkorlepton" begin
+        candidates = [UQuarkStar, AntiElectronStar]
+        check_candidates(iscompositequarkorlepton, candidates)
+    end
+
+    @testset "hasdown" begin
+        f = hasdown
+        @test f(Photon) == false
+        @test f(Gluon) == false
+        @test f(Electron) == false
+        @test f(AntiMuon) == false
+        @test f(jpsi) == false
+        @test f(Upsilon_1S) == false
+        @test f(PiPlus) == true
+        @test f(KMinus) == false
+        @test f(D0) == false
+        @test f(DPlus) == true
+        @test f(DsPlus) == false
+        @test f(B0) == true
+        @test f(Bs) == false
+        @test f(BcPlus) == false
+        @test f(Proton) == true
+        @test f(LcPlus) == true
+        @test f(Lb) == true
+        @test f(DD1) == true
+        @test f(SD0) == true
+        @test f(Invalid1) == false
+        @test f(Invalid2) == false
+    end
+
+    @testset "hasup" begin
+        f = hasup
+        @test f(Photon) == false
+        @test f(Gluon) == false
+        @test f(Electron) == false
+        @test f(AntiMuon) == false
+        @test f(jpsi) == false
+        @test f(Upsilon_1S) == false
+        @test f(PiPlus) == true
+        @test f(KMinus) == true
+        @test f(D0) == true
+        @test f(DPlus) == false
+        @test f(DsPlus) == false
+        @test f(B0) == false
+        @test f(Bs) == false
+        @test f(BcPlus) == false
+        @test f(Proton) == true
+        @test f(LcPlus) == true
+        @test f(Lb) == true
+        @test f(DD1) == false
+        @test f(SD0) == false
+        @test f(Invalid1) == false
+        @test f(Invalid2) == false
+    end
+
+    @testset "hasstrange" begin
+        f = hasstrange
+        @test f(Photon) == false
+        @test f(Gluon) == false
+        @test f(Electron) == false
+        @test f(AntiMuon) == false
+        @test f(jpsi) == false
+        @test f(Upsilon_1S) == false
+        @test f(PiPlus) == false
+        @test f(KMinus) == true
+        @test f(D0) == false
+        @test f(DPlus) == false
+        @test f(DsPlus) == true
+        @test f(B0) == false
+        @test f(Bs) == true
+        @test f(BcPlus) == false
+        @test f(Proton) == false
+        @test f(LcPlus) == false
+        @test f(Lb) == false
+        @test f(DD1) == false
+        @test f(SD0) == true
+        @test f(Invalid1) == false
+        @test f(Invalid2) == false
+    end
+
+    @testset "hascharm" begin
+        candidates = [jpsi, psi_2S, D0, DPlus, DsPlus, BcPlus, LcPlus, UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
+        check_candidates(hascharm, candidates)
+    end
+
+    @testset "hasbottom" begin
+        candidates = [Upsilon_1S, Upsilon_4S, B0, BPlus, Bs, BcPlus, Lb]
+        check_candidates(hasbottom, candidates)
+    end
+
+    @testset "hastop" begin
+        candidates = [T0, LtPlus]
+        check_candidates(hastop, candidates)
+    end
+
+    @testset "hasfundamentalanti" begin
+        candidates = [WMinus, Electron, Positron, Muon, AntiMuon, Tau, TauPrime,
+                      Nu_e, NuBar_tau, DQuark, UQuark, SQuark, CQuark, BQuark,
+                      TQuark, BPrimeQuark, TPrimeQuark, UQuarkStar,
+                      AntiElectronStar, STildeL, CTildeR, AntiCHadron]
+        check_candidates(hasfundamentalanti, candidates)
+    end
+
+    @testset "A" begin
+        candidates = Dict(Proton => 1, AntiNeutron => 1, HydrogenNucleus => 1, Carbon12 => 12)
+        for (candidate, value) ∈ candidates
+            @test A(candidate) == value
+        end
+        noncandidates = setdiff(Set(keys(candidates)), Set(instances(PDGIDS)))
+        for noncandidate in noncandidates
+            @test isnothiung(A(candidate))
+        end
+    end
+
+    @testset "Z" begin
+        candidates = Dict(Proton => 1, AntiNeutron => 0, HydrogenNucleus => 1, Carbon12 => 6)
+        for (candidate, value) ∈ candidates
+            @test Z(candidate) == value
+        end
+        noncandidates = setdiff(Set(keys(candidates)), Set(instances(PDGIDS)))
+        for noncandidate in noncandidates
+            @test isnothiung(Z(candidate))
+        end
     end
 end
