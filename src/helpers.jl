@@ -403,6 +403,25 @@ end
 
 
 """
+    threecharge(p::Union{Particle, PDGID, Integer})
+
+Returns 3 times the EM charge.
+"""
+function threecharge(p)
+
+end
+
+"""
+    charge(p::Union{Particle, PDGID, Integer})
+
+Returns the EM charge.
+"""
+function charge(p)
+
+end
+
+
+"""
     _hasquark(p:::Union{Particle, PDGID, Integer}, q::Integer)
 
 Note that q is always positive, so [1, 6] for Standard Model quarks
