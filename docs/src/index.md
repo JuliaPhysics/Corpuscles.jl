@@ -2,7 +2,7 @@
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPhysics.github.io/Corpuscles.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaPhysics.github.io/Corpuscles.jl/dev)
-[![Build Status](https://travis-ci.com/JuliaPhysics/Corpuscles.jl.svg?branch=master)](https://travis-ci.com/JuliaPhysics/Corpuscles.jl)
+[![Build Status](https://github.com/JuliaPhysics/Corpuscles.jl/workflows/CI/badge.svg)](https://github.com/JuliaPhysics/Corpuscles.jl/actions)
 [![Codecov](https://codecov.io/gh/JuliaPhysics/Corpuscles.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPhysics/Corpuscles.jl)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3933364.svg)](https://doi.org/10.5281/zenodo.3933364)
 
