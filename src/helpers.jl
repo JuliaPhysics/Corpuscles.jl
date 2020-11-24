@@ -360,12 +360,10 @@ function isnucleus(p)
 
     if p.N10 == 1 && p.N9 == 0
         # Charge should always be less than or equal to the baryon number
-        try
-            A_ = A(p)
-            Z_ = Z(p)
-        catch
-            return false
-        end
+        A_ = A(p)
+        Z_ = Z(p)
+
+        (isnothing(A_) || isnothing(Z_)) && return false
 
         A_ >= abs(Z_) && return true
     end
@@ -376,13 +374,14 @@ end
 """
     A(p::Union{Particle, PDGID, Integer})
 
-Returns the atomic number A if the PDG ID corresponds to a nucleus.
+Returns the atomic number A if the PDG ID corresponds to a nucleus, else it
+returns `nothing`.
 """
 function A(p)
     p = pdgid(p)
-    abspgdid = abs(p.value)
+    abspdgid = abs(p.value)
     abspdgid ∈ [2112, 2212] && return 1
-    (p.N10 != 1 || p.N9 != 0) && error("Particle with $(p) is not a nucleus")
+    (p.N10 != 1 || p.N9 != 0) && return nothing
     (abspdgid ÷ 10) % 1000
 end
 
@@ -390,14 +389,15 @@ end
 """
     Z(p::Union{Particle, PDGID, Integer})
 
-Returns the charge Z if the PDG ID corresponds to a nucleus.
+Returns the charge Z if the PDG ID corresponds to a nucleus, else it returns
+`nothing`.
 """
 function Z(p)
     p = pdgid(p)
-    abspgdid = abs(p.value)
+    abspdgid = abs(p.value)
     abspdgid == 2212 && return sign(p.value)
     abspdgid == 2112 && return 0
-    (p.N10 != 1 || p.N9 != 0) && error("Particle with $(p) is not a nucleus")
+    (p.N10 != 1 || p.N9 != 0) && return nothing
     ((abspdgid ÷ 10000) % 1000) * sign(p.value)
 end
 
