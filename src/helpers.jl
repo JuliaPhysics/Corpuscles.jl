@@ -447,7 +447,7 @@ function _hasquark(p, q::Integer)
     if isRhadron(p)
         _digits = digits(abs(p.value), pad=10)
         iz = 7
-        for loc ∈ range(6, 2; step=-1)
+        for loc ∈ range(6; step=-1, stop=2)
             if _digits[loc] == 0
                 iz = loc
             elseif loc == iz - 1
