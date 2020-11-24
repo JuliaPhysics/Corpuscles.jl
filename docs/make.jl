@@ -12,10 +12,10 @@ makedocs(;
         "Acknowledgements" => "acknowledgements.md",
         "API" => "api.md",
     ],
-    repo="https://github.com/KM3NeT/Corpuscles.jl/blob/{commit}{path}#L{line}",
+    repo="https://github.com/JuliaPhysics/Corpuscles.jl/blob/{commit}{path}#L{line}",
     sitename="Corpuscles.jl",
 )
 
 deploydocs(;
-    repo="github.com/KM3NeT/Corpuscles.jl",
+    repo="github.com/JuliaPhysics/Corpuscles.jl",
 )
