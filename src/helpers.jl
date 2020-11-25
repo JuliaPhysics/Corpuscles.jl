@@ -26,6 +26,48 @@ function Base.isvalid(p::PDGID)
     false
 end
 
+const _common_alias = Dict(
+    "mu" => ["muon", "mu-"],
+    "e" => ["electron", "e-"],
+    "tau" => ["tauon", "tau-"],
+    "gamma" => ["photon", "γ"],
+    "H" => ["higgs"]
+)
+"""
+    Particle(name::String)
+
+Construct particles from PDG name.
+
+Or commonly alias, alias do not cover all particles.
+"""
+function Particle(n::String)
+    # determine if anti particle
+    anti = false
+    if startswith(n, "anti-")
+        n = n[6:end]
+        anti = true
+    elseif endswith(n, "~")
+        n = n[1:end-1]
+        anti=true
+    end
+
+    # find canonical name
+    p =
+    if n ∈ keys(inv_catalog)
+        Particle(inv_catalog[n])
+    else
+        # search alias
+        for (k,v) in _common_alias
+            if n ∈ v
+                return Particle(inv_catalog[k])
+            end
+        end
+        error("$n not found.")
+    end
+
+    anti ? -p : p
+end
+
 """
     isstandard(p::Union{Particle, PDGID, Integer})
 

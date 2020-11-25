@@ -156,6 +156,16 @@ pdgid(p::PDGID) = p
 pdgid(p::Particle) = p.pdgid
 pdgid(x) = PDGID(Integer(x))
 
+import Base.:-
+# anti-particle
+function (-)(p::Particle) 
+    try 
+        Particle(-p.pdgid.value) 
+    catch # anti-particle is itself
+        p
+    end
+end
+
 function read_conversion_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, skipstart=2, comments=true)
     conversions = parse.(Int, file_content[:,1:3])
@@ -280,6 +290,12 @@ Returns the full list of particles from the currently selected catalog.
 particles() = catalog.particles
 
 const catalog = Catalog(read_particle_csv(_default_catalog))
+
+# inverse catelog for `Particle(name)` construction
+const inv_catalog = 
+    Dict{String, PDGID}(
+        p.name => p.pdgid for p in catalog.particles if p.pdgid.value>0
+    )
 
 """
 $(SIGNATURES)

@@ -152,6 +152,22 @@ end
     @test occursin(r"Name:\s*d\n", output)
 end
 
+@testset "Particle(String) helper and -(Particle)" begin
+    @test Particle("photon") == Particle(22)
+    @test Particle("higgs") == Particle(25)
+    @test Particle(-13) == -Particle(13)
+    @test Particle("mu") == Particle(13)
+    for p in ("mu", "tau")
+        @test Particle("$p~") == -Particle(p)
+        @test Particle("anti-$p") == -Particle(p)
+        # alias
+        @test Particle("$(p)-") == Particle(p)
+        @test Particle("$(p)on") == Particle(p)
+    end
+
+    # self anti-particle
+    @test Particle("H") == -Particle("H")
+end
 
 @testset "helpers" begin
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2020.csv"))
