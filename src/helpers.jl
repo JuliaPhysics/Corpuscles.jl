@@ -28,11 +28,15 @@ end
 
 const _common_alias = Dict(
     "mu" => ["muon", "mu-"],
+    "mu~" => ["mu+"],
     "e" => ["electron", "e-"],
+    "e~" => ["e+"],
     "tau" => ["tauon", "tau-"],
+    "tau~" => ["tau+"],
     "gamma" => ["photon", "γ"],
     "H" => ["higgs"]
 )
+
 """
     Particle(name::String)
 
@@ -40,9 +44,8 @@ Construct particles from PDG name.
 
 Or commonly alias, alias do not cover all particles.
 """
-function Particle(n::String)
+function Particle(n::String, anti=false)
     # determine if anti particle
-    anti = false
     if startswith(n, "anti-")
         n = n[6:end]
         anti = true
@@ -59,7 +62,7 @@ function Particle(n::String)
         # search alias
         for (k,v) in _common_alias
             if n ∈ v
-                return Particle(inv_catalog[k])
+                return Particle(k, anti)
             end
         end
         error("$n not found.")

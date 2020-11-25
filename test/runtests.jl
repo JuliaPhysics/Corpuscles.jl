@@ -162,7 +162,9 @@ end
         @test Particle("anti-$p") == -Particle(p)
         # alias
         @test Particle("$(p)-") == Particle(p)
+        @test Particle("$(p)+") == -Particle(p)
         @test Particle("$(p)on") == Particle(p)
+        @test Particle("anti-$(p)on") == -Particle(p)
     end
 
     # self anti-particle
