@@ -431,7 +431,7 @@ function _hasquark(p, q::Integer)
     p = pdgid(p)
     # Nuclei can also contain strange quarks,
     # cf. the definition of a nucleus PDG ID in isnucleus.
-    # This check needs to be done first since _extra_bits(pdgid) > 0 for nuclei
+    # This check needs to be done first since isstandard is false for nuclei
     if isnucleus(p)
         q ∈ [1, 2]  && return true # Nuclei by construction contain up and down quarks
         if q == 3 && !(p.value ∈ [2112, 2212])
