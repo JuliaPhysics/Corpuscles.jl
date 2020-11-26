@@ -433,4 +433,48 @@ end
             @test !f(Corpuscles.pdgid(noncandidate))
         end
     end
+
+    @testset "charge" begin
+        @test charge(Photon) == 0
+        @test charge(Gluon) == 0
+        @test charge(Electron) == -1
+        @test charge(AntiMuon) == +1
+        @test charge(jpsi) == 0
+        @test charge(Upsilon_1S) == 0
+        @test charge(PiPlus) == +1
+        @test charge(KMinus) == -1
+        @test charge(D0) == 0
+        @test charge(DPlus) == +1
+        @test charge(DsPlus) == +1
+        @test charge(B0) == 0
+        @test charge(Bs) == 0
+        @test charge(BcPlus) == +1
+        @test charge(Proton) == +1
+        @test charge(LcPlus) == +1
+        @test charge(Lb) == 0
+        @test charge(DD1) == -2 / 3
+        @test charge(SD0) == -2 / 3
+        @test isnothing(charge(Invalid1))
+        @test isnothing(charge(Invalid2))
+    end
+
+    @testset "threecharge" begin
+        @test threecharge(Photon) == 0
+        @test threecharge(Electron) == -3
+        @test threecharge(jpsi) == 0
+        @test threecharge(Upsilon_1S) == 0
+        @test threecharge(KMinus) == -3
+        @test threecharge(D0) == 0
+        @test threecharge(Proton) == +3
+        @test threecharge(LcPlus) == +3
+        @test threecharge(Lb) == 0
+        @test threecharge(DD1) == -2
+        @test threecharge(SD0) == -2
+        @test isnothing(threecharge(Invalid1))
+        @test isnothing(threecharge(Invalid2))
+    end
+
+    @testset "jspin" begin
+        # TODO
+    end
 end

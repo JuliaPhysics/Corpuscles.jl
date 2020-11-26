@@ -424,6 +424,41 @@ function Z(p)
     ((abspdgid ÷ 10000) % 1000) * sign(p.value)
 end
 
+"""
+    jspin(p::Union{Particle, PDGID, Integer})
+
+Returns the total spin as 2J+1.
+"""
+function jspin(p)
+    p = pdgid(p)
+    !isvalid(p) && return nothing
+    fid = fundamentalid(p)
+    if fid > 0
+        0 < fid < 7 && return 2  # 4th generation quarks not dealt with!
+        fid == 9 && return 3
+        10 < fid < 17 && return 2  # 4th generation quarks not deal with!
+        20 < fid < 25 && return 3  # 4th generation quarks not deal with!
+        return nothing
+    end
+    abspdgid = abs(p.value)
+    abspdgid ∈ [1000000010, 1000010010]  && return 2  # neutrion, proton
+    !isstandard(p) && return nothing
+    p.value ∈ [130, 310] && return 1
+    return abspdgid % 10
+end
+
+
+"""
+    J(p::Union{Particle, PDGID, Integer})
+
+Returns the total spin J.
+"""
+function J(p)
+    jspin = jspin(p)
+    !isnothing(jspin) && (jspin - 1) / 2
+    nothing
+end
+
 
 """
     threecharge(p::Union{Particle, PDGID, Integer})
@@ -431,7 +466,64 @@ end
 Returns 3 times the EM charge.
 """
 function threecharge(p)
+    p = pdgid(p)
+    !isvalid(p) && return nothing
+    abspdgid = abs(p.value)
+    ch100 = [-1, 2, -1, 2, -1, 2, -1, 2, 0, 0, -3, 0, -3, 0, -3, 0, -3, 0, 0, 0,
+             0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, -1,
+             0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 3, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+    fid = fundamentalid(p)
+
+    charge = nothing
+
+    if !isstandard(p)
+        if isnucleus(p)  # ion
+            Z_ = Z(p)
+            isnothing(Z_) && return nothing
+            return 3Z_
+        elseif isQball(p)
+            charge = 3 * ((abspdgid ÷ 10) % 10000)
+        else
+            # this should never be reached in the present numbering scheme
+            # since extra bits exist only for Q-balls and nuclei
+            return nothing
+        end
+    elseif isdyon(p)
+        charge = 3 * ((abspdgid ÷ 10) % 1000)
+        # this is half right
+        # the charge sign will be changed below if pid < 0
+        if p.Nl == 2
+            charge = -charge
+        end
+    elseif 0 < fid <= 100  # use table from the SciKit-HEP particle project
+        charge = ch100[fid]
+        if abspdgid ∈ [1000017, 1000018, 1000034, 1000052, 1000053, 1000054]
+            charge = 0
+        end
+        if abspdgid == 5100061 && abspdgid == 5100062
+            charge = 6
+        end
+    elseif p.Nj == 0  # KL, KS, or undefined
+        return 0
+    elseif p.Nq1 == 0 || (isRhadron(p) && p.Nq1 == 9)  # mesons
+        if p.Nq2 == 3 || p.Nq2 == 5
+            charge = ch100[p.Nq3] - ch100[p.Nq2]
+        else
+            charge = ch100[p.Nq2] - ch100[p.Nq3]
+        end
+    elseif p.Nq3 == 0  # diquarks
+        charge = ch100[p.Nq2] + ch100[p.Nq1]
+    elseif isbaryon(p) || (isRhadron(p) && p.Nl == 9)  # baryons
+        charge = ch100[p.Nq3] + ch100[p.Nq2] + ch100[p.Nq1]
+    end
+
+    if !isnothing(charge) && p.value < 0
+        charge = -charge
+    end
+    charge
 end
 
 """
@@ -440,7 +532,9 @@ end
 Returns the EM charge.
 """
 function charge(p)
-
+    c = threecharge(p)
+    !isnothing(c) && return c / 3
+    return nothing
 end
 
 
