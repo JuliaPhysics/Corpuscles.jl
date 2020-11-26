@@ -461,6 +461,122 @@ end
 
 
 """
+    J(p::Union{Particle, PDGID, Integer})
+
+Returns the spin S.
+
+This is valid for mesons only. `nothing` is returned otherwise.
+Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known
+particles and `nothing` is returned too.
+"""
+function S(p)
+    p = pdgid(p)
+    !ismeson(p) && return nothing
+    !isvalid(p) && return nothing
+
+    abspdgid = abs(p.value)
+    abspdgid ÷ 1000000) % 10 == 9 && return nothing  # no knowledge so far
+
+    nl = ((abspdgid) ÷ 10000) % 10
+    js = abspdgid % 10
+
+    !(js == 1 || js >= 3) && return 0
+
+    if nl == 0
+        js == 1 && return 0
+        return 1
+    end
+    if nl == 1
+        js == 1 && return 1
+        return 0
+    end
+    if nl ∈ [2, 3]
+        js >= 3 && return 1
+        return 0
+    0
+end
+
+"""
+    sspin(p::Union{Particle, PDGID, Integer})
+
+Returns the spin S as 2S+1.
+
+This is valid for mesons only. `nothing` is returned otherwise.
+Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known
+particles and `nothing` is returned too.
+"""
+function sspin(p)
+    s = S(p)
+    isnothing(s) && return nothing
+    2s + 1
+end
+
+
+"""
+    L(p::Union{Particle, PDGID, Integer})
+
+Returns the orbital angular momentum L.
+
+This is valid for mesons only. `nothing` is returned otherwise.
+Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known
+particles and `nothing` is returned too.
+"""
+function L(p)
+    p = pdgid(p)
+    !ismeson(p) && return nothing
+    !isvalid(p) && return nothing
+
+    abspdgid = abs(p.value)
+    (abspdgid ÷ 1000000) % 10 == 9 && return nothing  # no knowledge so far
+
+    nl = (abspdgid ÷ 10000) % 10
+    js = abspdgid % 10
+
+    if nl == 0
+        js == 1 && return 0
+        js == 3 && return 0
+        js == 5 && return 1
+        js == 7 && return 2
+        js == 9 && return 3
+    elseif nl == 1
+        js == 1 && return 1
+        js == 3 && return 1
+        js == 5 && return 2
+        js == 7 && return 3
+        js == 9 && return 4
+    elseif nl == 2
+        js == 3 && return 1
+        js == 5 && return 2
+        js == 7 && return 3
+        js == 9 && return 4
+    elseif nl == 3
+        js == 3 && return 2
+        js == 5 && return 3
+        js == 7 && return 4
+        js == 9 && return 5
+    end
+
+    0
+end
+
+"""
+    lspin(p::Union{Particle, PDGID, Integer})
+
+Returns the orbital angular momentum L as 2S+1.
+
+This is valid for mesons only. `nothing` is returned otherwise.
+Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known
+particles and `nothing` is returned too.
+"""
+function lspin(p)
+    l = L(p)
+    isnothing(l) && return nothing
+    2l + 1
+end
+
+
+
+"""
     threecharge(p::Union{Particle, PDGID, Integer})
 
 Returns 3 times the EM charge.

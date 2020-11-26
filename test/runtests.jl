@@ -477,4 +477,8 @@ end
     @testset "jspin" begin
         # TODO
     end
+
+    @testset "J" begin
+        # TODO
+    end
 end
