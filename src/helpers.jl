@@ -3,6 +3,29 @@
 # group: https://github.com/scikit-hep/particle/blob/master/src/particle/pdgid/functions.py
 
 """
+    isvalid(p::PDGID)
+
+Returns true if the PDG ID is valid.
+"""
+function Base.isvalid(p::PDGID)
+    fundamentalid(p) != 0 && return true
+    ismeson(p) && return true
+    isbaryon(p) && return true
+    isgaugebosonorhiggs(p) && return true
+    ispentaquark(p) && return true
+    isSUSY(p) && return true
+    isRhadron(p) && return true
+    isdyon(p) && return true
+    isdiquark(p) && return true
+    ispentaquark(p) && return true
+    isgeneratorspecific(p) && return true
+    istechnicolor(p) && return true
+    iscompositequarkorlepton(p) && return true
+    !isstandard(p) && return (isQball(p) || isnucleus(p))
+    false
+end
+
+"""
     isstandard(p::Union{Particle, PDGID, Integer})
 
 Returns true if the PDG ID of the particle follows the standard numbering scheme.
