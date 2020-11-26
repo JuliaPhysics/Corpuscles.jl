@@ -461,7 +461,7 @@ end
 
 
 """
-    J(p::Union{Particle, PDGID, Integer})
+    S(p::Union{Particle, PDGID, Integer})
 
 Returns the spin S.
 
@@ -475,7 +475,7 @@ function S(p)
     !isvalid(p) && return nothing
 
     abspdgid = abs(p.value)
-    abspdgid ÷ 1000000) % 10 == 9 && return nothing  # no knowledge so far
+    (abspdgid ÷ 1000000) % 10 == 9 && return nothing  # no knowledge so far
 
     nl = ((abspdgid) ÷ 10000) % 10
     js = abspdgid % 10
@@ -493,6 +493,7 @@ function S(p)
     if nl ∈ [2, 3]
         js >= 3 && return 1
         return 0
+    end
     0
 end
 
