@@ -454,8 +454,8 @@ end
         @test charge(Lb) == 0
         @test charge(DD1) == -2 / 3
         @test charge(SD0) == -2 / 3
-        @test isnothing(charge(Invalid1))
-        @test isnothing(charge(Invalid2))
+        @test Corpuscles.isnothing(charge(Invalid1))
+        @test Corpuscles.isnothing(charge(Invalid2))
     end
 
     @testset "threecharge" begin
@@ -470,8 +470,8 @@ end
         @test threecharge(Lb) == 0
         @test threecharge(DD1) == -2
         @test threecharge(SD0) == -2
-        @test isnothing(threecharge(Invalid1))
-        @test isnothing(threecharge(Invalid2))
+        @test Corpuscles.isnothing(threecharge(Invalid1))
+        @test Corpuscles.isnothing(threecharge(Invalid2))
     end
 
     @testset "jspin" begin
