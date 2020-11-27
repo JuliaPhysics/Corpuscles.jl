@@ -1,6 +1,7 @@
 # Helper functions
-# Based on the particle Python package implementations from the SciKit-HEP
-# group: https://github.com/scikit-hep/particle/blob/master/src/particle/pdgid/functions.py
+# The implementation is based on the `particle` Python package from
+# the SciKit-HEP group: https://github.com/scikit-hep/particle with the Git
+# commit 6fe8211181d6a0b21933b2d1042eeb4e87d77b3c from 2020-11-27
 
 """
     isvalid(p::PDGID)
