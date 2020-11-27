@@ -67,6 +67,35 @@ julia> p.mass
 2045.0 MeV ± 9.0 MeV
 ```
 
+There are tons of helper functions to check other properties:
+
+```julia
+julia> filter(hasstrange, particles())
+257-element Array{Particle,1}:
+ Particle(3224) Sigma(1385)
+ Particle(23124) Lambda(1890)
+ Particle(-13324) Xi(1820)
+ Particle(-329) K(4)*(2045)
+ ⋮
+ Particle(13124) Lambda(1690)
+ Particle(-100321) K(1460)
+ Particle(20433) D(s1)(2460)
+julia> filter(islepton, particles())
+16-element Array{Particle,1}:
+ Particle(18) nu(tau')
+ Particle(15) tau
+ Particle(11) e
+ Particle(13) mu
+ Particle(14) nu(mu)
+ Particle(17) tau'
+ ⋮
+ Particle(12) nu(e)
+ Particle(-14) nu(mu)
+ Particle(-16) nu(tau)
+ Particle(-12) nu(e)
+ Particle(-13) mu
+```
+
 ## Units
 
 For some properties like `mass` and `width` we use the

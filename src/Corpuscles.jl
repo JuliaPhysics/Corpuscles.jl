@@ -10,8 +10,21 @@ import Base
 
 export Particle, PDGID, PythiaID, Geant3ID, particles
 
+# helpers.jl
+export isfundamental, isstandard
+export isquark, islepton, ismeson, isbaryon, ishadron
+export isRhadron, isSUSY, ispentaquark, isdyon, isnucleus, isdiquark
+export istechnicolor, iscompositequarkorlepton
+export isgaugebosonorhiggs, issmgaugebosonorhiggs
+export isgeneratorspecific, isspecial, isQball, hasfundamentalanti
+export hasdown, hasup, hascharm, hasstrange, hasbottom, hastop
+export A, Z, charge, threecharge, J, S, L, jspin, sspin, lspin
+
 # Julia 1.0 compatibility
 eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
+isnothing(::Any) = false
+isnothing(::Nothing) = true
+
 
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 
@@ -138,6 +151,10 @@ struct Particle
     quarks::String
     latex::String
 end
+
+pdgid(p::PDGID) = p
+pdgid(p::Particle) = p.pdgid
+pdgid(x) = PDGID(Integer(x))
 
 function read_conversion_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, skipstart=2, comments=true)
@@ -293,6 +310,10 @@ function Base.show(io::IO, m::MeasuredValue)
     return
 end
 
+function Base.show(io::IO, p::PDGID)
+    Printf.@printf(io, "PDGID(%s)", p.value)
+end
+
 function Base.show(io::IO, p::Particle)
     Printf.@printf(io, "Particle(%s) %s", p.pdgid.value, p.name)
 end
@@ -316,5 +337,8 @@ function Base.print(io::IO, p::Particle)
         end
     end
 end
+
+
+include("helpers.jl")
 
 end # module
