@@ -474,11 +474,69 @@ end
         @test Corpuscles.isnothing(threecharge(Invalid2))
     end
 
-    @testset "jspin" begin
-        # TODO
+    JSLstatelist = Dict(
+        "000" => [Pi0, PiPlus, eta, eta_prime, KL, KS, KMinus, D0, DPlus,
+                  DsPlus, B0, BPlus, Bs, BcPlus, T0],
+        "011" => [a_0_1450_plus],
+        "101" => [K1_1270_0],
+        "110" => [rho_770_minus],
+        "111" => [K1_1400_0],
+        "112" => [rho_1700_0],
+        "211" => [a2_1320_minus],
+        "312" => [omega_3_1670],
+    )
+
+    @testset "JSL" begin
+        @testset "badly known meons" begin
+            @test jspin(f_4_2300) == 9
+            @test sspin(f_4_2300) === nothing
+            @test sspin(f_4_2300) === nothing
+        end
+
+        for (states, particles) ∈ JSLstatelist
+            for p in particles
+                J_, S_, L_ = [parse(Int, s) for s ∈ states]
+                @test J(p) == J_
+                @test S(p) == S_
+                @test L(p) == L_
+            end
+        end
     end
 
-    @testset "J" begin
-        # TODO
+
+    @testset "J non-mesons" begin
+        Jlist = Dict(
+            1 => [Gluon, Photon, Z0, jpsi, psi_2S, Upsilon_1S, Upsilon_4S, K1_1270_0,],
+            1//2 => [Electron, Positron, Muon, AntiMuon, Tau, Nu_e, NuBar_tau,
+                     DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, Proton,
+                     AntiNeutron, Lambda, Sigma0, SigmaPlus, SigmaMinus, Xi0,
+                     AntiXiMinus, LcPlus, Lb, LtPlus, STildeL, CTildeR],
+            3//2 => [OmegaMinus],
+            nothing => [Invalid1, Invalid2],
+            nothing => [TauPrime, BPrimeQuark, TPrimeQuark]
+        )
+        for (J_, particles) ∈ Jlist
+            for p in particles
+                @test J(p) == J_
+            end
+        end
+    end
+
+    @testset "S non-mesons" begin
+        Slist = Dict(nothing => [Gluon, Photon, Z0])
+        for (S_, particles) ∈ Slist
+            for p in particles
+                @test S(p) == S_
+            end
+        end
+    end
+
+    @testset "L non-mesons" begin
+        Llist = Dict(nothing => [Gluon, Photon, Z0])
+        for (L_, particles) ∈ Llist
+            for p in particles
+                @test L(p) == L_
+            end
+        end
     end
 end

@@ -454,9 +454,9 @@ end
 Returns the total spin J.
 """
 function J(p)
-    jspin = jspin(p)
-    !isnothing(jspin) && (jspin - 1) / 2
-    nothing
+    jspin_ = jspin(p)
+    isnothing(jspin_) && return nothing
+    (jspin_ - 1) / 2
 end
 
 
