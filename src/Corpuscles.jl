@@ -27,6 +27,7 @@ isnothing(::Nothing) = true
 
 
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
+include("pidNames.jl")
 
 function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
@@ -220,7 +221,7 @@ function read_particle_csv(filepath::AbstractString)
         charge = parse(Int8, row[13]) // 3 * u"e_au"
         rank = parse(Int8, row[14])
         status = PDGStatus(parse(Int8, row[15]))
-        name = row[16]
+        name = PIDNames[pdgid.value]
         quarks = row[17]
         latex = row[18]
         dct_particles[pdgid] = Particle(pdgid,
