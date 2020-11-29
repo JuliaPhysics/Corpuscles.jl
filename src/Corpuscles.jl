@@ -27,6 +27,7 @@ isnothing(::Nothing) = true
 
 
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
+include("pidNames.jl")
 
 function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
@@ -150,6 +151,7 @@ struct Particle
     name::String
     quarks::String
     latex::String
+    glyph::String
 end
 
 pdgid(p::PDGID) = p
@@ -221,6 +223,7 @@ function read_particle_csv(filepath::AbstractString)
         rank = parse(Int8, row[14])
         status = PDGStatus(parse(Int8, row[15]))
         name = row[16]
+        glyph = get(PIDNames, pdgid.value, row[16])
         quarks = row[17]
         latex = row[18]
         dct_particles[pdgid] = Particle(pdgid,
@@ -236,7 +239,8 @@ function read_particle_csv(filepath::AbstractString)
                                         status,
                                         name,
                                         quarks,
-                                        latex)
+                                        latex,
+                                        glyph)
     end
     dct_particles
 end
