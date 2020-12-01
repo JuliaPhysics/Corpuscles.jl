@@ -356,5 +356,6 @@ end
 
 
 include("helpers.jl")
+include("literals.jl")
 
 end # module

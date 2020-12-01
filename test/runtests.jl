@@ -167,6 +167,10 @@ end
         @test Particle("anti-$(p)on") == -Particle(p)
     end
 
+    @test Particle("D_sst_plus") == Particle(433)
+    @test Particle("anti-D_sst_plus") == -Particle(433)
+    @test_throws ErrorException Particle("SUSY is fake")
+
     # self anti-particle
     @test Particle("H") == -Particle("H")
 end
