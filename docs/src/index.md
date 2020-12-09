@@ -187,3 +187,29 @@ julia> filter(p->occursin(r"D\(\d*\)", p.name), particles())
  Particle(-415) 'D(2)*(2460)'
 ```
 
+Another useful feature is the `Particle(n::String, anti=false)` which directly
+creates a (anti-)particle from a given name -- as long as it exists in the
+currently loaded particle dataset:
+
+```julia
+julia> Particle("mu") == Particle(13)
+true
+
+julia> -Particle("mu") == Particle(-13)
+true
+
+julia> Particle("anti-mu") == Particle(-13)
+true
+
+julia> Particle("mu~") == Particle(-13)
+true
+
+julia> Particle("muon") == Particle(13)
+true
+
+julia> Particle("mu-") == Particle(13)
+true
+
+julia> Particle("mu+") == -Particle(13)
+true
+```
