@@ -158,7 +158,7 @@ pdgid(p::PDGID) = p
 pdgid(p::Particle) = p.pdgid
 pdgid(x) = PDGID(Integer(x))
 
-import Base.:-
+import Base: -
 # anti-particle
 function (-)(p::Particle) 
     try 
