@@ -100,9 +100,9 @@ end
     @test "particle2019.csv" in catalog_files
 
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2008.csv"))
-    @test 0.054u"MeV" == Particle(553).width.value
+    @test 0.054u"MeV/c^2" == Particle(553).width.value
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2019.csv"))
-    @test 0.05402u"MeV" == Particle(553).width.value
+    @test 0.05402u"MeV/c^2" == Particle(553).width.value
 
 end
 

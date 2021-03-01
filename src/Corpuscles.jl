@@ -134,12 +134,13 @@ function Base.isapprox(x::MeasuredValue, y::MeasuredValue)
 end
 
 const _energy_dim = Unitful.dimension(u"J")
+const _mass_dim = Unitful.dimension(u"kg")
 const _charge_dim = Unitful.dimension(u"C")
 
 struct Particle
     pdgid::PDGID
-    mass::MeasuredValue{_energy_dim}
-    width::Union{Missing, MeasuredValue{_energy_dim}}
+    mass::MeasuredValue{_mass_dim}
+    width::Union{Missing, MeasuredValue{_mass_dim}}
     charge::Quantity{T,_charge_dim,U} where {T<:Real, U<: Unitful.Units}
     isospin::Union{Missing, Rational{Int8}}
     parity::Union{Missing, Int8}
@@ -216,13 +217,13 @@ function read_particle_csv(filepath::AbstractString)
     dct_particles = ParticleDict()
     for row in eachrow_(file_content[2:end,:])
         pdgid       = PDGID(parse(Int64, row[1]))
-        mass_value  = parse(Float64, row[2]) * u"MeV"
-        mass_lower  = parse(Float64, row[3]) * u"MeV"
-        mass_upper  = parse(Float64, row[4]) * u"MeV"
-        mass = MeasuredValue{_energy_dim}(mass_value, mass_lower, mass_upper)
-        width_value  = parse(Float64, row[5]) * u"MeV"
-        width_lower  = parse(Float64, row[6]) * u"MeV"
-        width_upper  = parse(Float64, row[7]) * u"MeV"
+        mass_value  = parse(Float64, row[2]) * u"MeV/c^2"
+        mass_lower  = parse(Float64, row[3]) * u"MeV/c^2"
+        mass_upper  = parse(Float64, row[4]) * u"MeV/c^2"
+        mass = MeasuredValue{_mass_dim}(mass_value, mass_lower, mass_upper)
+        width_value  = parse(Float64, row[5]) * u"MeV/c^2"
+        width_lower  = parse(Float64, row[6]) * u"MeV/c^2"
+        width_upper  = parse(Float64, row[7]) * u"MeV/c^2"
         width = MeasuredValue{}(width_value, width_lower, width_upper)
         isospin = if (row[8] in ["", "?"]) missing else parse(Rational{Int8}, row[8]) end
         gparity = read_parity(row[9])
