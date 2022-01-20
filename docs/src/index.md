@@ -15,7 +15,7 @@ The cleaned CSV versions of these data are provided by courtesy
 of the [Scikit-HEP project](https://scikit-hep.org) and are part
 of the [Particle](https://github.com/scikit-hep/particle) Python
 module which inspired us to create a similar package for the
-[Julia Language](https://www.julialang.org). **Corpusles.jl**
+[Julia Language](https://www.julialang.org). **Corpuscles.jl**
 is by far not as feature complete as **Particle**, but we add
 functionality continuously, as needed. Feel free to create an
 [Issue](https://github.com/JuliaPhysics/Corpuscles.jl/issues/new) or pull request if
