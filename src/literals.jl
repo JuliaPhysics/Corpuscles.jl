@@ -169,10 +169,16 @@ function Particle(n::String, anti=false)
     elseif endswith(n, "~")
         bn = n[1:end-1]
         anti=true
+    elseif startswith(n, "~")
+        bn = n[2:end]
+        anti=true
     else
         bn = n
     end
-
+    bn = strip(bn, ['+', '-'])
+    if endswith(n, "0")
+        bn = bn[1:end-1]
+    end
 
     # find match to base name
     for S in (scikit_common, more_common, inv_catalog)
