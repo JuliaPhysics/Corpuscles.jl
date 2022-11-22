@@ -263,9 +263,19 @@ Generate a name for the particle, adding tilde if anti and -/+ according to the
 charge.
 """
 function _generatename(name, pdgid, antiprop, charge)
-    suffix_tilde = antiprop == Barred && pdgid < 0 ? "~" : ""
+    prefix_tilde = antiprop == Barred && pdgid < 0 ? "~" : ""
     suffix_charge = ""
-    return name * suffix_tilde * suffix_charge
+    if isinteger(charge.val)
+        chrg = floor(Int, charge.val)
+        if chrg == 0
+            suffix_charge = "0"
+        elseif chrg > 0
+            suffix_charge = '+'^abs(chrg)
+        else
+            suffix_charge = '-'^abs(chrg)
+        end
+    end
+    return prefix_tilde * name * suffix_charge
 end
 
 
