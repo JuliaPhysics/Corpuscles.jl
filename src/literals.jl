@@ -141,12 +141,15 @@ const scikit_common = Dict(
 )
 const more_common = Dict(
     "electron" => 11,
+    "e" => 11,
     "e-" => 11,
     "e+" => -11,
     "muon" => 13,
+    "mu" => 13,
     "mu-" => 13,
     "mu+" => -13,
     "tauon" => 15,
+    "tau" => 15,
     "tau-" => 15,
     "tau+" => -15,
     "H" => 25,
@@ -174,10 +177,6 @@ function Particle(n::String, anti=false)
         anti=true
     else
         bn = n
-    end
-    bn = strip(bn, ['+', '-'])
-    if endswith(n, "0")
-        bn = bn[1:end-1]
     end
 
     # find match to base name

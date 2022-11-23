@@ -149,7 +149,6 @@ struct Particle
     antiprop::InvProperty
     rank::Int8
     status::PDGStatus
-    rawname::String
     name::String
     quarks::String
     latex::String
@@ -234,8 +233,7 @@ function read_particle_csv(filepath::AbstractString)
         charge = parse(Int8, row[13]) // 3 * u"e_au"
         rank = parse(Int8, row[14])
         status = PDGStatus(parse(Int8, row[15]))
-        rawname = row[16]
-        name = _generatename(rawname, pdgid.value, antiprop, charge)
+        name = _generatename(row[16], pdgid.value, antiprop, charge)
         glyph = get(PIDNames, pdgid.value, row[16])
         quarks = row[17]
         latex = row[18]
@@ -250,7 +248,6 @@ function read_particle_csv(filepath::AbstractString)
                                         antiprop,
                                         rank,
                                         status,
-                                        rawname,
                                         name,
                                         quarks,
                                         latex,
@@ -326,7 +323,7 @@ const catalog = Catalog(read_particle_csv(_default_catalog))
 # inverse catelog for `Particle(name)` construction
 const inv_catalog = 
     Dict{String, PDGID}(
-        p.rawname => p.pdgid for p in catalog.particles if p.pdgid.value>0
+        p.name => p.pdgid for p in catalog.particles if p.pdgid.value>0
     )
 
 """
