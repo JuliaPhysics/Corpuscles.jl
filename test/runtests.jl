@@ -174,6 +174,7 @@ end
         @test Particle("$(p)on") == Particle(p)
         @test Particle("anti-$(p)on") == -Particle(p)
     end
+    @test Particle("Delta(1232)++") == Particle(2224)
 
     @test Particle("D_sst_plus") == Particle(433)
     @test Particle("anti-D_sst_plus") == -Particle(433)

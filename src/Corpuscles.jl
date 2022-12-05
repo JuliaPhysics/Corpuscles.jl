@@ -233,7 +233,7 @@ function read_particle_csv(filepath::AbstractString)
         charge = parse(Int8, row[13]) // 3 * u"e_au"
         rank = parse(Int8, row[14])
         status = PDGStatus(parse(Int8, row[15]))
-        name = row[16]
+        name = _generatename(row[16], pdgid.value, antiprop, charge)
         glyph = get(PIDNames, pdgid.value, row[16])
         quarks = row[17]
         latex = row[18]
@@ -255,6 +255,30 @@ function read_particle_csv(filepath::AbstractString)
     end
     dct_particles
 end
+
+"""
+$(SIGNATURES)
+
+Generate a name for the particle, adding tilde if anti and -/+ according to the
+charge.
+"""
+function _generatename(name, pdgid, antiprop, charge)
+    prefix_tilde = antiprop == Barred && pdgid < 0 ? "~" : ""
+    suffix_charge = ""
+    if isinteger(charge.val)
+        chrg = floor(Int, charge.val)
+        if chrg == 0
+            suffix_charge = "0"
+        elseif chrg > 0
+            suffix_charge = '+'^abs(chrg)
+        else
+            suffix_charge = '-'^abs(chrg)
+        end
+    end
+    return prefix_tilde * name * suffix_charge
+end
+
+
 
 """
 $(SIGNATURES)
