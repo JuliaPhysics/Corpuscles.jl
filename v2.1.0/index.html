@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Introduction · Corpuscles.jl</title><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script><link href="assets/logo.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href><img src="assets/logo.svg" alt="Corpuscles.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href>Corpuscles.jl</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Introduction</a><ul class="internal"><li><a class="tocitem" href="#Usage"><span>Usage</span></a></li><li><a class="tocitem" href="#Units"><span>Units</span></a></li><li><a class="tocitem" href="#Particle-Codes"><span>Particle Codes</span></a></li><li><a class="tocitem" href="#Finding-Particles"><span>Finding Particles</span></a></li></ul></li><li><a class="tocitem" href="helpers/">Helper Functions</a></li><li><a class="tocitem" href="acknowledgements/">Acknowledgements</a></li><li><a class="tocitem" href="api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Introduction</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Introduction</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaPhysics/Corpuscles.jl/blob/master/docs/src/index.md#L" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p><img src="https://github.com/JuliaPhysics/Corpuscles.jl/raw/master/docs/src/assets/corpuscles.png" alt/></p><p><a href="https://JuliaPhysics.github.io/Corpuscles.jl/stable"><img src="https://img.shields.io/badge/docs-stable-blue.svg" alt="Stable"/></a> <a href="https://JuliaPhysics.github.io/Corpuscles.jl/dev"><img src="https://img.shields.io/badge/docs-dev-blue.svg" alt="Dev"/></a> <a href="https://github.com/JuliaPhysics/Corpuscles.jl/actions"><img src="https://github.com/JuliaPhysics/Corpuscles.jl/workflows/CI/badge.svg" alt="Build Status"/></a> <a href="https://codecov.io/gh/JuliaPhysics/Corpuscles.jl"><img src="https://codecov.io/gh/JuliaPhysics/Corpuscles.jl/branch/master/graph/badge.svg" alt="Codecov"/></a> <a href="https://doi.org/10.5281/zenodo.3933364"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.3933364.svg" alt="DOI"/></a></p><h1 id="Corpuscles.jl"><a class="docs-heading-anchor" href="#Corpuscles.jl">Corpuscles.jl</a><a id="Corpuscles.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Corpuscles.jl" title="Permalink"></a></h1><p><strong>Corpuscles.jl</strong> is a package which gives easy access to particle properties and identification codes summarised and defined by the <a href="https://pdg.lbl.gov">Particle Data Group (PDG)</a> collaboration. The cleaned CSV versions of these data are provided by courtesy of the <a href="https://scikit-hep.org">Scikit-HEP project</a> and are part of the <a href="https://github.com/scikit-hep/particle">Particle</a> Python module which inspired us to create a similar package for the <a href="https://www.julialang.org">Julia Language</a>. <strong>Corpuscles.jl</strong> is by far not as feature complete as <strong>Particle</strong>, but we add functionality continuously, as needed. Feel free to create an <a href="https://github.com/JuliaPhysics/Corpuscles.jl/issues/new">Issue</a> or pull request if you find any bugs or have suggestions to improve.</p><h2 id="Usage"><a class="docs-heading-anchor" href="#Usage">Usage</a><a id="Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Usage" title="Permalink"></a></h2><p>The <code>Particle</code> struct can be used to create a particle. If an integer value is passed, it will be interpreted as <a href="http://pdg.lbl.gov/2019/reviews/rpp2019-rev-monte-carlo-numbering.pdf">PDG ID</a>, which is the primary particle encoding in <strong>Corpuscles.jl</strong>:</p><pre><code class="language-julia hljs">julia&gt; using Corpuscles
+
+julia&gt; p = Particle(12)
+Particle(12) &#39;nu(e)&#39;</code></pre><p>To get an overview of the available particle information, use <code>print()</code>:</p><pre><code class="language-julia hljs">julia&gt; print(p)
+Name:    K(4)*(2045)
+PDG ID:  -319
+LaTeX:   $\bar{K}_{4}^{*}(2045)^{0}$
+Status:  Common
+Width = 198.0 MeV ± 30.0 MeV
+Q (charge) = 0//1 e
+Composition = Ds
+Isospin = 1//2
+Mass = 2045.0 MeV ± 9.0 MeV
+P (space parity) = 1</code></pre><p>The properties are accessible via attributes:</p><pre><code class="language-julia hljs">julia&gt; fieldnames(Particle)
+(:pdgid, :mass, :width, :charge, :isospin, :parity, :gparity, :cparity, :antiprop, :rank, :status, :name, :quarks, :latex)
+
+julia&gt; p.quarks
+&quot;Ds&quot;
+
+julia&gt; p.isospin
+1//2
+
+julia&gt; p.mass
+2045.0 MeV ± 9.0 MeV</code></pre><p>There are tons of helper functions to check other properties:</p><pre><code class="language-julia hljs">julia&gt; filter(hasstrange, particles())
+257-element Array{Particle,1}:
+ Particle(3224) Sigma(1385)
+ Particle(23124) Lambda(1890)
+ Particle(-13324) Xi(1820)
+ Particle(-329) K(4)*(2045)
+ ⋮
+ Particle(13124) Lambda(1690)
+ Particle(-100321) K(1460)
+ Particle(20433) D(s1)(2460)
+julia&gt; filter(islepton, particles())
+16-element Array{Particle,1}:
+ Particle(18) nu(tau&#39;)
+ Particle(15) tau
+ Particle(11) e
+ Particle(13) mu
+ Particle(14) nu(mu)
+ Particle(17) tau&#39;
+ ⋮
+ Particle(12) nu(e)
+ Particle(-14) nu(mu)
+ Particle(-16) nu(tau)
+ Particle(-12) nu(e)
+ Particle(-13) mu</code></pre><h2 id="Units"><a class="docs-heading-anchor" href="#Units">Units</a><a id="Units-1"></a><a class="docs-heading-anchor-permalink" href="#Units" title="Permalink"></a></h2><p>For some properties like <code>mass</code> and <code>width</code> we use the <a href="https://github.com/PainterQubits/Unitful.jl">Unitful</a> package, which makes it easy to combine values with physical units:</p><pre><code class="language-julia hljs">julia&gt; typeof(p.mass)
+Corpuscles.MeasuredValue{𝐋^2 𝐌 𝐓^-2}
+
+julia&gt; p.mass
+2045.0 MeV ± 9.0 MeV
+
+julia&gt; p.mass.value
+2045.0 MeV
+
+julia&gt; p.mass.lower_limit
+9.0 MeV
+
+julia&gt; p.mass.upper_limit
+9.0 MeV</code></pre><p>and also <code>Base.isless</code> and <code>Base.isapprox</code> are implemented so that the lower and upper limits are taken into account, as seen here:</p><pre><code class="language-julia hljs">julia&gt; using Unitful
+
+julia&gt; p.mass
+2045.0 MeV ± 9.0 MeV
+
+julia&gt; p.mass &gt; 2036u&quot;MeV&quot;
+false
+
+julia&gt; p.mass &gt; 2035u&quot;MeV&quot;
+true</code></pre><h2 id="Particle-Codes"><a class="docs-heading-anchor" href="#Particle-Codes">Particle Codes</a><a id="Particle-Codes-1"></a><a class="docs-heading-anchor-permalink" href="#Particle-Codes" title="Permalink"></a></h2><p>Corpuscles currently supports conversions of Pythia and Geant3 codes to PDG using the <code>Pythia</code> and <code>Geant3ID</code> types. The corresponding number is simply passed to the type and then to the <code>Particle</code> itself. The PDG ID will be converted if possible, otherwise an error will be raised.</p><pre><code class="language-julia hljs">julia&gt; Particle(Geant3ID(5))
+Particle(-13) &#39;mu&#39;</code></pre><h2 id="Finding-Particles"><a class="docs-heading-anchor" href="#Finding-Particles">Finding Particles</a><a id="Finding-Particles-1"></a><a class="docs-heading-anchor-permalink" href="#Finding-Particles" title="Permalink"></a></h2><p>The <code>particles()</code> functions returns a <code>Vector</code> containing all the particles of the currently selected catalog. To search for particles, the <code>filter()</code> function comes in hand which can be combined with string comparison functions like <code>startswith()</code> or <code>occursin()</code>.</p><p>Here is an example how to find all particles with names starting with <code>&quot;nu&quot;</code>:</p><pre><code class="language-julia hljs">julia&gt; filter(p-&gt;startswith(p.name, &quot;nu&quot;), particles())
+6-element Array{Particle,1}:
+ Particle(-14) &#39;nu(mu)&#39;
+ Particle(-16) &#39;nu(tau)&#39;
+ Particle(-12) &#39;nu(e)&#39;
+ Particle(14) &#39;nu(mu)&#39;
+ Particle(16) &#39;nu(tau)&#39;
+ Particle(12) &#39;nu(e)&#39;</code></pre><p>A more powerful way to filter particles based on patterns in their name is using <a href="https://docs.julialang.org/en/v1/manual/strings/#Regular-Expressio ns-1">regular expressions</a> with e.g. <code>occursin()</code>:</p><pre><code class="language-julia hljs">julia&gt; filter(p-&gt;occursin(r&quot;D\(\d*\)&quot;, p.name), particles())
+10-element Array{Particle,1}:
+ Particle(-10421) &#39;D(0)*(2300)&#39;
+ Particle(-10411) &#39;D(0)*(2300)&#39;
+ Particle(425) &#39;D(2)*(2460)&#39;
+ Particle(10411) &#39;D(0)*(2300)&#39;
+ Particle(10421) &#39;D(0)*(2300)&#39;
+ Particle(10423) &#39;D(1)(2420)&#39;
+ Particle(-425) &#39;D(2)*(2460)&#39;
+ Particle(-10423) &#39;D(1)(2420)&#39;
+ Particle(415) &#39;D(2)*(2460)&#39;
+ Particle(-415) &#39;D(2)*(2460)&#39;</code></pre><p>Another useful feature is the <code>Particle(n::String, anti=false)</code> which directly creates a (anti-)particle from a given name – as long as it exists in the currently loaded particle dataset:</p><pre><code class="language-julia hljs">julia&gt; Particle(&quot;mu&quot;) == Particle(13)
+true
+
+julia&gt; -Particle(&quot;mu&quot;) == Particle(-13)
+true
+
+julia&gt; Particle(&quot;anti-mu&quot;) == Particle(-13)
+true
+
+julia&gt; Particle(&quot;mu~&quot;) == Particle(-13)
+true
+
+julia&gt; Particle(&quot;muon&quot;) == Particle(13)
+true
+
+julia&gt; Particle(&quot;mu-&quot;) == Particle(13)
+true
+
+julia&gt; Particle(&quot;mu+&quot;) == -Particle(13)
+true</code></pre></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="helpers/">Helper Functions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 5 December 2022 08:34">Monday 5 December 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
