@@ -1,7 +1,7 @@
 name = "Corpuscles"
 uuid = "e78a0372-c628-4773-9c8d-eb17d149bf93"
 authors = ["Johannes Schumann", "Tamas Gal"]
-version = "2.1.0"
+version = "2.1.1"
 
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
