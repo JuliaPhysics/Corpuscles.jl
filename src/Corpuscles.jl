@@ -29,7 +29,7 @@ isnothing(::Nothing) = true
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 include("pidNames.jl")
 
-function Base.parse(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
+function parserational(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
     nums, denoms = split(val, '/', keepempty=false)
     num = parse(T, nums)
@@ -225,7 +225,7 @@ function read_particle_csv(filepath::AbstractString)
         width_lower  = parse(Float64, row[6]) * u"MeV/c^2"
         width_upper  = parse(Float64, row[7]) * u"MeV/c^2"
         width = MeasuredValue{}(width_value, width_lower, width_upper)
-        isospin = if (row[8] in ["", "?"]) missing else parse(Rational{Int8}, row[8]) end
+        isospin = if (row[8] in ["", "?"]) missing else parserational(Rational{Int8}, row[8]) end
         gparity = read_parity(row[9])
         parity = read_parity(row[10])
         cparity = read_parity(row[11])
