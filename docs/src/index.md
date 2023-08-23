@@ -1,4 +1,3 @@
-![](https://github.com/JuliaPhysics/Corpuscles.jl/raw/master/docs/src/assets/corpuscles.png)
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/JuliaPhysics/Corpuscles.jl/raw/darkmode-logo/docs/src/assets/corpuscles_dark.svg">
   <img alt="Corpuscles.jl Logo" src="https://github.com/JuliaPhysics/Corpuscles.jl/raw/darkmode-logo/docs/src/assets/corpuscles.svg" width="200">
