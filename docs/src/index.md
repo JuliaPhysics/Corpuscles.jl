@@ -1,7 +1,5 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/JuliaPhysics/Corpuscles.jl/raw/master/docs/src/assets/corpuscles_darkmode.svg">
-  <img alt="Corpuscles.jl Logo" src="https://github.com/JuliaPhysics/Corpuscles.jl/raw/master/docs/src/assets/corpuscles.svg" width="400">
-</picture>
+![Fancy logo](https://github.com/JuliaPhysics/Corpuscles.jl/raw/master/docs/src/assets/corpuscles_darkmode.png#gh-dark-mode-only)
+![Fancy logo](https://github.com/JuliaPhysics/Corpuscles.jl/raw/master/docs/src/assets/corpuscles.png#gh-light-mode-only)
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPhysics.github.io/Corpuscles.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaPhysics.github.io/Corpuscles.jl/dev)
