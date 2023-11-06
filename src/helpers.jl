@@ -58,7 +58,7 @@ function fundamentalid(p)
     !isstandard(p) && return 0
     abspdgid = abs(p.value)
     p.Nq2 == 0 && p.Nq1 == 0 && return abspdgid % 10000
-    abs(p.value) <= 100 && return abspgdid
+    abs(p.value) <= 100 && return abspdgid
     0
 end
 
