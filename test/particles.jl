@@ -113,8 +113,6 @@
     AntiElectronStar = -4000011
     # Generator specific pseudoparticles or concepts
     AntiCHadron = -84
-    # MC internal use
-    MCinternal = -100
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
