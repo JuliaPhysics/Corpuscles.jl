@@ -458,7 +458,7 @@ end
         f = isvalid
         candidates = [Photon, Gluon, Electron, AntiMuon, jpsi, Upsilon_1S,
                       PiPlus, KMinus, D0, DPlus, DsPlus, B0, Bs, BcPlus, Proton,
-                      LcPlus, Lb, DD1, SD0]
+                      LcPlus, Lb, DD1, SD0, AntiCHadron]
         noncandidates = [Invalid1, Invalid2]
         for candidate ∈ candidates
             @test f(Corpuscles.pdgid(candidate))
