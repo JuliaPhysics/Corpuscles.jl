@@ -186,6 +186,10 @@ function Particle(n::String, anti=false)
             return anti ? -p : p
         end
     end
-    error("$n not found.")
+    all_keys = vcat(collect(keys(scikit_common)),
+        collect(keys(more_common)),
+        collect(keys(inv_catalog)))
+    suggestions = closest_key_token_based(bn, all_keys)
+    error("No exact key found for $(n). Similar items: $(suggestions).")
 end
 

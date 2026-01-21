@@ -63,7 +63,7 @@ end
     @test !isequal(1, geant_id.value)
 
     @test PDGID(13) === convert(PDGID, PDGID(13))
-    
+
     try
         convert(PDGID, Geant3ID(5000))
         @test false
@@ -72,7 +72,7 @@ end
         msg = sprint(showerror, e)
         @test msg == "ParticleID Error: No corresponding PDGID for Geant3ID(5000) found!"
     end
-    
+
     try
         convert(Geant3ID, PDGID(2222212))
         @test false
@@ -84,8 +84,8 @@ end
 
     for particle in particles()
         if particle.pdgid in [PDGID(-9000321), PDGID(9000321), PDGID(9020113),
-                              PDGID(-9000311), PDGID(9020213), PDGID(9000311),
-                              PDGID(-9020213)]
+            PDGID(-9000311), PDGID(9020213), PDGID(9000311),
+            PDGID(-9020213)]
             continue
         end
         @test convert(Geant3ID, particle.pdgid) !== nothing
@@ -178,10 +178,52 @@ end
 
     @test Particle("D_sst_plus") == Particle(433)
     @test Particle("anti-D_sst_plus") == -Particle(433)
-    @test_throws ErrorException Particle("SUSY is fake")
+    # previously threw, still throws but now with suggestions in the message
+    try
+        Particle("SUSY is fake")
+        @test false
+    catch e
+        @test e isa ErrorException
+        msg = sprint(showerror, e)
+        @test occursin("No exact key found for SUSY is fake. Similar items:", msg)
+    end
 
     # self anti-particle
     @test Particle("H") == -Particle("H")
+
+    @testset "similarity fallback" begin
+        for bad in ("photn", "anti-photn", "protn")
+            try
+                Particle(bad)
+                @test false
+            catch e
+                @test e isa ErrorException
+                msg = sprint(showerror, e)
+                @test occursin("No exact key found for $(bad). Similar items:", msg)
+            end
+        end
+    end
+
+    @testset "name suggestion quality" begin
+        # Pairs of (incorrect input => expected suggested correct name)
+        pairs = [
+            ("D_s", "D(s)+"),
+            ("rho", "rho(770)+"),
+            ("rho^+", "rho(770)+"),
+            ("K-", "K+"),
+        ]
+        for (bad, expected) in pairs
+            try
+                Particle(bad)
+                @test false  # should always throw
+            catch e
+                @test e isa ErrorException
+                msg = sprint(showerror, e)
+                @test occursin("No exact key found for $(bad). Similar items:", msg)
+                @test occursin(expected, msg)
+            end
+        end
+    end
 end
 
 @testset "helpers" begin
@@ -249,19 +291,19 @@ end
 
     @testset "ismeson" begin
         candidates = [jpsi, psi_2S, Upsilon_1S, Upsilon_4S, Pi0, PiPlus, eta,
-                  eta_prime, a_0_1450_plus, KL, KS, KMinus, phi, omega,
-                  rho_770_minus, K1_1270_0, K1_1400_0, rho_1700_0, a2_1320_minus,
-                  omega_3_1670, f_4_2300, D0, DPlus, DsPlus, B0, BPlus, Bs,
-                  BcPlus, Pi0TC, PiMinusTC, T0, Reggeon, Pomeron, Odderon,
-                  RPlus_TTildeDbar, R0_GTildeG]
+            eta_prime, a_0_1450_plus, KL, KS, KMinus, phi, omega,
+            rho_770_minus, K1_1270_0, K1_1400_0, rho_1700_0, a2_1320_minus,
+            omega_3_1670, f_4_2300, D0, DPlus, DsPlus, B0, BPlus, Bs,
+            BcPlus, Pi0TC, PiMinusTC, T0, Reggeon, Pomeron, Odderon,
+            RPlus_TTildeDbar, R0_GTildeG]
         check_candidates(ismeson, candidates)
     end
 
     @testset "isbaryon" begin
         candidates = [Proton, AntiNeutron, HydrogenNucleus, Lambda, Sigma0,
-                      SigmaPlus, SigmaMinus, Xi0, AntiXiMinus, OmegaMinus,
-                      LcPlus, Lb, LtPlus, RPlusPlus_GTildeUUU,
-                      UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
+            SigmaPlus, SigmaMinus, Xi0, AntiXiMinus, OmegaMinus,
+            LcPlus, Lb, LtPlus, RPlusPlus_GTildeUUU,
+            UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
         check_candidates(isbaryon, candidates)
     end
 
@@ -426,9 +468,9 @@ end
 
     @testset "hasfundamentalanti" begin
         candidates = [WMinus, Electron, Positron, Muon, AntiMuon, Tau, TauPrime,
-                      Nu_e, NuBar_tau, DQuark, UQuark, SQuark, CQuark, BQuark,
-                      TQuark, BPrimeQuark, TPrimeQuark, UQuarkStar,
-                      AntiElectronStar, STildeL, CTildeR, AntiCHadron]
+            Nu_e, NuBar_tau, DQuark, UQuark, SQuark, CQuark, BQuark,
+            TQuark, BPrimeQuark, TPrimeQuark, UQuarkStar,
+            AntiElectronStar, STildeL, CTildeR, AntiCHadron]
         check_candidates(hasfundamentalanti, candidates)
     end
 
@@ -457,8 +499,8 @@ end
     @testset "isvalid" begin
         f = isvalid
         candidates = [Photon, Gluon, Electron, AntiMuon, jpsi, Upsilon_1S,
-                      PiPlus, KMinus, D0, DPlus, DsPlus, B0, Bs, BcPlus, Proton,
-                      LcPlus, Lb, DD1, SD0, AntiCHadron]
+            PiPlus, KMinus, D0, DPlus, DsPlus, B0, Bs, BcPlus, Proton,
+            LcPlus, Lb, DD1, SD0, AntiCHadron]
         noncandidates = [Invalid1, Invalid2]
         for candidate ∈ candidates
             @test f(Corpuscles.pdgid(candidate))
@@ -510,7 +552,7 @@ end
 
     JSLstatelist = Dict(
         "000" => [Pi0, PiPlus, eta, eta_prime, KL, KS, KMinus, D0, DPlus,
-                  DsPlus, B0, BPlus, Bs, BcPlus, T0],
+            DsPlus, B0, BPlus, Bs, BcPlus, T0],
         "011" => [a_0_1450_plus],
         "101" => [K1_1270_0],
         "110" => [rho_770_minus],
@@ -541,11 +583,11 @@ end
     @testset "J non-mesons" begin
         Jlist = Dict(
             1 => [Gluon, Photon, Z0, jpsi, psi_2S, Upsilon_1S, Upsilon_4S, K1_1270_0,],
-            1//2 => [Electron, Positron, Muon, AntiMuon, Tau, Nu_e, NuBar_tau,
-                     DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, Proton,
-                     AntiNeutron, Lambda, Sigma0, SigmaPlus, SigmaMinus, Xi0,
-                     AntiXiMinus, LcPlus, Lb, LtPlus, STildeL, CTildeR],
-            3//2 => [OmegaMinus],
+            1 // 2 => [Electron, Positron, Muon, AntiMuon, Tau, Nu_e, NuBar_tau,
+                DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, Proton,
+                AntiNeutron, Lambda, Sigma0, SigmaPlus, SigmaMinus, Xi0,
+                AntiXiMinus, LcPlus, Lb, LtPlus, STildeL, CTildeR],
+            3 // 2 => [OmegaMinus],
             nothing => [Invalid1, Invalid2],
             nothing => [TauPrime, BPrimeQuark, TPrimeQuark]
         )
