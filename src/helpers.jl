@@ -729,3 +729,59 @@ hasbottom(p) = _hasquark(pdgid(p), 5)
     hastop(p::Union{Particle, PDGID, Integer})
 """
 hastop(p) = _hasquark(pdgid(p), 6)
+
+"""
+    value_GeV(m::MeasuredValue)
+
+Convert the value of a `MeasuredValue` (typically mass or width) to GeV/c² as a Float64.
+
+# Examples
+```julia-repl
+julia> p = Particle("Omega(c)0")
+julia> value_GeV(p.mass)
+2.6953
+```
+"""
+value_GeV(m::MeasuredValue) = convert(Float64, m.value / u"GeV/c^2")
+
+"""
+    value_MeV(m::MeasuredValue)
+
+Convert the value of a `MeasuredValue` (typically mass or width) to MeV/c² as a Float64.
+
+# Examples
+```julia-repl
+julia> p = Particle("Omega(c)0")
+julia> value_MeV(p.mass)
+2695.3
+```
+"""
+value_MeV(m::MeasuredValue) = convert(Float64, m.value / u"MeV/c^2")
+
+"""
+    uncertainty_GeV(m::MeasuredValue)
+
+Convert the uncertainty (upper limit) of a `MeasuredValue` (typically mass or width) to GeV/c² as a Float64.
+
+# Examples
+```julia-repl
+julia> p = Particle("Omega(c)0")
+julia> uncertainty_GeV(p.mass)
+0.0004
+```
+"""
+uncertainty_GeV(m::MeasuredValue) = convert(Float64, m.upper_limit / u"GeV/c^2")
+
+"""
+    uncertainty_MeV(m::MeasuredValue)
+
+Convert the uncertainty (upper limit) of a `MeasuredValue` (typically mass or width) to MeV/c² as a Float64.
+
+# Examples
+```julia-repl
+julia> p = Particle("Omega(c)0")
+julia> uncertainty_MeV(p.mass)
+0.4
+```
+"""
+uncertainty_MeV(m::MeasuredValue) = convert(Float64, m.upper_limit / u"MeV/c^2")

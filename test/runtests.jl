@@ -616,3 +616,44 @@ end
         end
     end
 end
+
+@testset "unit conversions" begin
+    p = Particle("Omega(c)0")
+
+    # Test value conversions
+    @test value_GeV(p.mass) ≈ 2.6952 atol = 0.0002
+    @test value_MeV(p.mass) ≈ 2695.2 atol = 0.2
+
+    # Test that GeV and MeV conversions are consistent
+    @test value_GeV(p.mass) * 1000 ≈ value_MeV(p.mass)
+
+    # Test uncertainty conversions
+    uncertainty_gev = uncertainty_GeV(p.mass)
+    uncertainty_mev = uncertainty_MeV(p.mass)
+    @test uncertainty_gev * 1000 ≈ uncertainty_mev
+
+    # Test with width
+    if !ismissing(p.width)
+        @test value_GeV(p.width) isa Float64
+        @test value_MeV(p.width) isa Float64
+        @test uncertainty_GeV(p.width) isa Float64
+        @test uncertainty_MeV(p.width) isa Float64
+    end
+
+    # Test with a few more particles (excluding massless particles)
+    test_particles = [Particle(11), Particle(211)]
+    for test_p in test_particles
+        @test value_GeV(test_p.mass) isa Float64
+        @test value_MeV(test_p.mass) isa Float64
+        @test value_GeV(test_p.mass) >= 0
+        @test value_MeV(test_p.mass) >= 0
+        @test value_GeV(test_p.mass) * 1000 ≈ value_MeV(test_p.mass)
+    end
+
+    # Test with massless particle (photon)
+    photon = Particle(22)
+    @test value_GeV(photon.mass) == 0.0
+    @test value_MeV(photon.mass) == 0.0
+    @test uncertainty_GeV(photon.mass) == 0.0
+    @test uncertainty_MeV(photon.mass) == 0.0
+end
