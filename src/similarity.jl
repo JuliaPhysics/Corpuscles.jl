@@ -20,13 +20,15 @@ end
 """
     tokenize(s::String) -> Vector{String}
 
-Tokenize a string into pieces separated by non-alphanumeric characters,
-keeping delimiters like `+`, `/`, `-`, and `_` as part of the tokens.
-This better respects particle-name structure while still being robust
-to small typos.
+Tokenize a string into alphanumeric chunks and delimiter tokens.
+
+The characters `+`, `/`, `-`, `_`, `(` and `)` are treated as
+**separators** and are kept as *stand‑alone* tokens. This way
+input such as `"D_s"` and `"D(s)+"` get broken into very similar
+token sequences, which improves fuzzy matching.
 """
 function tokenize(s::String)::Vector{String}
-    return split_and_keep(s, r"[^A-Za-z0-9+/\-_]")
+    return split_and_keep(s, r"[+/\-_()]")
 end
 
 """
@@ -56,7 +58,7 @@ function closest_key_token_based(user_input::String, keys::Vector{String})
     isempty(keys) && return String[]
     user_tokens = tokenize(user_input)
     similarities = [(key, jaccard_similarity(user_tokens, tokenize(key))) for key in keys]
-    sort!(similarities, by = x -> x[2], rev = true)
+    sort!(similarities, by=x -> x[2], rev=true)
     n = min(length(similarities), 5)
     return getindex.(similarities[1:n], 1)
 end
