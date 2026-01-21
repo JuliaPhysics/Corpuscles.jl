@@ -83,9 +83,15 @@ end
     end
 
     for particle in particles()
-        if particle.pdgid in [PDGID(-9000321), PDGID(9000321), PDGID(9020113),
-            PDGID(-9000311), PDGID(9020213), PDGID(9000311),
-            PDGID(-9020213)]
+        if particle.pdgid in [
+            PDGID(-9000321),
+            PDGID(9000321),
+            PDGID(9020113),
+            PDGID(-9000311),
+            PDGID(9020213),
+            PDGID(9000311),
+            PDGID(-9020213),
+        ]
             continue
         end
         @test convert(Geant3ID, particle.pdgid) !== nothing
@@ -206,12 +212,8 @@ end
 
     @testset "name suggestion quality" begin
         # Pairs of (incorrect input => expected suggested correct name)
-        pairs = [
-            ("D_s", "D(s)+"),
-            ("rho", "rho(770)+"),
-            ("rho^+", "rho(770)+"),
-            ("K-", "K+"),
-        ]
+        pairs =
+            [("D_s", "D(s)+"), ("rho", "rho(770)+"), ("rho^+", "rho(770)+"), ("K-", "K+")]
         for (bad, expected) in pairs
             try
                 Particle(bad)
@@ -245,7 +247,8 @@ end
     end
 
 
-    for _particles ∈ [particles(), [p.pdgid for p in particles()], [p.pdgid.value for p in particles()]]
+    for _particles ∈
+        [particles(), [p.pdgid for p in particles()], [p.pdgid.value for p in particles()]]
         @test sum(map(isstandard, _particles)) > 0
         @test sum(map(isfundamental, _particles)) > 0
         @test sum(map(Corpuscles.isstandard, _particles)) == 610
@@ -280,30 +283,87 @@ end
     end
 
     @testset "isquark" begin
-        candidates = [DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, BPrimeQuark, TPrimeQuark]
+        candidates =
+            [DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, BPrimeQuark, TPrimeQuark]
         check_candidates(isquark, candidates)
     end
 
     @testset "islepton" begin
-        candidates = [Electron, Positron, Muon, AntiMuon, Tau, TauPrime, Nu_e, NuBar_tau, AntiElectronStar]
+        candidates = [
+            Electron,
+            Positron,
+            Muon,
+            AntiMuon,
+            Tau,
+            TauPrime,
+            Nu_e,
+            NuBar_tau,
+            AntiElectronStar,
+        ]
         check_candidates(islepton, candidates)
     end
 
     @testset "ismeson" begin
-        candidates = [jpsi, psi_2S, Upsilon_1S, Upsilon_4S, Pi0, PiPlus, eta,
-            eta_prime, a_0_1450_plus, KL, KS, KMinus, phi, omega,
-            rho_770_minus, K1_1270_0, K1_1400_0, rho_1700_0, a2_1320_minus,
-            omega_3_1670, f_4_2300, D0, DPlus, DsPlus, B0, BPlus, Bs,
-            BcPlus, Pi0TC, PiMinusTC, T0, Reggeon, Pomeron, Odderon,
-            RPlus_TTildeDbar, R0_GTildeG]
+        candidates = [
+            jpsi,
+            psi_2S,
+            Upsilon_1S,
+            Upsilon_4S,
+            Pi0,
+            PiPlus,
+            eta,
+            eta_prime,
+            a_0_1450_plus,
+            KL,
+            KS,
+            KMinus,
+            phi,
+            omega,
+            rho_770_minus,
+            K1_1270_0,
+            K1_1400_0,
+            rho_1700_0,
+            a2_1320_minus,
+            omega_3_1670,
+            f_4_2300,
+            D0,
+            DPlus,
+            DsPlus,
+            B0,
+            BPlus,
+            Bs,
+            BcPlus,
+            Pi0TC,
+            PiMinusTC,
+            T0,
+            Reggeon,
+            Pomeron,
+            Odderon,
+            RPlus_TTildeDbar,
+            R0_GTildeG,
+        ]
         check_candidates(ismeson, candidates)
     end
 
     @testset "isbaryon" begin
-        candidates = [Proton, AntiNeutron, HydrogenNucleus, Lambda, Sigma0,
-            SigmaPlus, SigmaMinus, Xi0, AntiXiMinus, OmegaMinus,
-            LcPlus, Lb, LtPlus, RPlusPlus_GTildeUUU,
-            UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
+        candidates = [
+            Proton,
+            AntiNeutron,
+            HydrogenNucleus,
+            Lambda,
+            Sigma0,
+            SigmaPlus,
+            SigmaMinus,
+            Xi0,
+            AntiXiMinus,
+            OmegaMinus,
+            LcPlus,
+            Lb,
+            LtPlus,
+            RPlusPlus_GTildeUUU,
+            UCbarCUDPentaquark,
+            AntiUCbarCUDPentaquark,
+        ]
         check_candidates(isbaryon, candidates)
     end
 
@@ -452,7 +512,17 @@ end
     end
 
     @testset "hascharm" begin
-        candidates = [jpsi, psi_2S, D0, DPlus, DsPlus, BcPlus, LcPlus, UCbarCUDPentaquark, AntiUCbarCUDPentaquark]
+        candidates = [
+            jpsi,
+            psi_2S,
+            D0,
+            DPlus,
+            DsPlus,
+            BcPlus,
+            LcPlus,
+            UCbarCUDPentaquark,
+            AntiUCbarCUDPentaquark,
+        ]
         check_candidates(hascharm, candidates)
     end
 
@@ -467,15 +537,36 @@ end
     end
 
     @testset "hasfundamentalanti" begin
-        candidates = [WMinus, Electron, Positron, Muon, AntiMuon, Tau, TauPrime,
-            Nu_e, NuBar_tau, DQuark, UQuark, SQuark, CQuark, BQuark,
-            TQuark, BPrimeQuark, TPrimeQuark, UQuarkStar,
-            AntiElectronStar, STildeL, CTildeR, AntiCHadron]
+        candidates = [
+            WMinus,
+            Electron,
+            Positron,
+            Muon,
+            AntiMuon,
+            Tau,
+            TauPrime,
+            Nu_e,
+            NuBar_tau,
+            DQuark,
+            UQuark,
+            SQuark,
+            CQuark,
+            BQuark,
+            TQuark,
+            BPrimeQuark,
+            TPrimeQuark,
+            UQuarkStar,
+            AntiElectronStar,
+            STildeL,
+            CTildeR,
+            AntiCHadron,
+        ]
         check_candidates(hasfundamentalanti, candidates)
     end
 
     @testset "A" begin
-        candidates = Dict(Proton => 1, AntiNeutron => 1, HydrogenNucleus => 1, Carbon12 => 12)
+        candidates =
+            Dict(Proton => 1, AntiNeutron => 1, HydrogenNucleus => 1, Carbon12 => 12)
         for (candidate, value) ∈ candidates
             @test A(candidate) == value
         end
@@ -486,7 +577,8 @@ end
     end
 
     @testset "Z" begin
-        candidates = Dict(Proton => 1, AntiNeutron => 0, HydrogenNucleus => 1, Carbon12 => 6)
+        candidates =
+            Dict(Proton => 1, AntiNeutron => 0, HydrogenNucleus => 1, Carbon12 => 6)
         for (candidate, value) ∈ candidates
             @test Z(candidate) == value
         end
@@ -498,9 +590,28 @@ end
 
     @testset "isvalid" begin
         f = isvalid
-        candidates = [Photon, Gluon, Electron, AntiMuon, jpsi, Upsilon_1S,
-            PiPlus, KMinus, D0, DPlus, DsPlus, B0, Bs, BcPlus, Proton,
-            LcPlus, Lb, DD1, SD0, AntiCHadron]
+        candidates = [
+            Photon,
+            Gluon,
+            Electron,
+            AntiMuon,
+            jpsi,
+            Upsilon_1S,
+            PiPlus,
+            KMinus,
+            D0,
+            DPlus,
+            DsPlus,
+            B0,
+            Bs,
+            BcPlus,
+            Proton,
+            LcPlus,
+            Lb,
+            DD1,
+            SD0,
+            AntiCHadron,
+        ]
         noncandidates = [Invalid1, Invalid2]
         for candidate ∈ candidates
             @test f(Corpuscles.pdgid(candidate))
@@ -551,8 +662,23 @@ end
     end
 
     JSLstatelist = Dict(
-        "000" => [Pi0, PiPlus, eta, eta_prime, KL, KS, KMinus, D0, DPlus,
-            DsPlus, B0, BPlus, Bs, BcPlus, T0],
+        "000" => [
+            Pi0,
+            PiPlus,
+            eta,
+            eta_prime,
+            KL,
+            KS,
+            KMinus,
+            D0,
+            DPlus,
+            DsPlus,
+            B0,
+            BPlus,
+            Bs,
+            BcPlus,
+            T0,
+        ],
         "011" => [a_0_1450_plus],
         "101" => [K1_1270_0],
         "110" => [rho_770_minus],
@@ -582,14 +708,38 @@ end
 
     @testset "J non-mesons" begin
         Jlist = Dict(
-            1 => [Gluon, Photon, Z0, jpsi, psi_2S, Upsilon_1S, Upsilon_4S, K1_1270_0,],
-            1 // 2 => [Electron, Positron, Muon, AntiMuon, Tau, Nu_e, NuBar_tau,
-                DQuark, UQuark, SQuark, CQuark, BQuark, TQuark, Proton,
-                AntiNeutron, Lambda, Sigma0, SigmaPlus, SigmaMinus, Xi0,
-                AntiXiMinus, LcPlus, Lb, LtPlus, STildeL, CTildeR],
+            1 => [Gluon, Photon, Z0, jpsi, psi_2S, Upsilon_1S, Upsilon_4S, K1_1270_0],
+            1 // 2 => [
+                Electron,
+                Positron,
+                Muon,
+                AntiMuon,
+                Tau,
+                Nu_e,
+                NuBar_tau,
+                DQuark,
+                UQuark,
+                SQuark,
+                CQuark,
+                BQuark,
+                TQuark,
+                Proton,
+                AntiNeutron,
+                Lambda,
+                Sigma0,
+                SigmaPlus,
+                SigmaMinus,
+                Xi0,
+                AntiXiMinus,
+                LcPlus,
+                Lb,
+                LtPlus,
+                STildeL,
+                CTildeR,
+            ],
             3 // 2 => [OmegaMinus],
             nothing => [Invalid1, Invalid2],
-            nothing => [TauPrime, BPrimeQuark, TPrimeQuark]
+            nothing => [TauPrime, BPrimeQuark, TPrimeQuark],
         )
         for (J_, particles) ∈ Jlist
             for p in particles

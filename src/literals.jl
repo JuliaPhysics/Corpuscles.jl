@@ -1,12 +1,12 @@
 const scikit_common = Dict(
     # Gauge bosons
-    "photon"=>22,
+    "photon" => 22,
     "gamma"=>22,
     "Z_0"=>23,
     "W_plus"=>24,
     "W_minus"=>-24,
     # Leptons
-    "e_minus"=>11,
+    "e_minus" => 11,
     "e_plus"=>-11,
     "mu_minus"=>13,
     "mu_plus"=>-13,
@@ -19,7 +19,7 @@ const scikit_common = Dict(
     "nu_tau"=>16,
     "nu_tau_bar"=>-16,
     # Quarkonia
-    "Jpsi_1S"=>443,
+    "Jpsi_1S" => 443,
     "psi_2S"=>100443,
     "eta_c_1S"=>441,
     "eta_c_2S"=>100441,
@@ -36,7 +36,7 @@ const scikit_common = Dict(
     "chi_b1_1P"=>20553,
     "chi_b2_1P"=>555,
     # Light mesons
-    "pi_0"=>111,
+    "pi_0" => 111,
     "pi_plus"=>211,
     "pi_minus"=>-211,
     "a_0_980_0"=>9000111,
@@ -65,7 +65,7 @@ const scikit_common = Dict(
     "K_0st_1430_plus"=>10321,
     "K_0st_1430_minus"=>-10321,
     # Charm mesons
-    "D_0"=>421,
+    "D_0" => 421,
     "D_0_bar"=>-421,
     "D_plus"=>411,
     "D_minus"=>-411,
@@ -84,17 +84,17 @@ const scikit_common = Dict(
     "D_s1_2536_plus"=>10433,
     "D_s1_2536_minus"=>-10433,
     # Beauty mesons
-    "B_0"=>511,
+    "B_0" => 511,
     "B_0_bar"=>-511,
     "B_plus"=>521,
     "B_minus"=>-521,
     "B_s_0"=>531,
     "B_s_0_bar"=>-531,
     # Beauty, charmed mesons
-    "B_c_plus"=>541,
+    "B_c_plus" => 541,
     "B_c_minus"=>-541,
     # Light baryons
-    "p"=>2212,
+    "p" => 2212,
     "proton"=>2212,
     "p_bar"=>-2212,
     "antiproton"=>-2212,
@@ -127,10 +127,10 @@ const scikit_common = Dict(
     "Lambda_1520"=>3124,
     "Lambda_1520_bar"=>-3124,
     # Charm baryons
-    "Lambda_c_plus"=>4122,
+    "Lambda_c_plus" => 4122,
     "Lambda_c_minus_bar"=>-4122,
     # Beauty baryons
-    "Lambda_b_0"=>5122,
+    "Lambda_b_0" => 5122,
     "Lambda_b_0_bar"=>-5122,
     "Xi_b_0"=>5232,
     "Xi_b_0_bar"=>-5232,
@@ -164,13 +164,13 @@ Construct particles from PDG name.
 
 Or commonly alias, alias do not cover all particles.
 """
-function Particle(n::String, anti=false)
+function Particle(n::String, anti = false)
     # determine if anti particle
     if startswith(n, "anti-")
         bn = n[6:end]
         anti = true
     elseif endswith(n, "~")
-        bn = n[1:end-1]
+        bn = n[1:(end-1)]
         anti=true
     elseif startswith(n, "~")
         bn = n[2:end]
@@ -186,10 +186,11 @@ function Particle(n::String, anti=false)
             return anti ? -p : p
         end
     end
-    all_keys = vcat(collect(keys(scikit_common)),
+    all_keys = vcat(
+        collect(keys(scikit_common)),
         collect(keys(more_common)),
-        collect(keys(inv_catalog)))
+        collect(keys(inv_catalog)),
+    )
     suggestions = closest_key_token_based(bn, all_keys)
     error("No exact key found for $(n). Similar items: $(suggestions).")
 end
-

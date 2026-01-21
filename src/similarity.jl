@@ -5,7 +5,7 @@ function split_and_keep(input_string::AbstractString, regex::Regex)
         start_idx = match.offset
         # push non-matching segment if non-empty
         if start_idx > last_idx
-            push!(tokens, String(input_string[last_idx:start_idx-1]))
+            push!(tokens, String(input_string[last_idx:(start_idx-1)]))
         end
         # push the matched delimiter token itself
         push!(tokens, String(match.match))
@@ -76,7 +76,7 @@ function closest_key_token_based(user_input::String, keys::Vector{String})
     end
 
     similarities = collect(scored)  # Vector of Pair(display => score)
-    sort!(similarities, by=x -> last(x), rev=true)
+    sort!(similarities, by = x -> last(x), rev = true)
     n = min(length(similarities), 5)
     return first.(similarities[1:n])
 end
