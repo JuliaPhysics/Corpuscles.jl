@@ -57,8 +57,26 @@ provide helpful "did you mean" suggestions.
 function closest_key_token_based(user_input::String, keys::Vector{String})
     isempty(keys) && return String[]
     user_tokens = tokenize(user_input)
-    similarities = [(key, jaccard_similarity(user_tokens, tokenize(key))) for key in keys]
-    sort!(similarities, by=x -> x[2], rev=true)
+
+    # Score keys but report suggestions in terms of "physical" particle names
+    # (e.g. "D(s)+", "rho(770)+") rather than internal alias keys like "D_s_plus".
+    scored = Dict{String,Float64}()
+    for key in keys
+        score = jaccard_similarity(user_tokens, tokenize(key))
+        # Map key to a display name if possible
+        display = try
+            Particle(key).name
+        catch
+            key
+        end
+        # Keep the best score we have seen for a given display name
+        if !haskey(scored, display) || score > scored[display]
+            scored[display] = score
+        end
+    end
+
+    similarities = collect(scored)  # Vector of Pair(display => score)
+    sort!(similarities, by=x -> last(x), rev=true)
     n = min(length(similarities), 5)
-    return getindex.(similarities[1:n], 1)
+    return first.(similarities[1:n])
 end
