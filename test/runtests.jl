@@ -178,10 +178,31 @@ end
 
     @test Particle("D_sst_plus") == Particle(433)
     @test Particle("anti-D_sst_plus") == -Particle(433)
-    @test_throws ErrorException Particle("SUSY is fake")
+    # previously threw, still throws but now with suggestions in the message
+    try
+        Particle("SUSY is fake")
+        @test false
+    catch e
+        @test e isa ErrorException
+        msg = sprint(showerror, e)
+        @test occursin("No exact key found for SUSY is fake. Similar items:", msg)
+    end
 
     # self anti-particle
     @test Particle("H") == -Particle("H")
+
+    @testset "similarity fallback" begin
+        for bad in ("photn", "anti-photn", "protn")
+            try
+                Particle(bad)
+                @test false
+            catch e
+                @test e isa ErrorException
+                msg = sprint(showerror, e)
+                @test occursin("No exact key found for $(bad). Similar items:", msg)
+            end
+        end
+    end
 end
 
 @testset "helpers" begin

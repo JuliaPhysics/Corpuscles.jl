@@ -28,6 +28,7 @@ isnothing(::Nothing) = true
 
 const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 include("pidNames.jl")
+include("similarity.jl")
 
 function parserational(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
