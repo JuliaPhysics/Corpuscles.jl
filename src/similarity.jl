@@ -22,13 +22,13 @@ end
 
 Tokenize a string into alphanumeric chunks and delimiter tokens.
 
-The characters `+`, `/`, `-`, `_`, `(` and `)` are treated as
+The characters `+`, `/`, `-`, `_`, `(`, `)`, and `^` are treated as
 **separators** and are kept as *stand‑alone* tokens. This way
-input such as `"D_s"` and `"D(s)+"` get broken into very similar
-token sequences, which improves fuzzy matching.
+input such as `"D_s"` and `"D(s)+"` or `"rho^+"` and `"rho(770)+"`
+get broken into very similar token sequences, which improves fuzzy matching.
 """
 function tokenize(s::String)::Vector{String}
-    return split_and_keep(s, r"[+/\-_()]")
+    return split_and_keep(s, r"[+/\-_()^]")
 end
 
 """
