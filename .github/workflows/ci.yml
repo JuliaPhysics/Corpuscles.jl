@@ -75,7 +75,14 @@ jobs:
             Pkg.add("JuliaFormatter")
             println("JuliaFormatter installed successfully")
             using JuliaFormatter
-            println("JuliaFormatter version: ", Pkg.dependencies()["JuliaFormatter"].version)
+            # Get installed version
+            deps = Pkg.dependencies()
+            for (uuid, info) in deps
+              if info.name == "JuliaFormatter"
+                println("JuliaFormatter version: ", info.version)
+                break
+              end
+            end
           '
       - name: Check code formatting
         run: |
