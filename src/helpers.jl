@@ -295,7 +295,7 @@ function isgeneratorspecific(p)
     abspdgid = abs(p.value)
     81 <= abspdgid <= 100 && return true
     901 <= abspdgid <= 930 && return true
-    1901 <= abspdgid <= 1930 &&  return true
+    1901 <= abspdgid <= 1930 && return true
     2901 <= abspdgid <= 2930 && return true
     3901 <= abspdgid <= 3930 && return true
     abspdgid ∈ [998, 999] && return true
@@ -442,7 +442,7 @@ function jspin(p)
         return nothing
     end
     abspdgid = abs(p.value)
-    abspdgid ∈ [1000000010, 1000010010]  && return 2  # neutrion, proton
+    abspdgid ∈ [1000000010, 1000010010] && return 2  # neutrion, proton
     !isstandard(p) && return nothing
     p.value ∈ [130, 310] && return 1
     return abspdgid % 10
@@ -587,11 +587,108 @@ function threecharge(p)
     p = pdgid(p)
     !isvalid(p) && return nothing
     abspdgid = abs(p.value)
-    ch100 = [-1, 2, -1, 2, -1, 2, -1, 2, 0, 0, -3, 0, -3, 0, -3, 0, -3, 0, 0, 0,
-             0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, -1,
-             0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 3, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ch100 = [
+        -1,
+        2,
+        -1,
+        2,
+        -1,
+        2,
+        -1,
+        2,
+        0,
+        0,
+        -3,
+        0,
+        -3,
+        0,
+        -3,
+        0,
+        -3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        3,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ]
 
     fid = fundamentalid(p)
 
@@ -668,7 +765,7 @@ function _hasquark(p, q::Integer)
     # cf. the definition of a nucleus PDG ID in isnucleus.
     # This check needs to be done first since isstandard is false for nuclei
     if isnucleus(p)
-        q ∈ [1, 2]  && return true # Nuclei by construction contain up and down quarks
+        q ∈ [1, 2] && return true # Nuclei by construction contain up and down quarks
         if q == 3 && !(p.value ∈ [2112, 2212])
             p.N8 > 0 && return true
             return false
@@ -680,9 +777,9 @@ function _hasquark(p, q::Integer)
     isdyon(p) && return false
 
     if isRhadron(p)
-        _digits = digits(abs(p.value), pad=10)
+        _digits = digits(abs(p.value), pad = 10)
         iz = 7
-        for loc ∈ range(6; step=-1, stop=2)
+        for loc ∈ range(6; step = -1, stop = 2)
             if _digits[loc] == 0
                 iz = loc
             elseif loc == iz - 1
