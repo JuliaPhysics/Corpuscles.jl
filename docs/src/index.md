@@ -136,6 +136,26 @@ julia> p.mass > 2035u"MeV"
 true
 ```
 
+For convenience, there are helper functions to convert mass and width values
+directly to GeV/c² or MeV/c² as Float64:
+
+```julia
+julia> p = Particle("Omega(c)0")
+Particle(4132) Omega(c)0
+
+julia> value_GeV(p.mass)
+2.6953
+
+julia> value_MeV(p.mass)
+2695.3
+
+julia> uncertainty_GeV(p.mass)
+0.0004
+
+julia> uncertainty_MeV(p.mass)
+0.4
+```
+
 ## Particle Codes
 
 Corpuscles currently supports conversions of Pythia and Geant3 codes to PDG
