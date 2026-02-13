@@ -7,16 +7,15 @@ makedocs(;
         prettyurls = get(ENV, "CI", nothing) == "true",
         assets = ["assets/logo.ico"],
     ),
-    pages=[
+    pages = [
         "Introduction" => "index.md",
+        "Developers" => "developers.md",
         "Helper Functions" => "helpers.md",
         "Acknowledgements" => "acknowledgements.md",
         "API" => "api.md",
     ],
-    repo="https://github.com/JuliaPhysics/Corpuscles.jl/blob/{commit}{path}#L{line}",
-    sitename="Corpuscles.jl",
+    repo = "https://github.com/JuliaPhysics/Corpuscles.jl/blob/{commit}{path}#L{line}",
+    sitename = "Corpuscles.jl",
 )
 
-deploydocs(;
-    repo="github.com/JuliaPhysics/Corpuscles.jl",
-)
+deploydocs(; repo = "github.com/JuliaPhysics/Corpuscles.jl")
