@@ -42,7 +42,7 @@ end
 @testset "conversions" begin
 
     # Particle Identites
-    # PDGID <-> Geant3ID 
+    # PDGID <-> Geant3ID
     geant_id = Geant3ID(1)
     pdg_id = convert(PDGID, geant_id)
     @test isequal(22, pdg_id.value)
@@ -84,14 +84,14 @@ end
 
     for particle in particles()
         if particle.pdgid in [
-            PDGID(-9000321),
-            PDGID(9000321),
-            PDGID(9020113),
-            PDGID(-9000311),
-            PDGID(9020213),
-            PDGID(9000311),
-            PDGID(-9020213),
-        ]
+                PDGID(-9000321),
+                PDGID(9000321),
+                PDGID(9020113),
+                PDGID(-9000311),
+                PDGID(9020213),
+                PDGID(9000311),
+                PDGID(-9020213),
+            ]
             continue
         end
         @test convert(Geant3ID, particle.pdgid) !== nothing
@@ -238,16 +238,16 @@ end
     """
     function check_candidates(f, candidates)
         noncandidates = setdiff(Set(instances(PDGIDS)), Set(candidates))
-        for candidate ∈ candidates
+        for candidate in candidates
             @test f(candidate)
         end
-        for noncandidate ∈ noncandidates
+        for noncandidate in noncandidates
             @test !f(noncandidate)
         end
     end
 
 
-    for _particles ∈
+    for _particles in
         [particles(), [p.pdgid for p in particles()], [p.pdgid.value for p in particles()]]
         @test sum(map(isstandard, _particles)) > 0
         @test sum(map(isfundamental, _particles)) > 0
@@ -567,7 +567,7 @@ end
     @testset "A" begin
         candidates =
             Dict(Proton => 1, AntiNeutron => 1, HydrogenNucleus => 1, Carbon12 => 12)
-        for (candidate, value) ∈ candidates
+        for (candidate, value) in candidates
             @test A(candidate) == value
         end
         noncandidates = setdiff(Set(keys(candidates)), Set(instances(PDGIDS)))
@@ -579,7 +579,7 @@ end
     @testset "Z" begin
         candidates =
             Dict(Proton => 1, AntiNeutron => 0, HydrogenNucleus => 1, Carbon12 => 6)
-        for (candidate, value) ∈ candidates
+        for (candidate, value) in candidates
             @test Z(candidate) == value
         end
         noncandidates = setdiff(Set(keys(candidates)), Set(instances(PDGIDS)))
@@ -613,7 +613,7 @@ end
             AntiCHadron,
         ]
         noncandidates = [Invalid1, Invalid2]
-        for candidate ∈ candidates
+        for candidate in candidates
             @test f(Corpuscles.pdgid(candidate))
         end
         for noncandidate in noncandidates
@@ -695,9 +695,9 @@ end
             @test sspin(f_4_2300) === nothing
         end
 
-        for (states, particles) ∈ JSLstatelist
+        for (states, particles) in JSLstatelist
             for p in particles
-                J_, S_, L_ = [parse(Int, s) for s ∈ states]
+                J_, S_, L_ = [parse(Int, s) for s in states]
                 @test J(p) == J_
                 @test S(p) == S_
                 @test L(p) == L_
@@ -741,7 +741,7 @@ end
             nothing => [Invalid1, Invalid2],
             nothing => [TauPrime, BPrimeQuark, TPrimeQuark],
         )
-        for (J_, particles) ∈ Jlist
+        for (J_, particles) in Jlist
             for p in particles
                 @test J(p) == J_
             end
@@ -750,7 +750,7 @@ end
 
     @testset "S non-mesons" begin
         Slist = Dict(nothing => [Gluon, Photon, Z0])
-        for (S_, particles) ∈ Slist
+        for (S_, particles) in Slist
             for p in particles
                 @test S(p) == S_
             end
@@ -759,7 +759,7 @@ end
 
     @testset "L non-mesons" begin
         Llist = Dict(nothing => [Gluon, Photon, Z0])
-        for (L_, particles) ∈ Llist
+        for (L_, particles) in Llist
             for p in particles
                 @test L(p) == L_
             end

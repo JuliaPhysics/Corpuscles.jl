@@ -22,7 +22,7 @@ export A, Z, charge, threecharge, J, S, L, jspin, sspin, lspin
 export value_GeV, value_MeV, uncertainty_GeV, uncertainty_MeV
 
 # Julia 1.0 compatibility
-eachrow_(x) = (x[i, :] for i = 1:size(x)[1])
+eachrow_(x) = (x[i, :] for i in 1:size(x)[1])
 isnothing(::Any) = false
 isnothing(::Nothing) = true
 
@@ -31,12 +31,12 @@ const _data_dir = abspath(joinpath(@__DIR__, "..", "data"))
 include("pidNames.jl")
 include("similarity.jl")
 
-function parserational(::Type{Rational{T}}, val::AbstractString) where {T<:Integer}
+function parserational(::Type{Rational{T}}, val::AbstractString) where {T <: Integer}
     !('/' in val) && return parse(T, val) // 1
     nums, denoms = split(val, '/', keepempty = false)
     num = parse(T, nums)
     denom = parse(T, denoms)
-    return num//denom
+    return num // denom
 end
 
 abstract type ParticleID end
@@ -99,29 +99,29 @@ end
 end
 
 struct MeasuredValue{D}
-    value::Quantity{T1,D,U1} where {T1<:Real,U1<:Unitful.Units}
-    lower_limit::Quantity{T2,D,U2} where {T2<:Real,U2<:Unitful.Units}
-    upper_limit::Quantity{T3,D,U3} where {T3<:Real,U3<:Unitful.Units}
+    value::Quantity{T1, D, U1} where {T1 <: Real, U1 <: Unitful.Units}
+    lower_limit::Quantity{T2, D, U2} where {T2 <: Real, U2 <: Unitful.Units}
+    upper_limit::Quantity{T3, D, U3} where {T3 <: Real, U3 <: Unitful.Units}
 end
 
 function Base.isless(x::MeasuredValue, y::Quantity)
-    x.value + x.upper_limit < y
+    return x.value + x.upper_limit < y
 end
 
 function Base.isless(x::Quantity, y::MeasuredValue)
-    x < y.value - y.lower_limit
+    return x < y.value - y.lower_limit
 end
 
 function Base.isless(x::MeasuredValue, y::MeasuredValue)
-    x.value + x.upper_limit < y.value - y.lower_limit
+    return x.value + x.upper_limit < y.value - y.lower_limit
 end
 
 function Base.isapprox(x::Quantity, y::MeasuredValue)
-    (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
+    return (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
 end
 
 function Base.isapprox(y::MeasuredValue, x::Quantity)
-    (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
+    return (x < y.value + y.upper_limit) & (x > y.value - y.lower_limit)
 end
 
 function Base.isapprox(x::MeasuredValue, y::MeasuredValue)
@@ -132,7 +132,7 @@ function Base.isapprox(x::MeasuredValue, y::MeasuredValue)
     retval |= isapprox(y, x.value + x.upper_limit)
     retval |= isapprox(y, x.value - x.upper_limit)
     retval |= isapprox(y, x.value)
-    retval
+    return retval
 end
 
 const _energy_dim = Unitful.dimension(u"J")
@@ -142,12 +142,12 @@ const _charge_dim = Unitful.dimension(u"C")
 struct Particle
     pdgid::PDGID
     mass::MeasuredValue{_mass_dim}
-    width::Union{Missing,MeasuredValue{_mass_dim}}
-    charge::Quantity{T,_charge_dim,U} where {T<:Real,U<:Unitful.Units}
-    isospin::Union{Missing,Rational{Int8}}
-    parity::Union{Missing,Int8}
-    gparity::Union{Missing,Int8}
-    cparity::Union{Missing,Int8}
+    width::Union{Missing, MeasuredValue{_mass_dim}}
+    charge::Quantity{T, _charge_dim, U} where {T <: Real, U <: Unitful.Units}
+    isospin::Union{Missing, Rational{Int8}}
+    parity::Union{Missing, Int8}
+    gparity::Union{Missing, Int8}
+    cparity::Union{Missing, Int8}
     antiprop::InvProperty
     rank::Int8
     status::PDGStatus
@@ -164,7 +164,7 @@ pdgid(x) = PDGID(Integer(x))
 import Base: -
 # anti-particle
 function (-)(p::Particle)
-    try
+    return try
         Particle(-p.pdgid.value)
     catch # anti-particle is itself
         p
@@ -173,7 +173,7 @@ end
 
 function read_conversion_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, skipstart = 2, comments = true)
-    conversions = parse.(Int, file_content[:, 1:3])
+    return conversions = parse.(Int, file_content[:, 1:3])
 end
 
 const _id_conversion_cols = Dict(PDGID => 1, Geant3ID => 3, PythiaID => 2)
@@ -188,17 +188,17 @@ end
 
 Base.showerror(io::IO, e::IDException) = Printf.@printf(io, "ParticleID Error: %s", e.var)
 
-function Base.convert(t::Type{X}, id::Y) where {X<:ParticleID,Y<:ParticleID}
+function Base.convert(t::Type{X}, id::Y) where {X <: ParticleID, Y <: ParticleID}
     if isequal(X, Y)
         return id
     end
     val_col = _id_conversion_cols[t]
     key_col = _id_conversion_cols[Y]
-    row = findfirst(x->isequal(x, id.value), _id_conversion_tbl[:, key_col])
+    row = findfirst(x -> isequal(x, id.value), _id_conversion_tbl[:, key_col])
     if iszero(id.value) || isequal(row, nothing)
         throw(IDException("No corresponding $t for $id found!"))
     end
-    X(_id_conversion_tbl[row, val_col])
+    return X(_id_conversion_tbl[row, val_col])
 end
 
 
@@ -211,7 +211,7 @@ function read_parity(val::AbstractString)
     end
 end
 
-const ParticleDict = Dict{PDGID,Particle}
+const ParticleDict = Dict{PDGID, Particle}
 
 function read_particle_csv(filepath::AbstractString)
     file_content = readdlm(filepath, ',', AbstractString, comments = true)
@@ -261,7 +261,7 @@ function read_particle_csv(filepath::AbstractString)
             glyph,
         )
     end
-    dct_particles
+    return dct_particles
 end
 
 """
@@ -287,7 +287,6 @@ function _generatename(name, pdgid, antiprop, charge)
 end
 
 
-
 """
 $(SIGNATURES)
 
@@ -302,15 +301,15 @@ julia> Corpuscles.available_catalog_files()
 """
 function available_catalog_files()
     dir_content = readdir(_data_dir)
-    filter!(s->occursin(".csv", s), dir_content)
-    filter!(s->!occursin("conversions", s), dir_content)
-    joinpath.(_data_dir, dir_content)
+    filter!(s -> occursin(".csv", s), dir_content)
+    filter!(s -> !occursin("conversions", s), dir_content)
+    return joinpath.(_data_dir, dir_content)
 end
 
 const _catalogs = available_catalog_files()
 
 const _default_year = "2025"
-const _default_catalog = filter(s->occursin(_default_year, s), _catalogs)[end]
+const _default_catalog = filter(s -> occursin(_default_year, s), _catalogs)[end]
 
 mutable struct Catalog
     particle_dict::ParticleDict
@@ -330,7 +329,7 @@ const catalog = Catalog(read_particle_csv(_default_catalog))
 
 # inverse catelog for `Particle(name)` construction
 const inv_catalog =
-    Dict{String,PDGID}(p.name => p.pdgid for p in catalog.particles if p.pdgid.value>0)
+    Dict{String, PDGID}(p.name => p.pdgid for p in catalog.particles if p.pdgid.value > 0)
 
 """
 $(SIGNATURES)
@@ -362,11 +361,11 @@ function Base.show(io::IO, m::MeasuredValue)
 end
 
 function Base.show(io::IO, p::PDGID)
-    Printf.@printf(io, "PDGID(%s)", p.value)
+    return Printf.@printf(io, "PDGID(%s)", p.value)
 end
 
 function Base.show(io::IO, p::Particle)
-    Printf.@printf(io, "Particle(%s) %s", p.pdgid.value, p.name)
+    return Printf.@printf(io, "Particle(%s) %s", p.pdgid.value, p.name)
 end
 
 function Base.print(io::IO, p::Particle)
@@ -389,6 +388,7 @@ function Base.print(io::IO, p::Particle)
             Printf.@printf(io, "%s = %s\n", key, value)
         end
     end
+    return
 end
 
 

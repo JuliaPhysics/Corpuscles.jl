@@ -23,7 +23,7 @@ function Base.isvalid(p::PDGID)
     istechnicolor(p) && return true
     iscompositequarkorlepton(p) && return true
     !isstandard(p) && return (isQball(p) || isnucleus(p))
-    false
+    return false
 end
 
 """
@@ -33,7 +33,7 @@ Returns true if the PDG ID of the particle follows the standard numbering scheme
 """
 function isstandard(p)
     p = pdgid(p)
-    p.N8 == 0 && p.N9 == 0 && p.N10 == 0
+    return p.N8 == 0 && p.N9 == 0 && p.N10 == 0
 end
 
 """
@@ -45,7 +45,7 @@ function isfundamental(p)
     !isstandard(p) && return false
     p.Nq2 == 0 && p.Nq1 == 0 && return true
     abs(p.value) <= 100 && return true
-    false
+    return false
 end
 
 
@@ -59,7 +59,7 @@ function fundamentalid(p)
     abspdgid = abs(p.value)
     p.Nq2 == 0 && p.Nq1 == 0 && return abspdgid % 10000
     abs(p.value) <= 100 && return abspdgid
-    0
+    return 0
 end
 
 
@@ -77,7 +77,7 @@ function islepton(p)
     p = pdgid(p)
     !isstandard(p) && return false
     11 <= fundamentalid(p) <= 18 && return true
-    false
+    return false
 end
 
 """
@@ -104,7 +104,7 @@ function ismeson(p)
         p.Nq3 == p.Nq2 && p.value < 0 && return false
         return true
     end
-    false
+    return false
 end
 
 """
@@ -131,7 +131,7 @@ function isbaryon(p)
 
     (isRhadron(p) || ispentaquark(p)) && return false
 
-    false
+    return false
 end
 
 """
@@ -146,7 +146,7 @@ function ishadron(p)
     isbaryon(p) && return true
     ispentaquark(p) && return true
     isRhadron(p) && return true
-    false
+    return false
 end
 
 """
@@ -164,7 +164,7 @@ function isRhadron(p)
     isSUSY(p) && return false
     # All R-hadrons have at least 3 core digits
     (p.Nq2 == 0 || p.Nq3 == 0 || p.Nj == 0) && return false
-    true
+    return true
 end
 
 
@@ -180,7 +180,7 @@ function isSUSY(p)
     p.N != 1 && p.N != 2 && return false
     p.Nr != 0 && return false
     fundamentalid(p) == 0 && return false
-    true
+    return true
 end
 
 
@@ -205,7 +205,7 @@ function ispentaquark(p)
     p.Nq2 > p.Nq1 && return false
     p.Nq1 > p.Nl && return false
     p.Nl > p.Nr && return false
-    true
+    return true
 end
 
 """
@@ -214,7 +214,7 @@ end
 """
 function isgaugebosonorhiggs(p)
     p = pdgid(p)
-    21 <= abs(p.value) <= 40
+    return 21 <= abs(p.value) <= 40
 end
 
 """
@@ -222,7 +222,7 @@ end
 """
 function issmgaugebosonorhiggs(p)
     p = pdgid(p)
-    abs(p.value) == 24 || 21 <= p.value <= 25
+    return abs(p.value) == 24 || 21 <= p.value <= 25
 end
 
 
@@ -232,7 +232,7 @@ end
 function istechnicolor(p)
     p = pdgid(p)
     !isstandard(p) && return false
-    p.N == 3
+    return p.N == 3
 end
 
 """
@@ -245,7 +245,7 @@ function iscompositequarkorlepton(p)
     !isstandard(p) && return false
     fundamentalid(p) == 0 && return false
     !(p.N == 4 && p.Nr == 0) && return false
-    true
+    return true
 end
 
 """
@@ -266,7 +266,7 @@ function isdyon(p)
     !(p.Nl ∈ [1, 2]) && return false
     p.Nq3 == 0 && return false
     p.Nj != 0 && return false
-    true
+    return true
 end
 
 """
@@ -278,7 +278,7 @@ function isdiquark(p)
     abs(p.value) <= 100 && return false
     0 < fundamentalid(p) <= 100 && return false
     p.Nj > 0 && p.Nq3 == 0 && p.Nq2 > 0 && p.Nq1 > 0 && return true
-    false
+    return false
 end
 
 """
@@ -300,7 +300,7 @@ function isgeneratorspecific(p)
     3901 <= abspdgid <= 3930 && return true
     abspdgid ∈ [998, 999] && return true
     abspdgid ∈ [20022, 480000000] && return true  # Special cases of opticalphoton and geantino
-    false
+    return false
 end
 
 
@@ -314,7 +314,7 @@ pseudo-particles and concepts, see `isgeneratorspecific`.
 """
 function isspecial(p)
     p = pdgid(p)
-    p.value ∈ [39, 41, 42, 51, 52, 53, 110, 990, 9990] || isgeneratorspecific(p)
+    return p.value ∈ [39, 41, 42, 51, 52, 53, 110, 990, 9990] || isgeneratorspecific(p)
 end
 
 
@@ -332,7 +332,7 @@ function isQball(p)
     p.Nr != 0 && return false
     (abs(p.value) ÷ 10) % 10000 == 0 && return false
     p.Nj != 0 && return false
-    true
+    return true
 end
 
 
@@ -362,7 +362,7 @@ function hasfundamentalanti(p)
         fid ∈ unassigned && return false
         return true
     end
-    false
+    return false
 end
 
 
@@ -391,7 +391,7 @@ function isnucleus(p)
 
         A_ >= abs(Z_) && return true
     end
-    false
+    return false
 end
 
 
@@ -406,7 +406,7 @@ function A(p)
     abspdgid = abs(p.value)
     abspdgid ∈ [2112, 2212] && return 1
     (p.N10 != 1 || p.N9 != 0) && return nothing
-    (abspdgid ÷ 10) % 1000
+    return (abspdgid ÷ 10) % 1000
 end
 
 
@@ -422,7 +422,7 @@ function Z(p)
     abspdgid == 2212 && return sign(p.value)
     abspdgid == 2112 && return 0
     (p.N10 != 1 || p.N9 != 0) && return nothing
-    ((abspdgid ÷ 10000) % 1000) * sign(p.value)
+    return ((abspdgid ÷ 10000) % 1000) * sign(p.value)
 end
 
 """
@@ -457,7 +457,7 @@ Returns the total spin J.
 function J(p)
     jspin_ = jspin(p)
     isnothing(jspin_) && return nothing
-    (jspin_ - 1) / 2
+    return (jspin_ - 1) / 2
 end
 
 
@@ -495,7 +495,7 @@ function S(p)
         js >= 3 && return 1
         return 0
     end
-    0
+    return 0
 end
 
 """
@@ -510,7 +510,7 @@ particles and `nothing` is returned too.
 function sspin(p)
     s = S(p)
     isnothing(s) && return nothing
-    2s + 1
+    return 2s + 1
 end
 
 
@@ -558,7 +558,7 @@ function L(p)
         js == 9 && return 5
     end
 
-    0
+    return 0
 end
 
 """
@@ -573,9 +573,8 @@ particles and `nothing` is returned too.
 function lspin(p)
     l = L(p)
     isnothing(l) && return nothing
-    2l + 1
+    return 2l + 1
 end
-
 
 
 """
@@ -738,7 +737,7 @@ function threecharge(p)
     if !isnothing(charge) && p.value < 0
         charge = -charge
     end
-    charge
+    return charge
 end
 
 """
@@ -779,7 +778,7 @@ function _hasquark(p, q::Integer)
     if isRhadron(p)
         _digits = digits(abs(p.value), pad = 10)
         iz = 7
-        for loc ∈ range(6; step = -1, stop = 2)
+        for loc in range(6; step = -1, stop = 2)
             if _digits[loc] == 0
                 iz = loc
             elseif loc == iz - 1
@@ -794,7 +793,7 @@ function _hasquark(p, q::Integer)
     (p.Nq3 == q || p.Nq2 == q || p.Nq1 == q) && return true
 
     ispentaquark(p) && (p.Nl == q || p.Nr == q) && return true
-    false
+    return false
 end
 
 """
