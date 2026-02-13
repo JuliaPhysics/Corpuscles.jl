@@ -9,6 +9,7 @@ makedocs(;
     ),
     pages = [
         "Introduction" => "index.md",
+        "Developers" => "developers.md",
         "Helper Functions" => "helpers.md",
         "Acknowledgements" => "acknowledgements.md",
         "API" => "api.md",
