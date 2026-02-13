@@ -3,5 +3,5 @@ doc:
 tests: 
 	julia --project=. test/runtests.jl
 format:
-	julia --project=@runic -e 'using Pkg; Pkg.add("Runic")'
-	julia --project=@runic -e 'using Runic; files = readlines(`git ls-files '\''*.jl'\''`); isempty(files) || exit(Runic.main(vcat(["--inplace"], files)))'
+	julia --project=@runic --startup-file=no -e 'using Pkg; Pkg.add("Runic")'
+	git ls-files -z -- '*.jl' | xargs -0 --no-run-if-empty julia --project=@runic --startup-file=no -e 'using Runic; exit(Runic.main(ARGS))' -- --inplace

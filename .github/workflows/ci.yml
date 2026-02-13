@@ -64,26 +64,6 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v6
-      - uses: julia-actions/setup-julia@v2
+      - uses: fredrikekre/runic-action@v1
         with:
           version: '1'
-      - uses: julia-actions/cache@v2
-      - name: Install Runic
-        run: |
-          julia --project=@runic -e '
-            using Pkg
-            Pkg.add("Runic")
-            println("Runic installed successfully")
-            using Runic
-            # Get installed version
-            deps = Pkg.dependencies()
-            for (uuid, info) in deps
-              if info.name == "Runic"
-                println("Runic version: ", info.version)
-                break
-              end
-            end
-          '
-      - name: Check code formatting
-        run: |
-          git ls-files -z -- '*.jl' | xargs -0 --no-run-if-empty julia --project=@runic -m Runic --check --diff
