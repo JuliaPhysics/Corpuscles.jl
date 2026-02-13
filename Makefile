@@ -3,4 +3,5 @@ doc:
 tests: 
 	julia --project=. test/runtests.jl
 format:
-	julia -e 'using Pkg; Pkg.activate(temp=true); Pkg.add("JuliaFormatter"); using JuliaFormatter; format(".")'
+	julia --project=@runic -e 'using Pkg; Pkg.add("Runic")'
+	julia --project=@runic -e 'using Runic; files = readlines(`git ls-files '\''*.jl'\''`); isempty(files) || exit(Runic.main(vcat(["--inplace"], files)))'

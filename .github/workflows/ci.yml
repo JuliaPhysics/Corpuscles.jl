@@ -68,32 +68,22 @@ jobs:
         with:
           version: '1'
       - uses: julia-actions/cache@v2
-      - name: Install JuliaFormatter
+      - name: Install Runic
         run: |
-          julia -e '
+          julia --project=@runic -e '
             using Pkg
-            Pkg.add("JuliaFormatter")
-            println("JuliaFormatter installed successfully")
-            using JuliaFormatter
+            Pkg.add("Runic")
+            println("Runic installed successfully")
+            using Runic
             # Get installed version
             deps = Pkg.dependencies()
             for (uuid, info) in deps
-              if info.name == "JuliaFormatter"
-                println("JuliaFormatter version: ", info.version)
+              if info.name == "Runic"
+                println("Runic version: ", info.version)
                 break
               end
             end
           '
       - name: Check code formatting
         run: |
-          julia -e '
-            using JuliaFormatter
-            println("Running format check on current directory...")
-            result = format(".")
-            if result
-              println("✓ Code is properly formatted")
-            else
-              println("✗ Code needs formatting. Please run JuliaFormatter.format(\".\") locally and commit the changes.")
-              exit(1)
-            end
-          '
+          git ls-files -z -- '*.jl' | xargs -0 --no-run-if-empty julia --project=@runic -m Runic --check --diff
