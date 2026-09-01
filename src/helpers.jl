@@ -717,7 +717,7 @@ function threecharge(p)
         if abspdgid ∈ [1000017, 1000018, 1000034, 1000052, 1000053, 1000054]
             charge = 0
         end
-        if abspdgid == 5100061 && abspdgid == 5100062
+        if abspdgid == 5100061 || abspdgid == 5100062
             charge = 6
         end
     elseif p.Nj == 0  # KL, KS, or undefined
