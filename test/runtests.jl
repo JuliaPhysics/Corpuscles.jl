@@ -107,6 +107,18 @@ end
     @test "particle2020.csv" in catalog_files
     @test "particle2021.csv" in catalog_files
     @test "particle2022.csv" in catalog_files
+    @test "particle2023.csv" in catalog_files
+    @test "particle2024.csv" in catalog_files
+    @test "particle2025.csv" in catalog_files
+    @test "particle2026.csv" in catalog_files
+
+    Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2026.csv"))
+        
+    @test Particle(11).mass.value == 0.51099895069u"MeV/c^2"
+    @test Particle(6).mass.value == 172600u"MeV/c^2"
+    @test Particle(24).mass.value == 80362u"MeV/c^2"
+    @test Particle(25).mass.value == 125130u"MeV/c^2"
+    @test Particle(25).width.value == 3u"MeV/c^2"
 
     Corpuscles.use_catalog_file(joinpath(DATA_DIR, "particle2008.csv"))
     @test 0.054u"MeV/c^2" == Particle(553).width.value
